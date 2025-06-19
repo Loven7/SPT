@@ -1,0 +1,4103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- For mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Augenheilkunde  2019-2024</title>
+  <!-- Load a stylish Google Font for exam setup -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+.highlightedText {
+  background-color: yellow;
+}
+
+    /* ---------- MAIN QUIZ STYLES ---------- */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #e8f0fe; /* soft light-blue for main quiz */
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #topBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    #topBar button {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+      margin: 4px;
+    }
+    #topBar button:hover {
+      background-color: #45a049;
+      transform: scale(1.03);
+    }
+    /* Reset Progress Button */
+    #resetProgress {
+      background-color: #9c27b0;
+    }
+    #resetProgress:hover {
+      background-color: #8e24aa;
+    }
+    #header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    #dateTime, #globalTimer {
+      font-size: 14px;
+      color: #333;
+    }
+    #globalTimer {
+      font-size: 16px;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    #roundClock {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border: 5px solid #333;
+      border-radius: 50%;
+      background: white;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    #analogClock {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #progressInfo {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+    #progressContainer {
+      width: 100%;
+      background: #ddd;
+      height: 20px;
+      margin: 15px 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #progressBar {
+      height: 100%;
+      background: #4caf50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .question {
+      border: 1px solid #ccc;
+      background: #fafafa;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question strong { display: block; margin-bottom: 8px; }
+    .options { margin-top: 5px; }
+    .option {
+      display: block;
+      margin-bottom: 8px;
+      padding: 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .option:hover { background-color: #f0f0f0; }
+    .correct { background-color: #c8e6c9 !important; }
+    .incorrect { background-color: #ffcdd2 !important; }
+    .disabled { pointer-events: none; opacity: 0.7; }
+    .timer { font-size: 12px; color: #555; margin-top: 5px; }
+    .answer-feedback { margin-top: 8px; font-size: 14px; font-weight: bold; }
+    .checkmark { color: green; font-weight: bold; margin-left: 5px; }
+    .crossmark { color: red; font-weight: bold; margin-left: 5px; }
+    #paginationControls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #paginationControls button {
+      margin: 0 10px;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #paginationControls button:disabled { background-color: #9e9e9e; cursor: not-allowed; }
+    #backFromReview button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background-color: #607d8b;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #backFromReview button:hover { background-color: #546e7a; }
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .container { padding: 15px; }
+      #topBar { flex-direction: column; gap: 10px; }
+      #header { flex-direction: column; }
+      #roundClock { width: 50px; height: 50px; }
+      #globalTimer, #progressInfo { font-size: 14px; }
+      #topBar button, #paginationControls button, #backFromReview button {
+        font-size: 12px; padding: 6px 10px;
+      }
+    }
+    /* ---------- Unified Button Style (Used in Exam Mode) ---------- */
+    .btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+    .btn:hover { transform: scale(1.05); }
+    /* ---------- SPT TEST (Exam Mode) STYLES ---------- */
+    /* Lighter, fancier exam "world" */
+    #sptTestPage {
+      background-color: #f7f9fc;
+      color: #2c3e50;
+      padding: 30px 20px;
+      min-height: 100vh;
+    }
+    /* Exam Setup: now using a normal, compact size (wider than tall) */
+    #examSetup {
+      font-family: 'Roboto Slab', serif;
+      text-align: center;
+      font-size: 18px;
+      animation: fadeIn 1s ease;
+      margin: 20px auto;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    /* Setup Table remains the same */
+    #setupTable {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    #setupTable th, #setupTable td {
+      padding: 8px;
+      border: 1px solid #dfe4ea;
+      text-align: center;
+    }
+    #setupTable th { background: #f1f2f6; }
+    /* Exam length selection buttons: initially green, turn red when selected */
+    .examLengthBtn {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin: 5px;
+      font-size: 16px;
+    }
+    .examLengthBtn.selected { background-color: #c62828; }
+    /* Exam Interface Container */
+    #examContainer {
+      margin: 20px auto;
+      max-width: 800px;
+      animation: fadeIn 1s ease;
+      background: #ecf0f1;
+      color: #2c3e50;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    /* Exam questions use same .question style as main quiz */
+    #examQuestionsList .question { text-align: left; margin-bottom: 15px; }
+    /* Flag button for exam questions */
+    .flagBtn {
+      float: right;
+      background-color: #ff9800;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .flagBtn:hover { transform: scale(1.05); }
+    .flagged { border: 2px solid #ff9800; }
+    /* Exam mode pagination controls (red buttons) */
+    #examPaginationControls {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #examPaginationControls button {
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      background-color: #c62828;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 10px;
+      transition: background-color 0.2s;
+    }
+    #examPaginationControls button:disabled { background-color: #9e9e9e; cursor: not-allowed; }
+    /* Total Exam Timer */
+    #totalExamTimer {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* Exam Result Page: now using a compact normal size */
+    #examResult {
+      text-align: center;
+      font-size: 18px;
+      animation: fadeIn 1s ease;
+      margin: 20px auto;
+      max-width: 600px;
+      background: #ecf0f1;
+      color: #2c3e50;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    /* Result Table in exam result page (German) */
+    #resultTable {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 500px;
+      font-size: 16px;
+    }
+    #resultTable th, #resultTable td {
+      border: 1px solid #dfe4ea;
+      padding: 8px;
+      text-align: center;
+    }
+    #resultTable th { background: #f1f2f6; }
+    /* Smaller fonts for Feedback Page */
+    #examFeedbackDiv { font-size: 16px; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* ---------- Additional Compact Styles for SPT Test Pages ---------- */
+    #sptTestPage, #examSetup, #examResult {
+      max-width: 650px !important;
+      font-size: 16px !important;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- MAIN QUIZ SECTION -->
+  <div class="container">
+    <div id="topBar">
+        <button id="openSearchBtn">Search</button>
+<button id="reviewUnanswered">Unanswered Questions</button>
+
+      <button id="reviewIncorrect">Incorrect Answers</button>
+      <button id="shuffleButton">Shuffle Questions</button>
+      <button id="resetProgress">Reset Progress</button>
+      <!-- SPT Test button will be added via JS below -->
+    </div>
+    <div id="header">
+      <div>
+        <h1 id="topicHeadline">Augenheilkunde 2019-2024</h1>
+        <div id="dateTime"></div>
+      </div>
+      <div>
+        <div id="globalTimer">Quiz Timer: <span id="quizTime">00:00</span></div>
+        <div id="roundClock">
+          <canvas id="analogClock" width="100" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+    <div id="progressInfo">Total Questions: 0 | Answered: 0</div>
+    <div id="progressContainer">
+      <div id="progressBar"></div>
+    </div>
+    <div id="questionsContainer"></div>
+    <div id="paginationControls">
+      <button id="prevPage" disabled>Previous</button>
+      <span id="pageIndicator">Page 1</span>
+      <button id="nextPage">Next</button>
+    </div>
+    <div id="backFromReview" style="display:none; text-align:center; margin-top:20px;">
+      <button id="backBtn">Back to All Questions</button>
+    </div>
+  </div>
+  <script>
+    /* ---------- MAIN QUIZ SCRIPT (with Auto-Save) ---------- */
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    const QUESTIONS_PER_PAGE = 50;
+    let allQuestions = [
+
+
+{
+  "id": 001,
+  "text": "Bei der Funduskopie einer 40-jährigen Patientin zeigen sich Dehnungsveränderungen von Netzhaut, Aderhaut und Bruch-Membran, die auf eine hohe axiale Länge des Auges schließen lassen. Welche Refraktion erwarten Sie bei dieser Patientin?",
+  "image": "",
+  "options": [
+    "Myopie",
+    "Hyperopie",
+    "Emmetropie",
+    "Astigmatismus",
+    "Presbyopie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 002,
+  "text": "Bei welchen Erkrankungen des Augenlides besteht die Gefahr einer Schädigung der Hornhaut? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Trichiasis",
+    "Entropium",
+    "Lagophthalmus",
+    "Ptosis",
+    "Blepharospasmus"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 003,
+  "text": "Ein Patient kommt mit folgenden Beschwerden zu Ihnen: Augentränen, Fremdkörpergefühl, Lichtüberempfindlichkeit und Lidschwellung. Nach einer vollständigen Augenuntersuchung diagnostizieren Sie eine Trichiasis. Wie erklären Sie dem Patienten die Erkrankung und welche Therapie empfehlen Sie?",
+  "image": "",
+  "options": [
+    "Schleifende Wimpern und Elektroepilation",
+    "Verstopfte Drüsen und Lidmassage",
+    "Lidrandverkrustung und Antibiotikasalbe",
+    "Hornhauttrübung und Hornhauttransplantation",
+    "Wimpernverlust und Steroidinjektion"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 004,
+  "text": "Eine 34-jährige Patientin klagt über beidseitiges Augenbrennen, Rötung, Fremdkörper- und Trockenheitsgefühl seit einigen Monaten, besonders bei langer Computerarbeit. Welche sind Ihre nächsten Schritte zur Abklärung? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Durchführung eines Schirmer-Tests",
+    "Anamneseerhebung bezüglich hormoneller oder immunologischer Erkrankungen und Medikamenteneinnahme",
+    "Messung der Tränenfilm-Aufrisszeit",
+    "CT des Schädels zur Tumorausschlussdiagnostik",
+    "Fluoreszenzangiographie zur Netzhautdarstellung"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 005,
+  "text": "Eine 62-jährige Patientin kommt zur augenärztlichen Routineuntersuchung, aufgrund einer Sprachbarriere ist keine Vorgeschichte erhebbar. Bei der Funduskopie sind in der Makula weiche Drusen und eine Atrophie des retinalen Pigmentepithels zu sehen. Für welche Augenerkrankung sind diese Veränderungen charakteristisch?",
+  "image": "",
+  "options": [
+    "Altersbedingte Makuladegeneration",
+    "Diabetische Retinopathie",
+    "Retinale Venenokklusion",
+    "Hypertensive Retinopathie",
+    "Retinitis pigmentosa"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 006,
+  "text": "Eine junge Frau klagt seit einigen Tagen über Schleier und Trübungen am linken Auge. Bei der Funduskopie zeigt der in der Abbildung ersichtliche Befund. Wofür ist dieser typisch?",
+  "image": "https://i.postimg.cc/g2ZVjnhy/image.png",
+  "options": [
+    "Toxoplasmose-Chorioretinitis",
+    "Zentralarterienverschluss",
+    "Altersbedingte Makuladegeneration",
+    "Retinale Ischämiezone",
+    "Papillenödem postmeningitisch"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 007,
+  "text": "Bei welchen Krankheitsbildern kann sich eine Amblyopie entwickeln? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Kongenitale Katarakt",
+    "Anisometropie",
+    "Mikrostrabismus",
+    "Retinale Vaskulitis",
+    "Akuter Glaukomanfall"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 008,
+  "text": "Ein 28-jähriger Patient sucht aufgrund von beidseitigen schmerzlosen Sehstörungen (Schleier, Punkte) den Augenarzt auf. Bei der Untersuchung zeigen sich im Glaskörper weißliche Infiltrationen über der Pars plana und der äußeren Netzhautperipherie (»Schneebälle«). Was ist die wahrscheinlichste klinische Verdachtsdiagnose?",
+  "image": "",
+  "options": [
+    "Uveitis intermedia",
+    "Akutes Winkelglaukom",
+    "Retinale Vaskulitis",
+    "Optikusneuritis",
+    "Zyklitis posterior"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 009,
+  "text": "Ein 50-jähriger Mann mit bekanntem Typ 2 Diabetes mellitus kommt zu einer Routineuntersuchung. Sie sehen bei der Fundusuntersuchung an beiden Augen multiple Netzhautblutungen, Mikroaneurysmen sowie intraretinale mikrovaskuläre Abnormalitäten, die in mehr als einem Quadranten der Netzhaut vorhanden sind. Welche Diagnose trifft am ehesten zu?",
+  "image": "",
+  "options": [
+    "Schwere nicht-proliferative diabetische Retinopathie",
+    "Milde nicht-proliferative diabetische Retinopathie",
+    "Proliferative diabetische Retinopathie",
+    "Zentrale seröse Retinopathie",
+    "Hypertensive Retinopathie dritten Grades"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 010,
+  "text": "Ein 52-jähriger Patient wird mit der Verdachtsdiagnose Glaukom zu Ihnen in die Ambulanz geschickt. Welche Untersuchungen veranlassen Sie als erstes, um den Verdacht abzuklären? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Applanationstonometrie + Gonioskopie",
+    "Nervenfaseranalyse + Gesichtsfelduntersuchung",
+    "Hornhauttopographie + Tränenfilmanalyse",
+    "Fluoreszenzangiographie + OCT-Angiographie",
+    "Visusprüfung + Dämmerungssehen"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 011,
+  "text": "Ein 55-jähriger Patient bemerkt seit mehreren Monaten eine schmerzlose, prominente und rötliche nicht pigmentierte Verdickung im nasalen Bindehautbereich, die langsam auf die Hornhaut vorwächst. Zusätzlich wird das Sehen immer mehr verzogen. Wie lautet die wahrscheinlichste Diagnose?",
+  "image": "",
+  "options": [
+    "Pterygium",
+    "Pinguecula",
+    "Skleritis",
+    "Konjunktivales Hämangiom",
+    "Limbaldermoid"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 012,
+  "text": "Ein 67-jähriger Patient stellt sich 6 Wochen nach erfolgreicher Kataraktoperation mit schmerzloser Sehverschlechterung mit verzerrtem Sehen am operierten Auge vor. Die Bindehaut ist bland. Welche der folgenden Komplikationen kommt dafür in Frage?",
+  "image": "",
+  "options": [
+    "Maculaödem (Irvine-Gass-Syndrom)",
+    "Endophthalmitis (Frühform)",
+    "Nachstar (Posterior capsular opacification)",
+    "Netzhautablösung (Amotio retinae)",
+    "Zystoides Glaukom (Sekundärform)"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 013,
+  "text": "Ein 69-jähriger Mann kommt in die Notfallambulanz und gibt an mit dem linken Auge plötzlich nichts mehr zu sehen. Er habe außerdem Kopfschmerzen, die in die linke Schläfe ziehen. Nach genauer Anamneseerhebung gibt der Patient Müdigkeit, Appetitlosigkeit und Gewichtsverlust in den letzten Wochen an. In der Funduskopie finden Sie eine prominente und unscharf begrenzte Papille. Welche weiteren diagnostischen Schritte sind zu erwägen? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Perimetrie",
+    "Biopsie der A. temporalis",
+    "Labor (CRP+BSG)",
+    "CT des Abdomens",
+    "Ultraschall der Carotiden"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 014,
+  "text": "Ein Medizinstudent im fünften Studienjahr nimmt an Ihrem Augenpraktikum teil. Seine Kommilitonen behaupten, dass er bei starker Müdigkeit oder Genuss von Alkohol zu Schielen beginnt. Der Hirschberg-Test zeigt einen Normalbefund. Mit Hilfe welches Tests können Sie die Schielstellung erkennen?",
+  "image": "",
+  "options": [
+    "Aufdecktest",
+    "Abdrehversuch",
+    "Schielspiegel",
+    "Kopfwendetest",
+    "Fokusreflex"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 015,
+  "text": "Ein Patient, 66 Jahre, Typ 2 Diabetes seit 10 Jahren kommt zur Augenuntersuchung. Nach welchen morphologischen Veränderungen bzw. Läsionen der Netzhaut werden Sie insbesondere suchen? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Mikroaneurysmen",
+    "Intraretinale mikrovaskuläre Abnormalitäten",
+    "Harte Exsudate",
+    "Retinale Pigmentverschiebung",
+    "Foveale Hyperplasie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 016,
+  "text": "Ein zehnjähriger Bub mit einseitigem Innenschielen des linken Auges kommt in Ihre Ordination. Wo erwarten Sie die Lage der Hornhautreflexbildchen, wenn Sie den Reflexionstest nach Hirschberg durchführen?",
+  "image": "",
+  "options": [
+    "Rechtes Auge: Reflex über Hornhautmitte – Linkes Auge: Reflex über temporalem Irisrand",
+    "Rechtes Auge: Reflex über Hornhautmitte – Linkes Auge: Reflex über nasalem Hornhautrand",
+    "Rechtes Auge: Reflex über nasalem Irisrand – Linkes Auge: Reflex über temporalem Hornhautrand",
+    "Rechtes Auge: Reflex über temporalem Irisrand – Linkes Auge: Reflex über Hornhautmitte",
+    "Rechtes Auge: Reflex über temporalem Hornhautrand – Linkes Auge: Reflex über nasalem Irisrand"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 017,
+  "text": "Eine 26-jährige Patientin leidet seit 3 Tagen unter einem erheblich geröteten rechten Auge, Brennen und Schmerzen. Sie berichtet, dass die Krankheit mit deutlich wässriger Sekretion begann. Bei der Spaltlampenuntersuchung zeigt sich eine chemotische konjunktivale Injektion der Bindehaut mit Punctum maximum im Bereich der Karunkel. Die Hornhaut und Vorderkammer erscheinen jedoch unauffällig. [Nach 10 Tagen zeigen sich subepitheliale Hornhautinfiltrate. 2019-02] Ihre Verdachtsdiagnose lautet: Konjunktivitis durch:",
+  "image": "",
+  "options": [
+    "Adenoviren",
+    "Herpes-simplex-Virus",
+    "Chlamydien",
+    "Staphylokokken",
+    "Pneumokokken"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 018,
+  "text": "Eine 28-jährige Patientin, regelmäßige Trägerin weicher Monatskontaktlinsen, wird in der Notfallambulanz wegen eines seit einem Tag roten und schmerzenden rechten Auges vorstellig. Mit der Spaltlampe sind am Hornhautepithel weißliche Trübungen zu erkennen. Wie ist das unmittelbare weitere Prozedere?",
+  "image": "",
+  "options": [
+    "Hornhautabstrich und antibiotische Augentropfen",
+    "Fundusfotografie und Glukokortikoidgabe",
+    "Bindehautabstrich und antivirale Tabletten",
+    "Augeninnendruckmessung und Analgetikagabe",
+    "Kontaktlinsenverbot und künstliche Tränen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 019,
+  "text": "Eine 30-jährige Patientin mit bekannter Multipler Sklerose wird vorstellig und berichtet über eine Visusreduktion sowie einen Gesichtsfeldausfall im zentralen Sehfeld. Sie stellen die Verdachtsdiagnose einer Neuritis nervi optici. Welche ersten diagnostischen Maßnahmen sind zur weiteren Abklärung zu treffen? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sehschärfenprobe",
+    "Computerperimetrie",
+    "Swinging Flashlight Test",
+    "Optische Kohärenztomographie der Makula",
+    "Farbsättigungstest mit Ishihara-Tafeln"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 020,
+  "text": "Eine 36-jährige Patientin gibt an [/ beschreibt 2016-07], vor allem nach längerer Computerarbeit an diffusen Missempfindungen, Augenbrennen, Fremdkörpergefühl und erhöhter Lichtempfindlichkeit zu leiden. Welche der folgenden Untersuchungen spielt bei der ophthalmologischen Abklärung der Patientin eine Rolle?",
+  "image": "",
+  "options": [
+    "Schirmertest",
+    "Kammerwinkeleinstellung",
+    "Funduskopie",
+    "Retinographie",
+    "Farbkontrastprüfung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 021,
+  "text": "Eine 78-jährige Patientin stellt sich bei Ihnen mit plötzlich einsetzender Sehverschlechterung am linken Auge vor. Die Sehschärfe ist auf „Lichtwahrnehmung“ reduziert. Die Funduskopie zeigt folgende Abbildung. Welche Maßnahmen führen Sie durch bzw. leiten Sie in die Wege? (3 richtige Antworten)",
+  "image": "https://i.postimg.cc/bJ3Cgs3D/image.png",
+  "options": [
+    "Augendrucksenkung",
+    "Internistische Durchuntersuchung",
+    "Bulbusmassage",
+    "Vitrektomie",
+    "Brillenkorrektur"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 022,
+  "text": "Eine Patientin wird mit beidseitigem zunehmenden Exophthalmus und Doppelbildern vorstellig. In der Untersuchung zeigt sich eine Chemose der Bindehaut, konjunktivale Injektion sowie ein positives Dalrymple Zeichen. Die Motilität ist vor allem in der Hebung deutlich eingeschränkt. In der Echographie zeigt sich eine Verdickung aller Augenmuskeln. Welche Verdachtsdiagnose ist bei dieser Patientin am wahrscheinlichsten?",
+  "image": "",
+  "options": [
+    "Endokrine Orbitopathie mit entzündlicher Aktivität",
+    "Orbitatumor mit mechanischer Kompression",
+    "Myasthenia gravis mit okulärer Beteiligung",
+    "Chronische Konjunktivitis beidseits",
+    "Zerebrale Läsion mit Blickparese"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 023,
+  "text": "Infektionen der Hornhaut durch das Herpes Simplex Virus sind eine der häufigsten Ursachen für Hornhauttrübungen. Welche der folgenden Untersuchungen des Auges spielt bei der Diagnose einer Herpes simplex Infektion der Hornhaut eine wichtige Rolle?",
+  "image": "",
+  "options": [
+    "Sensibilität",
+    "Akkommodation",
+    "Pupillenweite",
+    "Tränenfilmqualität",
+    "Augendruck"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 024,
+  "text": "Nach Verletzung des rechten Auges mit einem spitzen Holzstäbchen klagt der Patient über starke Sehverschlechterung und Schmerzen am betroffenen Auge. Welches klinische Zeichen spricht am ehesten für eine perforierte Bulbusverletzung?",
+  "image": "",
+  "options": [
+    "Flache Vorderkammer",
+    "Verklebte Bindehaut",
+    "Ptosis des Oberlids",
+    "Vermehrte Tränenproduktion",
+    "Enggestellte Pupille"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 025,
+  "text": "Wie wird der Zustand nach operativer Entfernung der natürlichen Augenlinse (Kataraktextraktion) und Implantation einer intraokularen Kunstlinse genannt?",
+  "image": "",
+  "options": [
+    "Pseudophakie",
+    "Aphakie",
+    "Presbyopie",
+    "Anisometropie",
+    "Emmetropie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 026,
+  "text": "Zu Ihnen kommt eine Mutter mit ihrem vier Monate alten Kind. Sie berichtet, dass das linke Auge vermehrt tränt. Sie untersuchen das Kind und stellen einen wässrigen Sekretspiegel am linken Auge fest; sonst erscheinen das Auge und die Tränenwege bland. Sie vermuten ein Persistieren der Hasner Membran welche zu einer Dakryostenose führt. Welche Therapieoption empfehlen Sie bei diesem Kind?",
+  "image": "",
+  "options": [
+    "Observanz",
+    "Tränenwegsspülung",
+    "Tränenwegssondierung",
+    "Antibiotikagabe",
+    "Lid-OP"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 027,
+  "text": "Bei einem 63 Jahre alten Patienten mit Typ 2 Diabetes wird funduskopisch eine schwere, nicht proliferative diabetische Retinopathie mit einem zentralen Makulaödem diagnostiziert. Welche morphologischen Charakteristika sind typisch für diese Erkrankung? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Mikroaneurysmen",
+    "Cotton-wool Herde",
+    "Harte Exsudate",
+    "Drusenbildung",
+    "Papillenödem"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 028,
+  "text": "Bei einer 34-jährigen Patientin ist die Diagnose einer Anisometropie von +3 dpt bekannt. Welche Augensymptome und -befunde sind dadurch erklärbar? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Unverträglichkeit einer Brillenkorrektur aufgrund unterschiedlicher Bildgrößen.",
+    "Amblyopie im Falle einer unkorrigierten Anisometropie im Kindesalter.",
+    "Hornhautverkrümmung durch asymmetrisches Längenwachstum.",
+    "Mouches volantes durch Glaskörperabhebung.",
+    "Ptosis durch okuläre Kompensation."
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 029,
+  "text": "Bei einer jugendlichen Patientin besteht der Verdacht auf eine häufig rezidivierende Uveitis anterior. Das Vorliegen welcher okulärer Komplikationen könnte dafür ein Hinweis sein? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sekundärkatarakt",
+    "Zystoides Makulaödem",
+    "Bandförmige Hornhautdegeneration",
+    "Papillenödem",
+    "Netzhautablösung"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 030,
+  "text": "Bei einer Patientin mit einseitiger Visusreduktion und zentralen Skotomen in der Computerperimetrie wird der Verdacht auf Neuritis nervi optici gestellt. Welche Untersuchung kann zur Diagnosesicherung beitragen?",
+  "image": "",
+  "options": [
+    "Magnetresonanztomographie",
+    "Retinographie",
+    "Fluoreszenzangiographie",
+    "Ultraschall-Biomikroskopie",
+    "Schirmer-Test"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 031,
+  "text": "Ein 17 Jahre alter Jugendlicher kommt in Ihre Ambulanz mit zunehmender Sehverschlechterung seit mehreren Monaten und Schwierigkeiten bei der Brillenanpassung. Laut Patient habe er schon seit früher Kindheit eine Brille gebraucht, überhaupt wären in der Familie alle kurzsichtig. Es fällt ein schlaffes Oberlid auf, das schon auf leichtesten Zug ektropioniert („floppy eyelid“). Die Keratometrie zeigt einen irregulären Astigmatismus. Die Refraktionsbestimmung ergibt:\nOD: −7,50 sph = +5,00 cyl/90° 0,7\nOS: −8,00 sph = +5,00 cyl/80° 0,4\nWas ist die wahrscheinlichste Verdachtsdiagnose?",
+  "image": "",
+  "options": [
+    "Keratokonus",
+    "Myopia magna",
+    "Korneadystrophie",
+    "Hornhautnarbenbildung",
+    "Keratoglobus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 032,
+  "text": "Ein 18-monatiges Kind wird mit einseitiger Leukokorie beim Arzt vorgestellt. Es wird von diesem prompt an eine Augenklinik weitergeschickt: Was ist der Hauptverdachtsgrund, der den Arzt veranlasst hat, das Kind rasch weiterzuweisen?",
+  "image": "",
+  "options": [
+    "Retinoblastom",
+    "Kongenitales Glaukom",
+    "Persistierende fetale Vaskularisation",
+    "Katarakt",
+    "Coats-Erkrankung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 033,
+  "text": "Ein 20-jähriger Mann klagt über starke Schmerzen und Rötung am linken Auge, nachdem er letzte Nacht vergessen hat, die weiche Kontaktlinse zu entfernen. Bei der Spaltlampenuntersuchung sehen Sie eine massive gemischte Injektion sowie ein dichtes Infiltrat des Hornhautstromas. Die Fluorescein-Färbung ist positiv, die Hornhautsensibilität in der Norm. Wie lautet die primäre Verdachtsdiagnose?",
+  "image": "",
+  "options": [
+    "Ulcus corneae durch bakterielle Infektion",
+    "Keratitis durch Akanthamöben",
+    "Herpes-simplex-Keratitis",
+    "Fremdkörper unter dem Oberlid",
+    "Korneales Epithelödem"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 034,
+  "text": "Ein 23-jähriger Patient kommt mit leichten Schmerzen und Fremdkörpergefühl am linken Auge, die plötzlich bei der Arbeit als Steinmetz (Arbeit mit Hammer und Meißel) aufgetreten sind. Er habe nach dem Vorfall das Auge sofort gespült, worauf sich die Symptome leicht gebessert hätten. Bei der klinischen Untersuchung zeigt sich ein kleines Hyposphagma temporal, die Hornhaut ist glatt, klar spiegelnd und färbt sich nicht mit Fluoreszein. Der restliche Vorderabschnitt ist ebenfalls unauffällig. Der Snellen-Visus ist 1.0 am rechten Auge und 0.8 am linken Auge. Wie gehen Sie weiter vor? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Funduskopie in Mydriase",
+    "Ektropionieren bei V. a. subtarsalen Fremdkörper",
+    "Sofortige CT des Kopfes",
+    "Antibiotische Behandlung ohne weitere Diagnostik",
+    "Zykloplegika zur Schmerzlinderung"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 035,
+  "text": "Ein 28-jähriger Mann kommt zur Brillenanpassung zu Ihnen. Seit der Jugend trägt er eine Brille, die Dioptrienwerte waren in den letzten 3 Jahren nur schwach progredient. Sie ermitteln folgende refraktive Korrektur: od: −8 sph, +0.5 c/180°; os: −7.5 sph. Welche möglichen Komplikationen sind bei dieser Fehlsichtigkeit zu beachten? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Choroidale Neovaskularisation",
+    "Glaukom",
+    "Katarakt",
+    "Retinitis pigmentosa",
+    "Presbyopie"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 036,
+  "text": "Ein 51-jähriger Typ 1 Diabetiker klagt über einen schwarzen Schatten nasal unten, den er permanent wahrnimmt. Den Schatten hat er gestern Nachmittag das erste Mal bemerkt. Welche Differentialdiagnosen sind in diesem Fall die naheliegendsten? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Ablatio retinae",
+    "Proliferative diabetische Retinopathie",
+    "Retinaler Venenastverschluss",
+    "Zentralarterienverschluss",
+    "Optikusneuritis"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 037,
+  "text": "Ein 63-jähriger Patient klagt seit 2 Tagen über Schmerzen, Photophobie und Sehverschlechterung am rechten Auge. Bei der Spaltlampenuntersuchung sehen Sie eine dendritische Figur, die sich mit Fluoreszein deutlich anfärben lässt. Sie denken sofort an eine Herpes-Keratitis. Welche typischen Befunde erwarten Sie? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Herabgesetzte Hornhautsensibilität des betroffenen Auges",
+    "Mögliches Auftreten eines Sekundärglaukoms",
+    "Massive Eiteransammlung in der Vorderkammer",
+    "Linienförmige Einblutungen unter der Hornhaut",
+    "Netzhautablösung durch Hornhautverziehung"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 038,
+  "text": "Ein 63-jähriger Patient kommt zur jährlichen Kontrolle und ist subjektiv beschwerdefrei. Bei der Fundusuntersuchung diagnostizieren Sie eine trockene, altersbedingte Makuladegeneration. Im Gespräch erfahren Sie, dass seine Mutter im Alter von 70 Jahren erblindet ist. Was empfehlen Sie dem Patienten? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Luteinhaltige Nahrungsergänzungsmittel",
+    "Selbsttest mit dem Amsler Gitter",
+    "Regelmäßige Augeninnendruckmessung",
+    "Lasertherapie zur Prävention",
+    "Früherkennung von diabetischer Retinopathie"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 039,
+  "text": "Ein 65-jähriger Mann kommt zur augenärztlichen Routinekontrolle. Bei der Funduskopie sehen Sie beidseits Gunn'sche Kreuzungszeichen. Auf welche Diagnose weist dieser Befund hin?",
+  "image": "",
+  "options": [
+    "Hypertensive Retinopathie",
+    "Diabetische Retinopathie",
+    "Retinale Venenokklusion",
+    "Makuladegeneration",
+    "Retinitis pigmentosa"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 040,
+  "text": "Ein 73-jähriger Mann kommt zur Routinekontrolle. Bei der Spaltlampenuntersuchung diagnostizieren Sie eine nukleäre Katarakt. Welche Symptome sind für diese Form der senilen Katarakt typisch? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Myopisierung",
+    "Monokulare Doppelbilder",
+    "Schmerzhafte Augenbewegungen",
+    "Stark eingeschränkter Kontrastsehen",
+    "Verstärkte Lichtempfindlichkeit"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 041,
+  "text": "Ein 78-jähriger Patient kommt zur Kontrolle wegen zunehmender Sehverschlechterung an beiden Augen. Bei der Spaltlampenuntersuchung stellen Sie beidseits eine zunehmende Katarakt vor allem des Linsenkerns fest (nukleäre Katarakt). Welches typische Symptom erwarten Sie in diesem Fall?",
+  "image": "",
+  "options": [
+    "Myopisierung",
+    "Verstärkte Lichtempfindlichkeit",
+    "Verschwommene Sicht bei Dämmerung",
+    "Erhöhte Lichtempfindlichkeit",
+    "Schmerzende Augen bei der Fokussierung"
+  ],
+  "correctAnswers": [0]
+},
+
+
+{
+  "id": 042,
+  "text": "Ein Gleisbauarbeiter kommt gegen Mitternacht in die Notfallambulanz. Er gibt an, heute Nachmittag Eisenschienen geschnitten zu haben und seitdem ein quälendes Kratzgefühl im linken Auge zu verspüren. Schutzbrillen habe er nicht getragen. Bei der Untersuchung an der Spaltlampe erheben Sie folgenden Befund: „Mittelgradige Bindehauthyperämie, Hornhaut mit Kratzspuren, Vorderkammer reizfrei, Pupille rund, mittelweit und reagiert prompt.“ Welche Untersuchung ist im nächsten Schritt durchzuführen?",
+  "image": "",
+  "options": [
+    "Ektropionieren",
+    "Fluoreszein-Färbung",
+    "Fundusdiagnostik",
+    "Perimetrie",
+    "OCT der Hornhaut"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 043,
+  "text": "Ein Heimwerker kommt Freitagnachmittag in die Notfallambulanz und gibt an, am Vormittag Schweißarbeiten ohne Schutzbrille durchgeführt zu haben. Sie vermuten eine Hornhautschädigung durch UV-Strahlen. Welche Symptome und Befunde wären dafür zutreffend? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "An der Spaltlampe finden sich punktförmige fluorescein-positive Hornhautdefekte.",
+    "Die Hornhautdefekte gehen nicht über die Bowman’sche Membran hinaus.",
+    "Abheilung erfolgt meist innerhalb von 24 Stunden und narbenfrei.",
+    "Die Hornhaut zeigt eine tiefgreifende Vernarbung.",
+    "Starke Schmerzen und Photophobie setzen sofort nach der Exposition ein."
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 044,
+  "text": "Ein Patient von der pulmologischen Abteilung wird zur Begutachtung in Ihrer Ambulanz vorstellig. Im beigelegten Lungenröntgen wird ein Pancoast-Tumor befundet. Bei welcher ophthalmologischen Standarduntersuchung ist aufgrund dieser Anamnese am ehesten ein pathologischer Befund zu erwarten?",
+  "image": "",
+  "options": [
+    "Bei der Beurteilung der Pupillenfunktion bei Raum- und Dämmerlicht",
+    "Bei der Untersuchung des Augenhintergrundes",
+    "Bei der Messung des Augeninnendrucks",
+    "Bei der Sehschärfenbestimmung",
+    "Bei der Untersuchung der Hornhaut"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 045,
+  "text": "Eine 25-jährige Frau bemerkt seit einigen Jahren eine langsam zunehmende Sehverschlechterung und verzerrte Abbildungen. Die Beschwerden bessern sich durch Brillen nur gering, formstabile Kontaktlinsen hingegen bringen eine deutliche Verbesserung. Was ist die wahrscheinlichste Ursache für die Beschwerden?",
+  "image": "",
+  "options": [
+    "Keratokonus",
+    "Myopie",
+    "Astigmatismus",
+    "Presbyopie",
+    "Cataracta"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 046,
+  "text": "Eine 32-jährige Patientin klagt über Schmerzen in beiden Augen und gelegentliche Doppelbilder. Sie wirkt gestresst und gibt an in letzter Zeit Gewicht verloren zu haben. Klinisch zeigen sich beidseits gerötete Augen, das rechte Auge wirkt größer als das linke. Bei der Motilitätsprüfung zeigt sie eine Hebungseinschränkung und Abduktionsschwäche am rechten Auge mit Doppelbildern. Welchen nächsten diagnostischen Schritt setzen Sie?",
+  "image": "",
+  "options": [
+    "Schilddrüsenwerte bei V. a. endokrine Orbitopathie",
+    "Funduskopie zur Untersuchung der Papillen",
+    "Optische Kohärenztomographie (OCT)",
+    "Magnetresonanztomographie (MRT) des Gehirns",
+    "Ultraschalluntersuchung der Augenmuskeln"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 047,
+  "text": "Eine 36-jährige Patientin mit seit langem bekannter ankylosierender Spondylarthritis, HLA-B27 Antigen positiv, hat erstmals Augenbeschwerden und von ihrem Augenfacharzt die Diagnose „Uveitis“ erhalten. Welche Überlegungen zur Pathologie und Epidemiologie sind korrekt und können daher in die Patientenberatung einfließen? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Die häufigste Verlaufsform ist eine akute Uveitis anterior.",
+    "Seltene okuläre Komplikationen sind Sekundärglaukom und Sekundärkatarakt",
+    "Die Erkrankung ist in der Regel asymptomatisch und zeigt keine entzündlichen Veränderungen.",
+    "Die Uveitis tritt häufig beidseitig auf und ist chronisch rezidivierend.",
+    "Es gibt keine Verbindung zwischen HLA-B27 und der Entstehung der Uveitis."
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 048,
+  "text": "Eine 36-jährige Patientin stellt sich mit akut einseitig gerötetem und stark schmerzhaftem Auge vor. Bei der Inspektion zeigt sich eine sektorenförmige diffuse livid-rötliche Verfärbung. Wie lautet Ihre Verdachtsdiagnose und welches Ergebnis des Phenylephrin-Tests erwarten Sie?",
+  "image": "",
+  "options": [
+    "Verdachtsdiagnose Skleritis, durch Phenylephrin wird das Auge nicht oder nur geringfügig aufgehellt.",
+    "Verdachtsdiagnose Konjunktivitis, durch Phenylephrin wird das Auge deutlich aufgehellt.",
+    "Verdachtsdiagnose Uveitis, durch Phenylephrin wird das Auge stark aufgehellt.",
+    "Verdachtsdiagnose Endophthalmitis, durch Phenylephrin wird das Auge gar nicht aufgehellt.",
+    "Verdachtsdiagnose Akute Bindehautentzündung, durch Phenylephrin wird das Auge schnell und vollständig aufgehellt."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 049,
+  "text": "Eine 43-jährige Frau kommt am späten Abend in die Notfallambulanz wegen Schmerzen, Übelkeit und Sehverschlechterung am linken Auge. Sie kommt gerade von ihrem Dienst als Reinigungskraft bei einem Großbetrieb. Ein Kontakt von Reinigungsmitteln mit dem Auge wurde verneint. An Allgemeinerkrankungen ist ein erhöhter Blutdruck bekannt, der laut Patientin gut eingestellt ist. Bei äußerlicher Betrachtung ist das linke Auge gerötet und die Hornhaut leicht trüb. Es findet sich kein Schleim in der Fornix. Die Pupille ist mittelweit und lichtstarr. Die Vorderkammer ist flach. Welche Verdachtsdiagnose erscheint Ihnen am wahrscheinlichsten?",
+  "image": "",
+  "options": [
+    "Akuter Glaukomanfall",
+    "Uveitis anterior",
+    "Hornhauterosion",
+    "Keratitis durch Kontaktlinsen",
+    "Bindehautentzündung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 050,
+  "text": "Eine 48-jährige Frau ist besorgt über eine leicht prominente, rötliche, nicht pigmentierte Verdickung im nasalen Bindehautbereich. Diese ist schmerzlos, wächst aber seit mehreren Monaten langsam auf die Hornhaut vor, außerdem werden Abbildungen zunehmend verzerrt. Wie lautet die wahrscheinlichste Diagnose?",
+  "image": "",
+  "options": [
+    "Pterygium",
+    "Pinguecula",
+    "Skleritis",
+    "Konjunktivales Hämangiom",
+    "Limbaldermoid"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 051,
+  "text": "Eine 56-jährige Frau sucht am Wochenende die Notfallambulanz auf. Sie hatte zwei Tage zuvor eine komplikationslose Glaukom-Operation und gibt nun eine schmerzlose Sehverschlechterung an. Bei der Spaltlampenuntersuchung sehen Sie eine Ansammlung von Blut im unteren Drittel der Vorderkammer und diagnostizieren daher ein postoperatives Hyphäma. Der intraokulare Druck ist in der Norm. Welche sind Ihre nächsten Schritte? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Funduskopie",
+    "Lokale antiphlogistische Therapie",
+    "Engmaschige Verlaufskontrolle",
+    "Verabreichung von Glukokortikoiden",
+    "Korrektur des intraokularen Drucks mit Diuretika"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 052,
+  "text": "Eine 64-jährige Patientin hat die Diagnose von Xanthelasmen erhalten. Zu welcher ätiologischen Abklärung raten Sie? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Fettstoffwechselstörungen",
+    "Diabetes mellitus",
+    "Gallengangsleiden",
+    "Leberzirrhose",
+    "Herz-Kreislauf-Erkrankungen"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 053,
+  "text": "Eine 68-jährige Patientin wird überwiesen mit der Diagnose Zentralvenenverschluss und Visus 0.05 am linken Auge. Das rechte Auge präsentiert sich altersentsprechend unauffällig. Welche Komplikationen sind in diesem Fall im weiteren Verlauf zu bedenken und daher regelmäßig zu kontrollieren? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Makulaödem",
+    "Retinale Neovaskularisation",
+    "Rubeosis iridis",
+    "Optikusatrophie",
+    "Katarakt"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 054,
+  "text": "Eine 72-jährige Frau sucht Sie in Ihrer Praxis auf, da sie seit mehreren Monaten unter zunehmender Sehverschlechterung an beiden Augen leidet. Nach der Operation des grauen Stars vor mehreren Jahren habe sie eigentlich immer sehr gut gesehen. Schmerzen habe sie keine. In der Spaltlampenuntersuchung finden Sie im rechten Auge ein Hornhautödem und Descemetfalten. Im linken Auge zeigt sich ein pathologisch verändertes Hornhautendothel (siehe Abbildung). Wie lautet Ihre primäre Verdachtsdiagnose?",
+  "image": "https://i.postimg.cc/VNWynstp/image.png",
+  "options": [
+    "Fuchs-Endotheldystrophie",
+    "Keratokonus",
+    "Pterygium",
+    "Hornhautverletzung",
+    "Katarakt"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 055,
+  "text": "Eine 83-jährige Patientin kommt zur jährlichen Kontrolle bei bekannter trockener Makuladegeneration. Welche morphologischen Merkmale sind in diesem Fall typischer Weise zu erwarten? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Weiche Drusen",
+    "Harte Drusen",
+    "Hyperpigmentierung des retinalen Pigmentepithels",
+    "Retinale Vaskulitis",
+    "Netzhautablösung"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+
+{
+  "id": 056,
+  "text": "Eine Patientin kommt zu Ihnen mit einer persistierenden Konjunktivitis. Sie war bereits bei zwei anderen Ärzten und hat Gentamycin-Augentropfen bekommen, welche die Symptome nicht besserten. Bei der Spaltlampenuntersuchung finden Sie ein zähschleimiges Sekret und Follikel im Bereich der tarsalen Bindehaut. Auf genaueres Nachfragen erfahren Sie, dass die Patientin vor 3 Wochen wegen einer Urethritis in Behandlung war. Welche Verdachtsdiagnose haben Sie und welches typische Merkmal findet man im histologischen Präparat?",
+  "image": "",
+  "options": [
+    "Chlamydien-assoziierte Konjunktivitis und Einschlusskörperchen",
+    "Virale Konjunktivitis und Zellen mit Plasmablaster-Morphologie",
+    "Bakterielle Konjunktivitis und neutrophile Infiltrate",
+    "Allergische Konjunktivitis und eosinophile Granulozyten",
+    "Toxoplasmose und Granulome"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 057,
+  "text": "Samstagabend stellt sich ein 40-jähriger Patient mit Schmerzen im linken Auge in der Notfallambulanz vor. Bei der Untersuchung der Bindehaut an der Spaltlampe präsentiert sich eine umschriebene noduläre Rötung im Lidspalt. Vorderkammer und Hornhaut sind reizfrei. Nach Instillation von Phenylephrin-Augentropfen hellt sich die betroffene Stelle ein wenig auf. Welche der folgenden Pathologien kommt bei diesen Befunden am ehesten in Frage?",
+  "image": "",
+  "options": [
+    "Episkleritis",
+    "Uveitis anterior",
+    "Keratitis",
+    "Konjunktivitis",
+    "Scleritis"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 058,
+  "text": "Sie führen bei einem 20 Monate alten Kleinkind eine Überprüfung der Fähigkeit des räumlichen Sehens durch. Welches Testverfahren wählen Sie dafür?",
+  "image": "",
+  "options": [
+    "Lang-Test",
+    "Farnsworth-Test",
+    "Ishihara-Test",
+    "Amsler-Gitter-Test",
+    "Tumbling E-Test"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 059,
+  "text": "Sie führen einen Hirschberg-Test bei einem 8-jährigen Buben durch. Dabei zeigt sich der Lichtreflex auf der Hornhaut des linken Auges am temporalen Limbusrandbereich. Welche Schielstellung des linken Auges liegt vor?",
+  "image": "",
+  "options": [
+    "Esophorie",
+    "Exophorie",
+    "Hypertropie",
+    "Hypotropie",
+    "Orthophorie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 060,
+  "text": "Welche Angabe ist für die nichtexudative Makuladegeneration korrekt?",
+  "image": "",
+  "options": [
+    "Kann als Drusenmakulopathie oder areoläre Atrophie vorkommen",
+    "Führt immer zu einer plötzlichen Erblindung",
+    "Ist in der Regel mit Neovaskularisation der Makula verbunden",
+    "Verursacht typischerweise Glaukom",
+    "Kommt ausschließlich bei älteren Patienten vor"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 061,
+  "text": "Welche der folgenden Veränderungen in der Funduskopie ist für die altersbedingte Makuladegeneration (AMD) typisch und für Diabetes untypisch?",
+  "image": "",
+  "options": [
+    "Drusen",
+    "Harte Exsudate",
+    "Mikroaneurysmen",
+    "Intraretinale Blutungen",
+    "Kardinalsymptom der „Watteflocke“"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 062,
+  "text": "Wie lautet der medizinische Fachbegriff für eine Schwellung der Bindehaut?",
+  "image": "",
+  "options": [
+    "Chemose",
+    "Keratitis",
+    "Konjunktivitis",
+    "Uveitis",
+    "Blepharitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 063,
+  "text": "Womit erfolgt die Behandlung einer Keratokonjunktivitis sicca in erster Linie?",
+  "image": "",
+  "options": [
+    "Tränenersatzmittel",
+    "Antibiotische Augentropfen",
+    "Kortikosteroide",
+    "Immunmodulatoren",
+    "Künstliche Tränenkanäle"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 064,
+  "text": "Ein junger Mann mit Herpes labialis ist besorgt, dass die Infektion auf seine Augen übergegriffen hat. Welche Symptome und klinischen Befunde wären gegebenenfalls zu beachten? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Akute, milde Konjunktivitis",
+    "Einseitig gerötetes, schmerzhaftes Auge",
+    "Bäumchenartig verzweigte Hornhautepithelläsionen",
+    "Starke Tränenbildung ohne sichtbare Veränderungen",
+    "Pupillenveränderungen bei Blickbewegungen"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 065,
+  "text": "Bei einem Patienten besteht der Verdacht einer akuten Erhöhung des intrakraniellen Drucks. Welche ophthalmologischen Befunde sind in dieser Situation am ehesten zu erwarten? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Unscharfe Papillenränder oder Papillenprominenz",
+    "Transiente visuelle Obskurationen",
+    "Erhöhte Augendruckwerte",
+    "Periphere Netzhautblutungen",
+    "Verschwommenes Sehen bei Schrägsicht"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 066,
+  "text": "Bei einer Funduskopie fällt Ihnen eine blasse Papille mit vergrößerter Exkavation auf. An welche Erkrankung müssen Sie primär denken?",
+  "image": "",
+  "options": [
+    "Glaukom",
+    "Makuladegeneration",
+    "Diabetische Retinopathie",
+    "Uveitis",
+    "Retinitis pigmentosa"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 067,
+  "text": "Bei einer Patientin wird eine bakterielle Konjunktivitis diagnostiziert. Welche typischen klinischen Befunde zeigen sich in der Spaltlampenuntersuchung? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Chemose und konjunktivale Injektion",
+    "Eitriges Sekret und verklebte Lider",
+    "Hornhauttrübung und vergrößerte Pupillen",
+    "Mikroaneurysmen und intraretinale Blutungen",
+    "Stecknadelkopfgroße Läsionen auf der Bindehaut"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+{
+  "id": 068,
+  "text": "Besorgte Eltern vermuten bei ihrem 5-jährigen Buben eine Schielstellung. Ihnen fällt eine große Interpupillardistanz auf und Sie möchten überprüfen, ob es sich um einen Pseudo-Strabismus oder eine Exophorie handelt. Welche Untersuchungsmethode wählen Sie?",
+  "image": "",
+  "options": [
+    "Hirschberg Test",
+    "Amsler-Gitter-Test",
+    "Ishihara-Test",
+    "Lang-Test",
+    "Farnsworth-Test"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 069,
+  "text": "Ein 32-jähriger Manager kommt zu Ihnen, weil er seit ein paar Tagen am rechten Auge zentral unscharf sieht. Er habe keinerlei Schmerzen, sei in letzter Zeit aber ziemlich unter Zeitdruck gestanden. Er gibt an, mit seiner Brille (−2 dpt) am rechten Auge sogar noch schlechter zu sehen. Bei der Netzhautuntersuchung sehen Sie am rechten Auge subretinale Flüssigkeit im Bereich der Makula, sonst einen altersentsprechenden Befund. Am linken Auge zeigen sich keine Auffälligkeiten. Welche Differentialdiagnose ist am wahrscheinlichsten?",
+  "image": "",
+  "options": [
+    "Chorioretinopathia centralis serosa",
+    "Frühe diabetische Retinopathie",
+    "Retinale Venenastthrombose",
+    "Makulaforamen",
+    "Hypertensive Retinopathie"
+  ],
+  "correctAnswers": [0]
+},
+
+
+{
+  "id": 070,
+  "text": "Ein 40-jähriger Patient bemerkt vor 2 Wochen bei der Morgentoilette im Rasierspiegel, dass seine rechte Pupille kleiner als die linke ist. Seither achtet er täglich darauf und kommt nun zum Augenarzt, weil die Pupille rechts immer deutlich kleiner als links ist. Befragung und Untersuchung ergeben folgende Befunde: Lidspalte rechts etwas schmäler, Bulbusmotorik unauffällig, keine Doppelbilder, keine Sehstörung, Anisokorie fraglich im Hellen, im Dunkeln bleibt die rechte Pupille deutlich kleiner. An welche Störung denken Sie?",
+  "image": "",
+  "options": [
+    "Horner-Syndrom",
+    "Okulomotoriusparese",
+    "Adie-Tonische Pupille",
+    "Argyll-Robertson-Pupille",
+    "Akkommodationsspasmus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 071,
+  "text": "Ein 40-jähriger Patient kommt in Ihre Praxis für Allgemeinmedizin und berichtet von einer kürzlich erfolgten augenärztlichen Untersuchung. Der Patient ist beunruhigt, da der Augenarzt ihm gesagt hätte, dass aufgrund der Kurzsichtigkeit ein erhöhtes Risiko für eine Netzhautabhebung bestünde. Er könne sich jedoch nicht mehr an die dafür klassischen Symptome erinnern. Welche der folgenden Anzeichen nennen Sie ihm korrekter Weise?",
+  "image": "",
+  "options": [
+    "Blitze, Schatten und/oder Rußregen",
+    "Stechende Schmerzen und starke Tränenbildung",
+    "Druckgefühl und gerötete Skleren",
+    "Schwankendes Doppeltsehen",
+    "Lichtempfindlichkeit bei Pupillenstarre"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 072,
+  "text": "Ein 48-jähriger Patient berichtet über eine plötzliche Sehverschlechterung links seit dem Vorabend. Der Visus auf dem Auge beträgt 0,1 Snellen. Bei der Spaltlampenuntersuchung ist der Einblick aufgrund von Glaskörpertrübungen stark erschwert. Welches diagnostische Mittel ist zur weiteren Abklärung am besten geeignet?",
+  "image": "",
+  "options": [
+    "A- und B-Bild-Echographie",
+    "Optische Kohärenztomographie (OCT)",
+    "Fluoreszenzangiographie",
+    "Perimetrie",
+    "Pachymetrie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 073,
+  "text": "Ein 51-jähriger Rechtsanwalt berichtet über temporäres Lichtblitze-Sehen am linken Auge seit 2 Tagen. In der Funduskopie zeigt sich eine inkomplette hintere Glaskörperabhebung bei anliegender Netzhaut. Bei der Drei-Spiegel-Kontaktglas-Untersuchung finden sich keine Netzhautdefekte. Wie sieht die weitere Vorgehensweise aus?",
+  "image": "",
+  "options": [
+    "Observanz",
+    "Pars-plana-Vitrektomie",
+    "Laserretinopexie",
+    "Steroidtherapie",
+    "Pneumatische Retinopexie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 074,
+  "text": "Ein 8-jähriges Kind klagt häufig über Kopfschmerzen nach langem Lesen. Sie skiaskopieren das Kind unter Zykloplegie und stellen eine Hypermetropie fest. Worin besteht in diesem Fall die ideale Korrektur?",
+  "image": "",
+  "options": [
+    "Anpassung einer konvexen Pluslinse (Sammellinse)",
+    "Anpassung einer konkaven Minuslinse (Zerstreuungslinse)",
+    "Verordnung von Prismen zur Entlastung der Augenmuskeln",
+    "Zykloplegische Tropfentherapie zur Muskelentspannung",
+    "Training der Akkommodation durch Nahübungen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 075,
+  "text": "Ein bettlägriger Patient gibt starke einseitige Kopfschmerzen seit einigen Stunden an. Anamnestisch ist ein Glaukom bekannt, und im Rahmen der Abklärung möchten Sie auch einen akuten Glaukomanfall ausschließen. Was müssen Sie bei einer palpatorischen Augendruckmessung beachten? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sie ermöglicht eine grobe Abschätzung des Augeninnendrucks.",
+    "Geringe Augendrucksteigerungen sind nicht sicher tastbar.",
+    "Ein harter, nicht eindrückbarer Bulbus ist ein Zeichen für einen sehr hohen Intraokulardruck.",
+    "Die Methode ist exakter als die Applanationstonometrie.",
+    "Man kann damit auch die Kammerwinkelweite bestimmen."
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 076,
+  "text": "Ein Freund von Ihnen wurde beim Segeln durch eine Querstange im Gesicht getroffen, sodass er ins Krankenhaus gebracht werden musste. Dort wurde er auch von einem Augenarzt begutachtet. Er erhält einen augenärztlichen Befund und ersucht Sie, diesen für ihn zu erklären. Welche dieser Diagnosen kann nach einem Trauma auftreten?",
+  "image": "",
+  "options": [
+    "Anisokorie",
+    "Strabismus convergens",
+    "Glaukom simplex",
+    "Katarakta senilis",
+    "Retinopathia pigmentosa"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 077,
+  "text": "Ein Patient klagt über ein akut gerötetes, schmerzhaftes Auge mit Sehverschlechterung. Schon bei der makroskopischen Untersuchung fällt Ihnen eine kleine Hornhauttrübung auf. Welche Überlegungen zu Abklärung und Therapie sind korrekt? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Bei einer infektiösen Keratitis ist eine bakterielle Ursache am wahrscheinlichsten.",
+    "Bei einer Infektion mit Herpes-Viren ist die Hornhautsensibilität herabgesetzt.",
+    "Eine Akanthamöbenkeratitis kommt vor allem bei Kontaktlinsenträgern vor.",
+    "Pilzinfektionen der Hornhaut treten ausschließlich nach Hornhauttransplantationen auf.",
+    "Eine bakterielle Keratitis heilt in der Regel ohne Behandlung spontan ab."
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 078,
+  "text": "Ein Patient kommt zu Ihnen in die Ordination. Er sieht seit dem Vortag zwei Fäden, die sich mit der Blickrichtung mitbewegen. Sein Sehvermögen ist nicht beeinträchtigt. Welche Diagnose ist die wahrscheinlichste?",
+  "image": "",
+  "options": [
+    "Mouches volantes",
+    "Makulaödem",
+    "Netzhautloch",
+    "Glaskörperblutung",
+    "Uveitis anterior"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 079,
+  "text": "Ein Patient kommt zur Voruntersuchung für die Katarakt-Operation. Über welche möglichen postoperativen Komplikationen ist der Patient aufzuklären? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Endophthalmitis",
+    "Zystoides Makulaödem",
+    "Nachstar",
+    "Glaukom congenitum",
+    "Netzhautpigmentepithelhypertrophie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 080,
+  "text": "Ein Patient wird mit einem geröteten Auge, leichtem Druckschmerz und Fremdkörpergefühl in Ihrer Ordination vorstellig. Der klinische Befund ist für Sie nicht eindeutig, und Sie möchten einen einfachen Test durchführen, um eine Konjunktivitis von einer Episkleritis zu unterscheiden. Welche Augentropfen benötigen Sie dafür?",
+  "image": "",
+  "options": [
+    "Phenylephrin 10 % Augentropfen",
+    "Pilocarpin 1 % Augentropfen",
+    "Tropicamid 0,5 % Augentropfen",
+    "Atropin 1 % Augentropfen",
+    "Timolol 0,5 % Augentropfen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 081,
+  "text": "Eine 27-jährige Patientin sucht die Notfallambulanz aufgrund einer seit zwei Tagen bestehenden, zunehmenden Sehverschlechterung sowie Augenbewegungsschmerzen am linken Auge auf. Die Verdachtsdiagnose einer Neuritis nervi optici erhärtet sich durch einen relativen afferenten Pupillendefekt (RAPD) links im Swinging Flashlight Test. Von welcher der folgenden Beobachtungen leitet sich der Befund \"RAPD links\" ab?",
+  "image": "",
+  "options": [
+    "Paradoxe Pupillenerweiterung bei Beleuchtung links",
+    "Beidseitige Pupillenstarre bei Lichtreiz",
+    "Stärkere Pupillenreaktion bei Beleuchtung rechts",
+    "Fehlende Pupillenreaktion bei Konvergenz",
+    "Normaler Pupillenreflex bei Beleuchtung links"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 082,
+  "text": "Eine 28-jährige Patientin berichtet Ihnen von längerem Leidensdruck auf Grund starker Kurzsichtigkeit und Kontaktlinsenunverträglichkeit. Sie informiert sich bei Ihnen bezüglich Myopiebehandlung durch Excimerlaser. Mittels welchen Verfahrens wird Emmetropie bei vorbestehender Myopie erreicht?",
+  "image": "",
+  "options": [
+    "Zentraler Abtrag der Hornhaut",
+    "Peripherer Abtrag der Hornhaut",
+    "Intraokularlinsenimplantation",
+    "Photodynamische Therapie",
+    "Skleralplastik"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 083,
+  "text": "Eine 31-jährige Typ 1 Diabetikerin kommt zur Routine-Kontrolle. Bei der Netzhautuntersuchung diagnostizieren Sie eine milde nicht proliferative diabetische Retinopathie. Welche Faktoren können zu einer Verschlechterung der Retinopathie führen? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Nephropathie",
+    "Schwangerschaft",
+    "Vegetarische Ernährung",
+    "Hyperopie",
+    "Vermehrter Flüssigkeitskonsum"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 084,
+  "text": "Eine 31-jährige, stark übergewichtige Patientin wurde an der neurologischen Abteilung aufgenommen. Sie klagt über ein Druckgefühl im Kopf, Sehprobleme und leichtes Schwindelgefühl. In der akut durchgeführten Computertomographie finden sich keine Hinweise auf eine intrakranielle Raumforderung oder eine Blutung. Der neurologische Oberarzt vermutet eine idiopathische intrakranielle Hypertension (Pseudotumor cerebri) und ersucht Sie um ophthalmologische Begutachtung der Hirndruckzeichen. Welche Untersuchung ist hierfür durchzuführen?",
+  "image": "",
+  "options": [
+    "Direkte Ophthalmoskopie",
+    "Perimetrie",
+    "Hornhauttopographie",
+    "Augeninnendruckmessung",
+    "Fluoreszenzangiographie"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 085,
+  "text": "Eine 32-jährige Patientin sucht die Notfallambulanz aufgrund einer seit zwei Tagen bestehenden, zunehmenden Sehverschlechterung am linken Auge auf. Mitten im Sichtfeld sei ein grauer Fleck, der das Sehen „verschwommen“ mache. Zudem bestünden Schmerzen beim Bewegen des Auges. In der Visusprüfung ermitteln Sie eine Sehstärke von 1,0 rechts und 0,3 links. Es besteht ein relativer afferenter Pupillendefekt links. Ansonsten können Sie in der Spaltlampenuntersuchung inklusive Fundoskopie keine Auffälligkeiten ermitteln. Was ist die wahrscheinlichste Verdachtsdiagnose?",
+  "image": "",
+  "options": [
+    "Neuritis nervi optici",
+    "Amotio retinae",
+    "Zentrale seröse Chorioretinopathie",
+    "Uveitis anterior",
+    "Akuter Glaukomanfall"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 086,
+  "text": "Eine 35-jährige Patientin berichtet über eine plötzliche Sehverschlechterung am linken Auge. Sie finden bei der Untersuchung einen Visus von 0,4, einen relativen afferenten Pupillendefekt sowie eine Rot-Grün Schwäche im Farbtest. Bei der Untersuchung zeigt sich ein sonst unauffälliger Augenbefund. Welche Diagnose ist am wahrscheinlichsten?",
+  "image": "",
+  "options": [
+    "Retrobulbärneuritis",
+    "Amotio retinae",
+    "Zentrale seröse Retinopathie",
+    "Katarakt",
+    "Hypertensive Retinopathie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 087,
+  "text": "Eine 82-jährige Patientin klagt über eine Sehverschlechterung am linken Auge seit ein paar Tagen. Schmerzen habe sie keine. Anamnestisch gibt sie Bluthochdruck und Typ 2 Diabetes an. Blutdruck und Blutzucker seien aber mit Medikamenten gut eingestellt. Zusätzlich gibt sie an vor 2 Monaten an beiden Augen Katarakt operiert worden zu sein. Fundoskopisch und im OCT ist ein diskretes Makulaödem zu sehen, sonst keine Auffälligkeiten. Wie lautet Ihre Verdachtsdiagnose?",
+  "image": "",
+  "options": [
+    "Irvine Gass Syndrom",
+    "Diabetisches Makulaödem",
+    "Zentrale seröse Chorioretinopathie",
+    "Retinale Venenastthrombose",
+    "Choroidale Neovaskularisation"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 088,
+  "text": "Franz S. ist 28 Jahre alt und leidet seit seiner Jugend unter Myopie. Seit ungefähr drei Jahren hat sich seine Refraktion (-5.5Dsph +0.5Dcyl 79°) nicht verändert und er entscheidet sich für eine Operation, um ohne eine Brille in die Ferne sehen zu können. Welche Möglichkeiten einer operativen Korrektur bestehen? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Laser- in-situ-Keratomileusis",
+    "Phake Intraokularlinse",
+    "Photorefraktive Keratektomie",
+    "Pars-plana-Vitrektomie",
+    "Skleral Buckling"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 089,
+  "text": "In der Ambulanz stellt sich ein ungefähr 70-jähriger Patient vor. Er leidet seit einigen Monaten unter kontinuierlicher Sehverschlechterung, besonders in die Ferne. Zuhause kommt ihm seine rote Couch nun eher bräunlich vor und insgesamt sieht er Farben nicht mehr so satt wie vor ein paar Jahren. Er will abends nicht mehr Autofahren, weil ihn die Scheinwerfer der entgegenkommenden Autos furchtbar blenden. Welche Erkrankung ist die wahrscheinlichste?",
+  "image": "",
+  "options": [
+    "Katarakt",
+    "Glaukom",
+    "Makuladegeneration",
+    "Retinitis pigmentosa",
+    "Diabetische Retinopathie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 090,
+  "text": "In der Anamnese eines Patienten findet sich die Diagnose einer Retinopathia centralis serosa. Für die Verschreibung welches systemischen Medikaments ist dies eine wichtige Information?",
+  "image": "",
+  "options": [
+    "Glucocorticoid",
+    "Beta-Blocker",
+    "Statin",
+    "Metformin",
+    "ACE-Hemmer"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 091,
+  "text": "Sie sollen bei einem dreijährigen Mädchen eine Beurteilung der Augenstellung durchführen, da die Kinderärztin eine manifeste Schielfehlstellung vermutet. Zur Überprüfung der Augenachsen und zur ersten Abschätzung des Schielwinkels wählen Sie am besten welches Testverfahren?",
+  "image": "",
+  "options": [
+    "Hirschberg-Test",
+    "Amsler-Gitter-Test",
+    "Lang-Test",
+    "Ishihara-Test",
+    "Visusprüfung mit LEA-Symbolen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 092,
+  "text": "Was ist die häufigste Ursache der kongenitalen Tränenwegsstenose?",
+  "image": "",
+  "options": [
+    "Persistierende Hasner’sche Membran",
+    "Angeborene Dakryozystozele",
+    "Fehlanlage des Ductus lacrimalis",
+    "Nasale Choanalatresie",
+    "Fehlbildung der Tränendrüse"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 093,
+  "text": "Welche augenärztlichen Tätigkeiten werden eine Woche nach der Kataraktoperation zur postoperativen Kontrolle primär durchgeführt? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Visus inkl. Refraktion",
+    "Messung des intraokularen Drucks",
+    "Spaltlampenuntersuchung",
+    "Perimetrie",
+    "Fluoreszenzangiographie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 094,
+  "text": "Welche der folgenden klinischen Befunde sind typisch für einen Zentralvenenverschluss? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Streifen- und fleckförmige intraretinale Blutungen in allen Quadranten",
+    "Schlängelung und Kaliberschwankungen der retinalen Venen",
+    "Maculaödem",
+    "Periphere netzartige Pigmentveränderungen der Retina",
+    "Zentrale Hypopigmentierung mit fokalen Drusenansammlungen"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 095,
+  "text": "Welche Methoden werden zur Bestimmung des Astigmatismus eingesetzt? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Kreuzzylindermethode",
+    "Skiaskopie",
+    "Amsler-Gitter-Test",
+    "Swinging Flashlight Test",
+    "Lang-Stereotest"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+
+{
+  "id": 096,
+  "text": "Welche Veränderungen kennzeichnen das Auftreten einer Presbyopie? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Nahpunkt",
+    "Akkomodationsbreite",
+    "Augeninnendruck",
+    "Pupillenweite",
+    "Hornhautdicke"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+
+{
+  "id": 097,
+  "text": "Wodurch zeichnet sich eine einseitige afferente Pupillenstörung aus? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Beidseitige Mydriasis im Dunkeln",
+    "Beidseitige Miosis im Hellen",
+    "Einseitiger Lichtreiz ohne direkte Pupillenreaktion",
+    "Verzögerte Konvergenzreaktion beidseits",
+    "Unauffälliger Schirmertest trotz Sehstörung"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 098,
+  "text": "Während einer Routineuntersuchung stellen Sie bei einer 72-jährigen Patientin eine einseitige Visusminderung fest, die der Patientin selbst nicht aufgefallen sei. In der Fundusuntersuchung zeigen sich beidseits Drusen und am schlechteren, linken Auge zudem eine Pigmentepithelabhebung. Das OCT bestätigt ein Makulaödem links. Wie gehen Sie nun in der weiteren Betreuung der Patientin vor?",
+  "image": "",
+  "options": [
+    "Sie überweisen die Patientin zur Fluoreszeinangiographie und gegebenenfalls anti-VEGF Therapie an eine Klinik.",
+    "Sie empfehlen der Patientin eine Brillenanpassung beim Optiker.",
+    "Sie leiten sofort eine systemische Kortisontherapie ein.",
+    "Sie verordnen eine antibiotische Augensalbe zur Nacht.",
+    "Sie raten der Patientin zur Kontrolle in sechs Monaten ohne weitere Maßnahmen."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 099,
+  "text": "Eine 45-jährige Patientin berichtet über Augenbewegungsschmerzen bei Blick in alle Richtungen. Was ist die wahrscheinlichste Diagnose?",
+  "image": "",
+  "options": [
+    "Optikusneuritis",
+    "Uveitis anterior",
+    "Glaukom",
+    "Retrobulbäres Hämatom",
+    "Skleritis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 100,
+  "text": "Welche Symptome werden häufig mit Pterygien in Verbindung gebracht? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Fremdkörpergefühl",
+    "Verzerrtsehen",
+    "Doppeltsehen in der Nähe",
+    "Nachbilder nach Lichteinfall",
+    "Farbsinnstörung im zentralen Gesichtsfeld"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 101,
+  "text": "Auf welche möglichen Zeichen der diabetischen Retinopathie achten Sie bei der augenärztlichen Routinekontrolle eines Typ-2-Diabetikers (Erstdiagnose vor 4 Jahren) in der Fundoskopie vor allem? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Mikroaneurysmen",
+    "Gefäßneubildungen",
+    "Cotton-wool Herde",
+    "Drusen in der Makula",
+    "Papillenödem bei beidseitiger Miosis"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 102,
+  "text": "Bei der Anamneseerhebung gibt eine 78-jährige Patientin eine Kataraktoperation an sowie einen einmaligen „Lasereingriff“, der etwa 3 Jahre nach der Operation stattgefunden habe. Welche Art von Lasereingriff ist naheliegend?",
+  "image": "",
+  "options": [
+    "Neodym-YAG-Laser-Kapsulotomie",
+    "Argonlaser-Trabekuloplastik",
+    "Excimer-Laser-Keratektomie",
+    "Femtosekunden-Laser-Kapsulorhexis",
+    "Laserkoagulation bei Netzhautperforation"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 103,
+  "text": "Bei der Routineuntersuchung eines 5-jährigen Mädchens führen Sie auch einen Uncover Test (Aufdecktest) durch. Nach Abdeckung für zwei Sekunden sehen Sie eine Einstellbewegung des freigegebenen Auges von nasal. Um welche Schielform handelt es sich?",
+  "image": "",
+  "options": [
+    "Esophorie",
+    "Exophorie",
+    "Hypertropie",
+    "Hypotropie",
+    "Orthophorie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 104,
+  "text": "Bei einer Patientin wurde ein Infarkt im Bereich der Radiatio optica rechts diagnostiziert. Welche Art des Gesichtsfeldausfalls ist zu erwarten?",
+  "image": "",
+  "options": [
+    "Homonyme Hemianopsie nach links",
+    "Bitemporale Hemianopsie",
+    "Zentrale Skotome",
+    "Altitudinale Gesichtsfeldausfälle",
+    "Quadrantenanopsie beidseits temporal"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 105,
+  "text": "Ein 15-jähriger Patient berichtet Ihnen, dass sich seine Sehkraft in den letzten 6 Monaten mehrmals verändert habe – er sei zunehmend kurzsichtig und die Astigmatismuswerte steigen ebenfalls an beiden Augen. Seine Mutter, die ihn begleitet, berichtet auf Nachfrage, dass ihr Mann und dessen Familie alle „schlecht sehen“. Welche Verdachtsdiagnose ist am naheliegendsten?",
+  "image": "",
+  "options": [
+    "Keratokonus",
+    "Myopie magna",
+    "Katarakta congenita",
+    "Retinitis pigmentosa",
+    "Aniridie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 106,
+  "text": "Ein 21-jähriger Patient klagt über Schmerzen am Auge und Lichtempfindlichkeit. Diese Symptome sind vor 3 Tagen plötzlich aufgetreten. Er trägt weiche Monatslinsen, ansonsten ist die Augenanamnese bland. An der Spaltlampe zeigt sich ein ringförmiges Hornhautulkus. Welcher Erreger ist in diesem Fall wahrscheinlich nachweisbar?",
+  "image": "",
+  "options": [
+    "Pseudomonas aeruginosa",
+    "Staphylococcus epidermidis",
+    "Akanthamöben",
+    "Candida albicans",
+    "Herpes simplex Virus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 107,
+  "text": "Ein 26-jähriger Patient klagt über Brennen am rechten Auge. Die Spaltlampenuntersuchung zeigt eine fluorescein-positive dendritische Figur im Zentrum der Hornhaut, die Sensibilität ist in der Läsion im Seitenvergleich stark vermindert. Ansonsten ist die Hornhaut klar. Welches der folgenden Lokaltherapeutika ist in diesem Fall primär zu verordnen?",
+  "image": "",
+  "options": [
+    "Virostatikum",
+    "Antibiotikum",
+    "Glukokortikoid",
+    "Mydriatikum",
+    "Lokalanästhetikum"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 108,
+  "text": "Ein 32-jähriger Mann kommt mit einer moderaten Visusreduktion und Metamorphopsien am rechten Auge in die Augenambulanz. Es wird ein Verdacht auf Chorioretinopathia centralis serosa (CCS) gestellt. Welche Zeichen und Befunde sind typisch für diese Erkrankung? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "In der optischen Kohärenztomographie Flüssigkeit zwischen RPE und Photorezeptoren",
+    "Erworbene Hyperopie, bessere Visusleistung mit vorgehaltenen Pluslinsen",
+    "Papillenödem mit radiären Blutungen",
+    "Intraretinale Zysten und harte Exsudate",
+    "Periphere Netzhautdegeneration mit Rissbildung"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 109,
+  "text": "Ein 35-jähriger Mann hat die Diagnose einer Chorioretinopathia centralis serosa (CCS) erhalten. Welche Symptome und Befunde sind typisch für diese Erkrankung? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Moderate Visusreduktion und Metamorphopsien",
+    "Seröse Abhebung der neurosensorischen Retina",
+    "Papillenödem mit Hämosiderinablagerung",
+    "Hornhauttrübung mit Stromainfiltraten",
+    "Bitemporale Hemianopsie mit Druckkopfschmerz"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 110,
+  "text": "Ein 43-jähriger Mann sucht die Notfallambulanz aufgrund von heftigen Schmerzen, Photophobie und gerötetem rechten Auge auf. In der Anamnese stellt sich heraus, dass der Patient aufgrund einer Lebertransplantation derzeit Immunsuppressiva zu sich nehmen muss. In der Spaltlampenuntersuchung zeigt sich folgendes Bild: Wie ist das therapeutische Vorgehen?",
+  "image": "https://i.postimg.cc/8zzdGNBD/image.png",
+  "options": [
+    "Topische und systemische Antimykotikatherapie",
+    "Systemische Kortikosteroidtherapie",
+    "Antibiotische Kombinationstherapie mit Fluorchinolonen",
+    "Alleinige lokale Antiseptikatherapie",
+    "Primär operative Vitrektomie"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 111,
+  "text": "Ein 48-jähriger Mann kommt zur augenärztlichen Routinekontrolle. Er trägt eine Brille für die Ferne, sonst ist die Augenanamnese unauffällig. Die Sehschärfenprobe ergibt folgenden Befund: \nOD: −10,5 sph 1,0 \nOS: −11,75 sph 1,0 \nWelche Befunde sind bei Spaltlampenuntersuchung und Funduskopie zu erwarten? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Hintere Glaskörperabhebung",
+    "Peripapilläre Aderhautatrophie",
+    "Schräger Sehnerveneintritt",
+    "Verengte Kammerwinkel",
+    "Verdickung der Bruch’schen Membran"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 112,
+  "text": "Ein 48-jähriger Patient hat aufgrund einer Hauterkrankung in den letzten Monaten hochdosiert kortisonhaltige Medikamente eingenommen. Seit einer Woche sieht er auf dem linken Auge unscharf und verzerrt. Der Patient gibt keine Augenschmerzen an und die weitere Allgemein- und Augenanamnese ist bland. Welche Diagnose ist naheliegend?",
+  "image": "",
+  "options": [
+    "Chorioretinopathia centralis serosa",
+    "Diabetisches Makulaödem",
+    "Optikusneuritis",
+    "Makulaforamen",
+    "Hypertensive Retinopathie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 113,
+  "text": "Ein 68-jähriger Mann ist mit seinem linken Auge auf eine Tischkante gestürzt. Er kommt mit Sehverschlechterung, massiver subkonjunktivaler Blutung und Bindehautchemose in die Notfallambulanz. Anamnestisch hatte er eine Kataraktoperation vor 9 Jahren und nimmt Marcoumar. Welche der folgenden Spaltlampenbefunde sind für das weitere Vorgehen (konservativ oder chirurgisch) entscheidend? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Bulbus geschlossen (= contusio bulbi)",
+    "Bulbus eröffnet (= penetrating ocular injury)",
+    "Pupillenerweiterung unter Photophobie",
+    "Veränderte Fundusreflexe bei Netzhautverziehung",
+    "Tränenproduktion unter Normalwert"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 114,
+  "text": "Ein 74-jähriger Patient sucht den Augenarzt zur Vorsorgeuntersuchung auf. Dabei werden die folgenden Befunde erhoben: Visus 0,9 an beiden Augen, Tension rechts 26 mmHg, links 24 mmHg, vordere Augenkammer mitteltief und unauffällig. Der Kammerwinkel ist gonioskopisch offen. Am Fundus weist die Papille an beiden Augen eine vergrößerte Exkavation auf mit einer cup/disc Ratio von rechts 0,9 und links 0,8. Welche Untersuchung ist die wichtigste zur weiteren Abklärung?",
+  "image": "",
+  "options": [
+    "Perimetrie",
+    "Optische Kohärenztomographie der Makula",
+    "Fundusfotografie mit Farbstoffinjektion",
+    "Hornhautpachymetrie",
+    "Tonographie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 115,
+  "text": "Ein 75-jähriger Patient gibt im Anamnesegespräch an, vor einigen Jahren am rechten Auge eine Kataraktoperation gehabt zu haben. Diese sei komplikationslos verlaufen, aber etwa zwei Jahre später sei eine Behandlung mit Laser durchgeführt worden. An weitere Details könne er sich nicht erinnern. Welche Art von Lasereingriff hat damals vermutlich stattgefunden?",
+  "image": "",
+  "options": [
+    "Neodym-YAG-Laser-Kapsulotomie",
+    "Argonlaser-Trabekuloplastik",
+    "Femtosekundenlaser-Kapsulorhexis",
+    "Photokoagulation bei diabetischer Retinopathie",
+    "Excimerlaser-Keratektomie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 116,
+  "text": "Ein 82-jähriger Mann kommt wegen akuter Beschwerden in die Notfallambulanz. Seit einigen Tagen hat er schläfenseitige Kopfschmerzen, auf Nachfrage auch Schmerzen beim Kauen und Schlucken. Seit einigen Stunden nun sieht er auf dem linken Auge kaum noch etwas. Bei der Funduskopie zeigt sich Ihnen folgendes Bild: Welche nächsten diagnostischen Schritte veranlassen Sie? (2 richtige Antworten)",
+  "image": "https://i.postimg.cc/pTsxgQ2P/image.png",
+  "options": [
+    "Computerperimetrie",
+    "Labor: Blutsenkungsgeschwindigkeit und CRP",
+    "MRT mit Kontrastmittel des Schädels",
+    "Augendruckmessung",
+    "Angiographie der retinalen Gefäße"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+{
+  "id": 117,
+  "text": "Ein 82-jähriger Mann stellt sich wegen Beschwerden am rechten Auge vor. Ihnen zeigt sich folgendes Bild. Welche Diagnosen sind hier bereits bei der makroskopischen Beurteilung zu erkennen? (2 richtige Antworten)",
+  "image": "https://i.postimg.cc/hPzg57Nq/image.png",
+  "options": [
+    "Entropium",
+    "Trichiasis",
+    "Ektropium",
+    "Pterygium",
+    "Blepharitis"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 118,
+  "text": "Ein Patient hat die Diagnose einer exsudativen altersbedingten Makuladegeneration erhalten. Welche Befunde unterscheiden diese Erkrankung von anderen Formen der altersbedingten Makuladegeneration? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sub-/Intraretinale Flüssigkeit in der Optischen Kohärenztomographie",
+    "Choroidale Neovaskularisation in der Angiographie",
+    "Leckage-Aktivität in der Angiographie",
+    "Cotton-wool Herde und Gefäßverengung",
+    "Verdickung der Bruch’schen Membran in der OCT"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 119,
+  "text": "Ein Patient mit bioptisch gesichertem Aderhautmelanom möchte Auskunft über sein Metastasierungsrisiko über die Zeit. Welche der genannten Faktoren beziehen Sie in die Analyse des individuellen Risikos primär ein? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Histopathologie des Tumormaterials",
+    "Zytogenetik aus dem Tumormaterial",
+    "Tumorgröße in der Funduskopie",
+    "Veränderungen der Papille",
+    "Sehschärfenverlust"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 120,
+  "text": "Ein Patient mit einer neu aufgetretenen Schwellung am linken Unterlid kommt zu Ihnen. Sie untersuchen den Patienten und sehen eine lokalisierte Schwellung mit Rötung. Der Patient gibt Schmerzen und ein Druckgefühl an. Sie vermuten ein Hordeolum internum. Welche Drüsen sind dabei betroffen und welche Erreger verursachen häufig diese Erkrankung?",
+  "image": "",
+  "options": [
+    "Meibom Drüsen und Staphylokokken",
+    "Zeis Drüsen und Streptokokken",
+    "Wolfring Drüsen und Pneumokokken",
+    "Moll Drüsen und Herpesviren",
+    "Krause Drüsen und Candida"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 121,
+  "text": "Ein Patient stellt sich beim Augenarzt wegen einer schmerzlosen Visusminderung eines Auges vor. Dieser findet am Augenhintergrund einen pigmentierten Aderhauttumor. Was ist die beste Vorgangsweise, um rasch zu einer richtigen Diagnose zu kommen?",
+  "image": "",
+  "options": [
+    "Ophthalmologischer Ultraschall",
+    "Optische Kohärenztomographie",
+    "Perimetrie",
+    "Fundusfotografie",
+    "CT des Schädels"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 122,
+  "text": "Ein Patient wird mit Verdacht auf ein Bulbustrauma vorstellig. Aufgrund des Unfallhergangs soll ein intraokulärer Fremdkörper ausgeschlossen werden. Welche Untersuchungsmethode ordnen Sie primär an?",
+  "image": "",
+  "options": [
+    "CT Untersuchung",
+    "MRT des Kopfes",
+    "Ophthalmoskopie in Mydriasis",
+    "Ultraschall-B-Scan",
+    "Spaltlampenuntersuchung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 123,
+  "text": "Eine 34-jährige Frau ist vor einigen Tagen gestürzt und gibt nun einseitige Sehstörungen mit Trübungen und Lichtblitzen an. Anamnestisch ist eine Myopie bekannt. Welche Untersuchungsmethode ist zu wählen, um periphere Netzhautdefekte zu detektieren?",
+  "image": "",
+  "options": [
+    "Dreispiegelkontaktglas nach Goldmann",
+    "Optische Kohärenztomographie",
+    "Amsler-Gitter-Test",
+    "Hornhauttopographie",
+    "Spaltlampenuntersuchung mit breitem Lichtspalt"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 124,
+  "text": "Eine 48-jährige Patientin wird in Ihrer Ambulanz wegen zunehmender subjektiver Gesichtsfeldeinschränkung vorstellig. Der biomikroskopische Augenbefund zeigt keine Auffälligkeiten. Sie veranlassen eine Gesichtsfelduntersuchung. In der Computer-Perimetrie ist eine bitemporale Hemianopsie mit streng vertikaler Trennlinie auffällig. Wo ist die wahrscheinlichste Lokalisation der Läsion?",
+  "image": "",
+  "options": [
+    "Hypophyse",
+    "Chiasma opticum lateral",
+    "N. opticus rechts",
+    "Radiatio optica links",
+    "Cortex occipitalis beidseits"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 125,
+  "text": "Eine 75-jährige Patientin klagt über eine Rötung ihres rechten Auges mit Photophobie und Sehverschlechterung. Bei der Untersuchung sehen Sie oberflächliche Defekte (siehe Abbildung) und erheben, dass die Hornhautsensibilität deutlich herabgesetzt ist. Welcher Erreger ist am ehesten zu vermuten?",
+  "image": "https://i.postimg.cc/wM5rCg5L/image.png",
+  "options": [
+    "Herpes simplex",
+    "Staphylococcus aureus",
+    "Akanthamöben",
+    "Candida albicans",
+    "Adenoviren"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 126,
+  "text": "Eine Patientin wird mit einer deutlich entzündlichen Lidschwellung des rechten Oberlides vorstellig. Es wird die Diagnose eines Hordeolums gestellt. Welche Strukturen kommen als Ausgangspunkt dieses Entzündungsprozesses in Frage? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Meibom Drüsen",
+    "Zeiss Drüsen",
+    "Wolfring Drüsen",
+    "Krause Drüsen",
+    "Tränendrüse"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 127,
+  "text": "In der Notfallambulanz erscheint eine Reinigungskraft, welche versehentlich unverdünnten Industriereiniger ins linke Auge bekommen hat. Sie ordnen sofortige reichliche Spülung des Auges mittels NaCl an. Um auch den oberen konjunktivalen Fornix zu spülen, müssen Sie das Oberlid doppelt ektropionieren. Welches Hilfsmittel ziehen Sie dazu heran?",
+  "image": "",
+  "options": [
+    "Desmarres-Haken",
+    "Spaltlampenspatel",
+    "Augenlidhaken nach von Graefe",
+    "Lidklemme nach Barraquer",
+    "Castroviejo-Pinzette"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 128,
+  "text": "In die Notfallambulanz kommt ein 78-jähriger Patient. Am linken Auge habe er vor neun Wochen eine Kataraktoperation gehabt, und nun sehe er an diesem Auge seit einigen Tagen mehrmals am Tag Lichtblitze, zunehmende umherschwimmende Trübungen und einen Schatten im äußeren Gesichtsfeld. Schmerzen werden verneint, makroskopisch erscheint der Vorderabschnitt bland. Welche Verdachtsdiagnose trifft am ehesten zu?",
+  "image": "",
+  "options": [
+    "Ablatio retinae",
+    "Endophthalmitis",
+    "Zystoides Makulaödem",
+    "Nachstar",
+    "Iridodialyse"
+  ],
+  "correctAnswers": [0]
+},
+
+
+
+{
+  "id": 129,
+  "text": "Sie führen einen Uncover Test (Aufdecktest) durch und sehen eine Einstellbewegung des freigegebenen Auges. Die Einstellbewegung erfolgt von temporal. Auf welche Schielform weist dieses Testergebnis hin?",
+  "image": "",
+  "options": [
+    "Exophorie",
+    "Esophorie",
+    "Hypertropie",
+    "Hypotropie",
+    "Orthophorie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 130,
+  "text": "Sie möchten einen Patienten mittels direkter Ophthalmoskopie untersuchen. Was müssen Sie dabei berücksichtigen? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sie erhalten einen ca. 16-fach vergrößerten Bildausschnitt.",
+    "Mit Ihrem linken Auge sollten Sie das linke Auge des Patienten untersuchen",
+    "Die Untersuchung ist nur bei weiter Pupille möglich",
+    "Der Sehnerv kann ausschließlich mit indirektem Ophthalmoskop dargestellt werden",
+    "Zur Vermeidung von Blendung sollte nur grünes Licht verwendet werden"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 131,
+  "text": "Sie möchten einen Patienten mittels direkter Ophthalmoskopie untersuchen. Was müssen Sie dabei berücksichtigen? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sie erhalten ein aufrechtes Netzhautbild.",
+    "Die Untersuchung ist leichter im abgedunkelten Raum und bei weiter Pupille.",
+    "Das Bild ist seitenverkehrt und auf dem Kopf stehend.",
+    "Die Vergrößerung beträgt etwa das 2-fache.",
+    "Man sieht die Netzhaut nur mit Kontaktglas."
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 132,
+  "text": "Was sind die Charakteristika der Presbyopie? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Reduktion des Nahvisus ohne Korrektur",
+    "Verlust der Akkommodation",
+    "Erhöhte Blendempfindlichkeit bei Dunkelheit",
+    "Verstärkte Farbsinnstörung im Blau-Gelb-Bereich",
+    "Vergrößerung der Pupillendifferenz im Alter"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 133,
+  "text": "Welche der folgenden Befunde treten typischerweise bei hoher Myopie auf? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Peripapilläre Aderhautatrophie",
+    "Schräger Sehnerveneintritt",
+    "Papillenödem",
+    "Netzhautvaskulitis",
+    "Lidrandverplumpung"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 134,
+  "text": "Welche der folgenden Symptome sind typisch für eine Katarakt-Erkrankung? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Visusabnahme",
+    "Vermindertes Kontrastsehen",
+    "Blendungsempfindlichkeit",
+    "Bitemporale Gesichtsfeldausfälle",
+    "Farbsehstörungen im Grün-Rot-Bereich"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+{
+  "id": 135,
+  "text": "Welche Therapie ist jedenfalls Bestandteil der Behandlung einer symptomatischen kongenitalen Tränenwegsstenose mit persistierender Hasner’scher Membran?",
+  "image": "",
+  "options": [
+    "Lokale Massage",
+    "Systemische Antibiotikatherapie",
+    "Intraokulare Injektion",
+    "Laserablation",
+    "Intravitreale Kortikosteroide"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 136,
+  "text": "Eine 28-jährige Patientin kommt in die Notfallambulanz und sitzt mit einem Schal um den Kopf gewickelt im Wartebereich. Sie klagt über extreme Lichtempfindlichkeit und außerdem Schleiersehen. Die augenärztliche Untersuchung ergibt eine gemischte Injektion der Bindehaut, Präzipitate an der Hornhautrückfläche und ein positives Tyndallphänomen beider Augen. Die Funduskopie ist unauffällig. Die Applanationstonometrie ergibt einen Augendruck beidseits von 16 mmHg. Was ist die primäre Diagnose?",
+  "image": "",
+  "options": [
+    "Akute anteriore Uveitis",
+    "Akuter Glaukomanfall",
+    "Endophthalmitis",
+    "Keratokonjunktivitis",
+    "Retrobulbärneuritis"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 137,
+  "text": "Bei der Spaltlampenuntersuchung eines 62-jährigen Landwirts sehen Sie diese Veränderung. Welche Symptome können diese Veränderung am ehesten begleiten? (2 richtige Antworten)",
+  "image": "https://i.postimg.cc/4ybJWCmF/image.png",
+  "options": [
+    "Verzerrtsehen durch Astigmatismus",
+    "Fremdkörpergefühl",
+    "Bitemporale Hemianopsie",
+    "Blau-Gelb-Farbsehstörung",
+    "Nyktalopie"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 138,
+  "text": "Bei einem 87-jährigen Mann ist seit längerem eine altersbedingte Lidfehlstellung bekannt. Welches Hauptsymptom ist bei diesem Befund (siehe Abbildung) in der Regel zu erwarten?",
+  "image": "https://i.postimg.cc/TY0dm68K/image.png",
+  "options": [
+    "Epiphora",
+    "Photopsien",
+    "Metamorphopsien",
+    "Nyktalopie",
+    "Diplopie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 139,
+  "text": "Bei einem bettlägerigen Patienten wird eine Augenuntersuchung gewünscht. Welche diagnostischen Untersuchungsmethoden sind in dieser Situation möglich? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Direkte Ophthalmoskopie",
+    "Hirschberg Test",
+    "Exophthalmometer nach Hertel",
+    "Gonioskopie mit Kontaktglas",
+    "Perimetrie mit Goldmann-Bogenperimeter"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 140,
+  "text": "Bei einer 51-jährigen Patientin wurde ein Lappenriss temporal oben mit einer begleitenden rhegmatogenen Ablatio retinae diagnostiziert. Bei dieser Art von Netzhautablösung tritt Flüssigkeit zwischen:",
+  "image": "",
+  "options": [
+    "Die neurosensorische Netzhaut und das Pigmentepithel",
+    "Die Bruch'sche Membran und das Pigmentepithel",
+    "Die Lamina cribrosa und den Sehnerven",
+    "Die Aderhaut und die Sklera",
+    "Den Glaskörper und die Retina"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 141,
+  "text": "Bei einer neurologischen Patientin besteht der Verdacht einer Erhöhung des intrakraniellen Drucks. Sie wird zur augenärztlichen Untersuchung auf Hirndruckzeichen zugewiesen. Da die Patientin immobil ist, muss die Untersuchung allerdings am Bett stattfinden. Mit welcher Untersuchungsmethode können Sie die genannte Fragestellung abklären?",
+  "image": "",
+  "options": [
+    "Direkte Ophthalmoskopie",
+    "Optische Kohärenztomographie",
+    "Goldmann-Perimetrie",
+    "Gonioskopie",
+    "Fundusfotografie mit Fluoreszenzangiographie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 142,
+  "text": "Bei welchen klinischen Symptomen haben Sie 4 Tage nach einer Augenoperation den akuten Verdacht auf das Vorliegen einer akuten postoperativen Endophthalmitis?",
+  "image": "",
+  "options": [
+    "Photophobie, tiefer Augenschmerz, akute Visusminderung",
+    "Tränenträufeln, Jucken, temporäre Doppelbilder",
+    "Druckgefühl, milde Rötung, stabile Sehschärfe",
+    "Langsam zunehmende Rötung ohne Schmerz",
+    "Unauffälliger Befund, aber subjektive Lichtempfindlichkeit"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 143,
+  "text": "Ein 12-jähriges Mädchen wird vom Schularzt geschickt, da aufgefallen ist, dass sie beim Lernen und Lesen häufig unter Kopfschmerzen leidet und schnell ermüdet. Welche augenärztliche Untersuchung ist in einem ersten Schritt am sinnvollsten?",
+  "image": "",
+  "options": [
+    "Refraktionsbestimmung in Zykloplegie",
+    "Gonioskopie zur Kammerwinkelbeurteilung",
+    "Fluoreszenzangiographie der Makula",
+    "Hornhauttopographie",
+    "Ultraschalluntersuchung des Bulbus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 144,
+  "text": "Ein 20 [/ 22 2022-09]-jähriger junger Mann wird wegen asthenopischer Beschwerden bei zunehmender Dekompensation einer Exophorie zur Schielambulanz zugewiesen. Welche Behandlungsformen kommen grundsätzlich in Frage? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Korrektur eines Refraktionsfehlers",
+    "Orthoptische Übungen",
+    "Schieloperation",
+    "Okklusionsbehandlung",
+    "Steroidinjektion retrobulbär"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 145,
+  "text": "Ein 21-jähriger Patient stellt sich mit Schmerzen am rechten Auge in der Notfallambulanz vor. Er war zwei Tage zuvor bereits mit einem Eisenfremdkörper der Hornhaut vorstellig, welcher entfernt wurde. In der Spaltlampenuntersuchung zeigt sich eine zarte Injektion der Bindehaut und ein kleiner oberflächlicher, Fluoreszein-positiver Epitheldefekt der Hornhaut. Die Vorderkammer ist reizfrei und der Augeninnendruck liegt bei 16 mmHg. Ein Fremdkörper ist nicht auffindbar. Wie lautet die wahrscheinlichste Diagnose?",
+  "image": "",
+  "options": [
+    "Erosio corneae",
+    "Keratitis dendritica",
+    "Uveitis anterior",
+    "Akuter Glaukomanfall",
+    "Endophthalmitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 146,
+  "text": "Ein 26-jähriger Arbeiter wird in die Notfallambulanz gebracht. Anamnestisch wird eine akute Laugenverätzung beider Augen angegeben, der Patient kann die Augen aufgrund eines reaktiven Blepharospasmus kaum öffnen. Welche ersten therapeutischen Schritte führen Sie durch? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Spülen mit isotoner NaCl-Lösung",
+    "Eintropfen eines Oberflächen-Anästhetikums",
+    "Ektropionieren",
+    "Anlegen eines Augenverbandes",
+    "Primäre Applikation von Kortikosteroiden"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 147,
+  "text": "Ein 31-jähriger Mann mit bekannter ankylosierender Spondylarthritis (HLA B27- Antigen positiv) wird vom Rheumatologen zugewiesen, da er bei der Anamneseerhebung häufig eine einseitige, schmerzhafte Augenrötung angegeben hat. Auf welche klinischen Befunde achten Sie insbesondere? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Ziliare Injektion oder gemischte Injektion der Konjunktiva",
+    "Entzündungszeichen in der Vorderkammer",
+    "Fluoreszein-positive Hornhautepitheldefekte",
+    "Tränenwegstenose mit Mukusabfluss",
+    "Isokorie ohne Pupillenreaktion"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 148,
+  "text": "Ein 4-jähriges Mädchen wird von ihren Eltern in der Augenambulanz vorgestellt, da sie gelegentlich angesprochen werden, ob das Kind vielleicht schiele. Eine Einschränkung der Sehleistung ist bisher nicht aufgefallen, auch die Mutter-Kind-Pass Untersuchung vor 2 Jahren war unauffällig, aber die Familie ist verunsichert, ob alles in Ordnung ist. Bei der Inspektion fällt sofort ein weiter Abstand zwischen den Pupillen auf. Welche Untersuchungsmethode wählen Sie in dieser Situation?",
+  "image": "",
+  "options": [
+    "Hirschberg Test",
+    "Lang-Stereotest",
+    "Ishihara-Test",
+    "Sehschärfenprüfung mit E-Haken",
+    "Cycloplegische Refraktionsbestimmung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 149,
+  "text": "Ein 48-jähriger Lagerarbeiter stellt sich wegen Augenbrennen, Rötung und Fremdkörpergefühl an beiden Augen vor. Bei der Spaltlampenuntersuchung zeigen sich gerötete Lidränder, eine geringe konjunktivale Injektion und Bindehautfalten. Welche diagnostischen Schritte sollten als nächste durchgeführt werden? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Durchführung eines Schirmer-Tests",
+    "Messung der Tränenfilm-Aufrisszeit",
+    "Goldmann-Applanationstonometrie",
+    "Fundoskopie in Mydriasis",
+    "Lang-Stereotest"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 150,
+  "text": "Ein 48-jähriger Patient kommt aufgrund akuter Beschwerden mit rotem Auge, Schmerzen und Photophobie in die Notfallambulanz. Anamnestisch ist seit langem eine ankylosierende Spondylarthritis (HLA B27 +) bekannt. In den letzten Jahren hatte er auch immer wieder heftige einseitige Augenentzündungen, die mit Kortison behandelt wurden. Welche Befunde sind in diesem Fall zu erwarten? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Zellen in der Vorderkammer",
+    "Sekundärkatarakt",
+    "Glaskörperblutung",
+    "Papillenödem",
+    "Bitemporale Gesichtsfeldausfälle"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 151,
+  "text": "Ein 52-jähriger Mann wird von der Neurologie mit Trockenheits- und Fremdkörpergefühl am rechten Auge zugewiesen. Bei der Prüfung des Lidschlusses zeigt sich folgendes Bild (siehe Abbildung). Welche Ursache ist bei der am ehesten zu vermutenden Diagnose die häufigste?",
+  "image": "https://i.postimg.cc/YS9zkM7Y/image.png",
+  "options": [
+    "Idiopathisch",
+    "Borreliose",
+    "Diabetische Polyneuropathie",
+    "Tumor im Bereich des Kleinhirnbrückenwinkels",
+    "Sarkoidose"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 152,
+  "text": "Ein 68-jähriger Patient stellt sich wegen plötzlicher, schmerzloser Sehverschlechterung am rechten Auge seit dem Vortag vor. Die Augenanamnese ist bland, der Patient gibt eine Medikation gegen arterielle Hypertonie an. Der funduskopische Befund des rechten Auges zeigt Fleckblutungen in allen 4 Quadranten (siehe Bild). Der Befund am linken Auge ist unauffällig. Wie lautet die primäre Verdachtsdiagnose?",
+  "image": "https://i.postimg.cc/gj9VvhZH/image.png",
+  "options": [
+    "Retinaler Zentralvenenverschluss",
+    "Retinale Arterienastokklusion",
+    "Diabetische Retinopathie",
+    "Chorioretinopathia centralis serosa",
+    "Papillenödem bei erhöhter ICP"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 153,
+  "text": "Ein 78-jähriger Patient entscheidet sich bei fortgeschrittener Katarakt zu einer Katarakt-Operation. Wohin wird bei einer Standard OP die Kunstlinse platziert?",
+  "image": "",
+  "options": [
+    "In die Linsenkapsel",
+    "In den Glaskörperraum",
+    "In die vordere Augenkammer",
+    "Zwischen Iris und Linse",
+    "In die Sklera fixiert"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 154,
+  "text": "Ein junger Patient sucht abends mit beidseitigen starken Augenschmerzen die Notfallambulanz auf. Er hat tagsüber im Gebirge eine Schitour unternommen und gibt auf Nachfrage an, keinen Augenschutz getragen zu haben. Welche Diagnosen sind anhand dieser Anamnese naheliegend? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Keratitis photoelectrica",
+    "Keratitis punctata superficialis",
+    "Retinale Phototoxizität",
+    "Uveitis anterior",
+    "Endophthalmitis"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+{
+  "id": 155,
+  "text": "Ein Patient hat rezidivierende Herpes simplex Infektionen in der Gesichtsregion. Welche Symptome und klinischen Befunde wären typisch für eine Augenbeteiligung? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Verminderte Hornhautsensibilität",
+    "Bäumchenartig verzweigte Hornhautepithelläsionen",
+    "Einseitige akute Rötung",
+    "Photophobie beidseits",
+    "Papillenödem mit bilateraler Miosis"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+
+{
+  "id": 156,
+  "text": "Ein Patient wird mit der Verdachtsdiagnose eines retinalen Zentralvenenverschlusses zugewiesen. Welche klinischen Befunde sind primär zu erwarten? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Streifenförmige Blutungen in allen vier Quadranten",
+    "Tortuositas vasorum (geschlängelte dilatierte retinale Venen)",
+    "Netzhautödem im Bereich der Makula",
+    "Drusen am Sehnervenkopf",
+    "Ischämische Cotton-Wool-Herde in der Peripherie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 157,
+  "text": "Eine 16-jährige Patientin stellt sich mit akut geschwollenem und schmerzhaftem Oberlid seit einigen Tagen vor (siehe Bild). Welche Überlegungen zur Pathologie bzw. weiteren Abklärung sind zutreffend? (2 richtige Antworten)",
+  "image": "https://i.postimg.cc/63C2xm8C/image.png",
+  "options": [
+    "Eine bakterielle oder virale Infektion ist wahrscheinlich.",
+    "Erhöhte Entzündungsparameter sind zu erwarten.",
+    "Es handelt sich wahrscheinlich um ein Chalazion ohne systemische Reaktion.",
+    "Ein Glaukomanfall sollte als erstes ausgeschlossen werden.",
+    "Eine sofortige Kataraktoperation ist erforderlich."
+  ],
+  "correctAnswers": [0, 1]
+},
+
+{
+  "id": 158,
+  "text": "Eine 16-jährige Patientin stellt sich mit geschwollenem und stark schmerzhaftem Oberlid seit einigen Tagen vor (siehe Bild). Welche Verdachtsdiagnose ist bei diesem typischen klinischen Bild abzuklären?",
+  "image": "https://i.postimg.cc/63C2xm8C/image.png",
+  "options": [
+    "Dacryoadenitis",
+    "Hordeolum externum",
+    "Chalazion",
+    "Blepharitis",
+    "Orbitale Zellulitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 159,
+  "text": "Eine 26-jährige Patientin wird von der Neurologie an die Augenabteilung zugewiesen. Vor einer Lumbalpunktion sollen akute Hirndruckzeichen abgeklärt werden. Welche Befunde bei der ophthalmologischen Durchuntersuchung wären hinweisend für die genannte Fragestellung? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Unscharf begrenzte Papille in der Funduskopie",
+    "Vergrößerter blinder Fleck in der Perimetrie",
+    "Zentrale Skotome beidseits",
+    "Periphere chorioretinale Narben",
+    "Einschränkung der Augenmotilität nach oben"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 160,
+  "text": "Eine 28-jährige Frau kommt in die Ambulanz, weil sie das Gefühl hat seit zwei Tagen mit dem rechten Auge unscharf zu sehen. Außerdem gibt die Patientin Augenbewegungsschmerzen und Farbsehstörungen an. Nach einem Besuch in der Sauna habe die Patientin das Gefühl gehabt noch schlechter zu sehen. Die Spaltlampenuntersuchung und Funduskopie ergeben keine Auffälligkeiten. Die Sehschärfenprobe ergibt folgenden Befund:\nOD: −0,5 sph 0,4\nOS: −1,0 sph 1,0\nWelche weiteren diagnostischen Maßnahmen setzen Sie aufgrund der spezifischen Symptomatik der Patientin? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Schädel-MRT",
+    "Swinging-flashlight-Test",
+    "Perimetrie",
+    "Pachymetrie",
+    "Netzhautangiographie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 161,
+  "text": "Eine 38-jährige Patientin klagt seit 2 Wochen über Sandkorngefühl und Brennen beider Augen. Die Spaltlampenuntersuchung zeigt eine mäßige konjunktivale Injektion und eine zarte Stippung der Hornhaut beidseits. Der durchgeführte Schirmer-Test ist beidseits auffällig. Welche Therapie leiten Sie primär ein?",
+  "image": "",
+  "options": [
+    "Tränenersatzmittel",
+    "Lokale Antibiotikatherapie",
+    "Systemische Kortikosteroidgabe",
+    "Topische antivirale Therapie",
+    "Lasertherapie der Meibom-Drüsen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 162,
+  "text": "Eine 52-jährige Patientin stellt sich mit akuter einseitiger Augenrötung und starken Schmerzen vor. Bei der Inspektion zeigt sich segmental eine tiefe ziliare Injektion mit diffuser bläulich-rötlicher Verfärbung. Aus der Anamnese ist eine rheumatoide Arthritis bekannt. Wie lautet Ihre Verdachtsdiagnose und welches Ergebnis des Phenylephrin-Tests erwarten Sie?",
+  "image": "",
+  "options": [
+    "Verdachtsdiagnose Skleritis, durch Phenylephrin wird das Auge nicht oder nur geringfügig aufgehellt.",
+    "Verdachtsdiagnose Konjunktivitis, durch Phenylephrin verschwindet die Rötung vollständig.",
+    "Verdachtsdiagnose Uveitis, durch Phenylephrin wird die Pupille erweitert.",
+    "Verdachtsdiagnose Episkleritis, durch Phenylephrin tritt verstärkte Pupillenreaktion auf.",
+    "Verdachtsdiagnose Keratitis, durch Phenylephrin wird die Hornhaut klar."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 163,
+  "text": "Eine 54-jährige Büroangestellte wird bei Ihnen wegen brennender Augen, Rötung und Fremdkörpergefühl auf beiden Augen in der Augen-Notfallambulanz vorstellig. Sie arbeitet mehrere Stunden täglich am PC. Die Spaltlampenuntersuchung zeigt eine reduzierte \"Breakup-Time\" des Tränenfilms, entzündliche Lidränder und eine konjunktivale Injektion an beiden Augen. Welche sind Ihre ersten therapeutischen Schritte? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Tränenersatzmittel mehrmals täglich",
+    "Lidkantenpflege",
+    "Systemische Antibiose",
+    "Kortikosteroide oral",
+    "Netzhautlaserung"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 164,
+  "text": "Eine 67-jährige Patientin stellt sich wegen akuter Doppelbilder in der Notfallambulanz vor. Es besteht eine Kopfzwangshaltung mit Kopfdrehung nach links, ein Abduktionsdefizit links und eine Verstärkung der Doppelbilder bei Blick nach links. Ein Diabetes mellitus Typ II und arterielle Hypertonie sind vorbekannt. Welche nervale Läsion diagnostizieren Sie aufgrund des vorliegenden Befundes?",
+  "image": "",
+  "options": [
+    "N. abducens Parese links",
+    "N. oculomotorius Parese rechts",
+    "N. trochlearis Parese rechts",
+    "N. opticus Läsion links",
+    "N. trigeminus Neuralgie beidseits"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 165,
+  "text": "Eine 71-jährige Patientin gibt seit einigen Tagen eine zentrale Sehverschlechterung mit Metamorphopsien am rechten Auge an. Sie hat keine Schmerzen und auch keine Rötung des Auges ist zu bemerken. Anamnestisch ist eine Kataraktoperation vor ca. 2 Monaten am betroffenen Auge erhebbar. Laut Patientin ist diese komplikationslos verlaufen, auch sonst sind, abgesehen von der Katarakt, keine Augenerkrankungen bekannt. Welche Erkrankung ist in diesem Fall am ehesten zu vermuten?",
+  "image": "",
+  "options": [
+    "Makulaödem (Irvine-Gass-Syndrom)",
+    "Retinaler Zentralvenenverschluss",
+    "Chorioretinopathia centralis serosa",
+    "Neovaskuläre AMD",
+    "Nachstar"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 166,
+  "text": "Eine 72-jährige Patientin gibt einseitige Metamorphopsien seit mehreren Wochen an. Es sind keine Augenvorerkrankungen und keine systemischen Erkrankungen bekannt. Welche Erkrankung ist bei dieser Anamnese die wahrscheinlichste?",
+  "image": "",
+  "options": [
+    "Altersbedingte Makuladegeneration",
+    "Zentrale seröse Chorioretinopathie",
+    "Retinale Venenastthrombose",
+    "Epiretinale Gliose",
+    "Retinitis pigmentosa"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 167,
+  "text": "Eine 85-jährige Patientin sieht seit circa einem halben Jahr zunehmend schlechter. Visus beidseits: c.c. 0.6 Snellen. Bei der Spaltlampenuntersuchung sehen Sie, dass die Patientin pseudophak ist und an beiden Augen einen Nachstar entwickelt hat. Wie gehen Sie weiter vor?",
+  "image": "",
+  "options": [
+    "Laser-Kapsulotomie",
+    "Vitrektomie",
+    "Katarakt-Reoperation",
+    "Systemische Glukokortikoide",
+    "Pachymetrie zur Hornhautdickenmessung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 168,
+  "text": "Eine Patientin mit bekanntem systemischem Lupus erythematodes gibt an, gelegentlich eine einseitige Augenrötung mit Schmerzen zu haben. Welche entzündliche Augenerkrankung ist anhand von Grunderkrankung und Symptomatik am ehesten vorhanden?",
+  "image": "",
+  "options": [
+    "Skleritis",
+    "Episkleritis",
+    "Uveitis anterior",
+    "Blepharitis",
+    "Keratitis sicca"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 169,
+  "text": "Eine Patientin sucht die Augenambulanz wegen Mouches volantes, Lichtblitzen und „Ruß- regen“ am rechten Auge auf. Für welche Erkrankung sind diese Symptome typisch?",
+  "image": "",
+  "options": [
+    "Netzhautdefekt",
+    "Katarakt",
+    "Neovaskuläre Gliose",
+    "Kammerwinkelblockade",
+    "Epiretinale Membran"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 170,
+  "text": "Eine Patientin wird zugewiesen mit Verdacht auf einen Defekt in der äußeren Netzhautperipherie. Welche Untersuchungsmethoden sind zur Abklärung geeignet? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Kontaktglasuntersuchung mit Dreispiegelglas nach Goldmann",
+    "Indirekte Ophthalmoskopie mit starker Lupe",
+    "Fundusfotografie mit Autofluoreszenz",
+    "OCT der Makula",
+    "Schirmer-Test beidseits"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 171,
+  "text": "In der Computerperimetrie wurde ein einseitiger Gesichtfeldausfall detektiert. In welchem Abschnitt der Sehbahn muss eine Läsion vermutet werden?",
+  "image": "",
+  "options": [
+    "Von der Netzhaut bis zum Chiasma opticum",
+    "Im Chiasma opticum",
+    "In der Radiatio optica",
+    "Im visuellen Cortex",
+    "Im Corpus geniculatum laterale"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 172,
+  "text": "Sie möchten mit dem direkten Ophthalmoskop den Fundus beurteilen. Was ist für Untersuchungsmethode und physiologischen Befund zutreffend? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Das physiologische Verhältnis des Kalibers der retinalen Arterien zu Venen beträgt 2:3.",
+    "Die Papilla n. optici ist scharf begrenzt und hat eine zentrale kleine Exkavation.",
+    "Die Untersuchung ist leichter im abgedunkelten Raum und bei erweiterter Pupille durchführbar.",
+    "Retinale Arterien sind immer dunkler als Venen.",
+    "Die Makula liegt nasal der Papille."
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 173,
+  "text": "Sie planen bei einem Patienten mit Verdacht auf Retrobulbärneuritis einen Swinging-Flashlight-Test durchzuführen. Wie führen Sie den Test ordnungsgemäß durch?",
+  "image": "",
+  "options": [
+    "In einem abgedunkelten Raum mittels Taschenlampe",
+    "Mit der Spaltlampe bei maximaler Lichtstärke",
+    "Durch Betrachtung des Fundus mit dem Ophthalmoskop",
+    "Mit einem Laserpointer bei Tageslicht",
+    "Nur nach medikamentöser Pupillenerweiterung"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 174,
+  "text": "Was ist die häufigste augenheilkundliche Indikation zur Behandlung mit Nd:YAG Laser bei PatientInnen nach Katarakt Operation?",
+  "image": "",
+  "options": [
+    "Nachstar",
+    "Glaskörpertrübungen",
+    "Retinale Neovaskularisation",
+    "Hornhautverkrümmung",
+    "Makulaödem"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 175,
+  "text": "Welche Augenstrukturen sind an der Spaltlampe nur mit zusätzlichen Hilfsmitteln (Kontakt- und Vorsatzgläser/ Lupengläser) einsehbar? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Sehnerv",
+    "Netzhaut",
+    "Kammerwinkel",
+    "Hornhautepithel",
+    "Vorderkammer"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 176,
+  "text": "Welche primäre Verdachtsdiagnose stellt sich bei diesem klinischen Befund am Unterlid?",
+  "image": "https://i.postimg.cc/525RjxDr/image.png",
+  "options": [
+    "Basalzellkarzinom",
+    "Plattenepithelkarzinom",
+    "Chalazion",
+    "Hordeolum",
+    "Xanthelasma"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 177,
+  "text": "Welche Untersuchungsmethoden werden typischerweise bei einer altersbedingten Makuladegeneration zur Diagnosestellung verwendet? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Optische Kohärenztomographie (OCT)",
+    "Amsler Netz",
+    "Fluoreszenzangiographie",
+    "Perimetrie mit Goldmann-Bogenperimeter",
+    "Spaltlampenmikroskopie mit Gonioskopie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 178,
+  "text": "Ein 34-jähriger Patient kommt zu Ihnen in die Akutambulanz. Er gibt an, am Vormittag auf der Baustelle gearbeitet und Metall gefräst zu haben. Seitdem bestehen Schmerzen sowie eine Rötung des rechten Auges. Welche der folgenden Untersuchungen sind in diesem Fall am ehesten durchzuführen? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Spaltlampen-Biomikroskopie der Horn- & Bindehaut",
+    "Ektropionieren des Oberlides",
+    "Anfärben der Hornhaut mit Fluorescein",
+    "Netzhautangiographie",
+    "Refraktionsbestimmung mit Autorefraktometer"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 179,
+  "text": "Ein 34-jähriger Patient kommt zu Ihnen in die Notfallambulanz. Er gibt an, am Vormittag auf der Baustelle gearbeitet und Metall gefräst zu haben. Seitdem bestehen Schmerzen sowie eine Rötung des rechten Auges. Bei der Untersuchung zeigen sich konjunktivale Injektionen, ein zartes Hornhautödem und ein kleiner metallischer Fremdkörper im Hornhautstroma ca 1mm vom Limbus entfernt. Wie gehen Sie primär vor?",
+  "image": "",
+  "options": [
+    "Entfernung des Fremdkörpers mit der Nadel, Salbenverband",
+    "Einstellen auf systemische Steroidtherapie",
+    "Primäre Laserbehandlung mit YAG-Laser",
+    "Beobachtung und Verlaufskontrolle nach 48 Stunden",
+    "Überweisung zur Vitrektomie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 180,
+  "text": "Ein 35-jähriger Patient stellt sich mit einem geröteten Auge, Fremdkörpergefühl und Sehminderung vor. Bei der Untersuchung des vorderen Augenabschnitts sehen Sie eine dendritische Läsion der Hornhaut. Welche Therapie leiten Sie aufgrund Ihrer Verdachtsdiagnose initial ein?",
+  "image": "",
+  "options": [
+    "Topische antivirale Therapie",
+    "Topische antibiotische Kombinationstherapie",
+    "Systemische Kortikosteroidgabe",
+    "Pupillenerweiterung zur Schmerzprophylaxe",
+    "Intraokulare Injektion von Antimykotika"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 181,
+  "text": "Ein 35-jähriger Patient stellt sich mit einem geröteten Auge, Fremdkörpergefühl und Sehminderung vor. Bei der Untersuchung des vorderen Augenabschnitts sehen Sie eine dendritische Läsion der Hornhaut. Wie lautet die zutreffendste Diagnose?",
+  "image": "",
+  "options": [
+    "Herpeskeratitis",
+    "Bakterielle Keratitis",
+    "Keratokonjunktivitis sicca",
+    "Uveitis anterior",
+    "Episkleritis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 182,
+  "text": "Ein 43-jähriger Patient mit proliferativer diabetischer Retinopathie stellt sich mit plötzlicher Sehverschlechterung (Blitze, Gesichtsfeldausfall) in der Augenakutambulanz vor. In der Funduskopie zeigt sich eine traktive Amotio retinae. Wie gehen Sie weiter vor?",
+  "image": "",
+  "options": [
+    "Vitrektomie",
+    "Laserkoagulation der Netzhautperipherie",
+    "Systemische Glukokortikosteroidgabe",
+    "Beobachten und Verlaufskontrolle",
+    "Intravitreale VEGF-Injektion"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 183,
+  "text": "Ein 53-jähriger Patient berichtet über starke, dumpfe Schmerzen an der rechten Schläfe und Übelkeit seit gestern. Zusätzlich sieht er einen Ring um Lichtquellen (Halos). An der Spaltlampe sehen Sie am rechten Auge eine gemischte Injektion der Konjunktiva, ein Epithelödem der Kornea und eine fast reaktionslose Pupille. Der Augendruck am rechten Auge ist 53 mmHg. Welche Verdachtsdiagnose haben Sie und von welchem Eingriff profitiert der Patient langfristig?",
+  "image": "",
+  "options": [
+    "Akuter Winkelblock und Iridotomie",
+    "Neovaskuläres Glaukom und Trabekulektomie",
+    "Uveitis anterior und Steroidinjektion",
+    "Hornhautulkus und Hornhauttransplantation",
+    "Chronisches Offenwinkelglaukom und Zyklophotokoagulation"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 184,
+  "text": "Ein 76-jähriger Mann kommt in die Augenambulanz und gibt an, dass er vor 2 Wochen aufgrund heftiger Schmerzen und Sehverschlechterung des rechten Auges beim niedergelassenen Augenfacharzt war. Seitdem würde er mit antibiotischen Augentropfen 3× täglich und Aciclovir-Augensalbe 5× täglich behandelt. Die Symptome seien zwar etwas besser, aber immer noch vorhanden. Bei Erhebung der Anamnese stellt sich heraus, dass der Patient vor Beginn der Symptome mit Kontaktlinsen im Urlaub in einem Dampfbad war. Bei Betrachtung der Hornhaut des rechten Auges finden Sie ein tiefes Ringinfiltrat vor. Wie lautet Ihre primäre Verdachtsdiagnose?",
+  "image": "",
+  "options": [
+    "Akanthamöbenkeratitis",
+    "Herpes-simplex-Keratitis",
+    "Bakterielle Keratitis",
+    "Pilzkeratitis",
+    "Toxoplasmose-Retinochorioiditis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 185,
+  "text": "Ein 84-jähriger Patient mit bekannter altersbedingter Makuladegeneration stellt sich in der Makulaambulanz vor. Vor kurzem hat er mit dem Amsler-Grid vermehrt Metamorphopsien wahrgenommen. Was ist die wahrscheinlichste Diagnose für die neu aufgetretenen Beschwerden?",
+  "image": "",
+  "options": [
+    "Choroidale Neovaskularisation",
+    "Zystoides Makulaödem",
+    "Nachstar",
+    "Epiretinale Gliose",
+    "Makulaforamen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 186,
+  "text": "Ein 84-jähriger Patient mit bekannter altersbedingter Makuladegeneration stellt sich in der Makulaambulanz vor. Vor kurzem hat er mit dem Amsler-Grid vermehrt Metamorphopsien wahrgenommen. Welche bildgebenden Untersuchungen helfen Ihnen am ehesten bei der Diagnosestellung? (2 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Optische Kohärenztomographie",
+    "Fluoreszenzangiographie",
+    "Ultraschall-B-Bild",
+    "Gonioskopie",
+    "Hornhauttopographie"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 187,
+  "text": "Ein junger Tennisspieler wird mit Verdacht auf Bulbuskontusion vorgestellt. Welche Untersuchungen sind primär durchzuführen? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Augenmotilität",
+    "Swinging Flashlight Test",
+    "Tonometrie",
+    "Gonioskopie",
+    "Ishihara-Test"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 188,
+  "text": "Ein Patient mit Fremdkörpergefühl stellt sich bei Ihnen vor. Bei der Untersuchung des vorderen Augenabschnitts diagnostizieren Sie ein ausgeprägtes Entropium. Welche Veränderung an der Hornhaut ist typisch für diese Lidfehlstellung?",
+  "image": "",
+  "options": [
+    "Erosio corneae",
+    "Bandförmige Degeneration",
+    "Keratokonus",
+    "Makuläre Dystrophie",
+    "Hornhautperforation"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 189,
+  "text": "Eine 23-jährige Patientin mit multipler Sklerose stellt sich bei Ihnen vor. Sie gibt am linken Auge eine zunehmende Sehverschlechterung seit 2 Tagen, eine herabgesetzte Farbwahrnehmung sowie Schmerzen bei der Augenbewegung an. Wie lautet die wahrscheinlichste Diagnose?",
+  "image": "",
+  "options": [
+    "Neuritis nervi optici",
+    "Retrobulbärhämatom",
+    "Papillenödem",
+    "Akuter Winkelblock",
+    "Aderhautmelanom"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 190,
+  "text": "Eine 59-jährige Patientin kommt in die Notaufnahme und gibt an, Blitze am rechten Auge zu sehen. Sie gibt an, eine Brille zu tragen und stark kurzsichtig zu sein. An welche möglichen Ursachen ist primär zu denken? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Rhegmatogene Ablatio",
+    "Hintere Glaskörperabhebung",
+    "Netzhautdefekt",
+    "Makuladegeneration",
+    "Blepharitis"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 191,
+  "text": "Eine Patientin kommt zu Ihnen aufgrund einer Schwellung am rechten Oberlid. Sie finden eine schmerzhafte Oberlidschwellung in Paragraphenform und eine Pseudoptose. Sie vermuten eine Dakryoadenitis, durch welche Untersuchungen können Sie Ihre Verdachtsdiagnose bestätigen?",
+  "image": "",
+  "options": [
+    "Entzündungszeichen im Labor + Ultraschall",
+    "Goldmann-Perimetrie + Gonioskopie",
+    "Pachymetrie + OCT der Makula",
+    "Funduskopie + Swinging Flashlight Test",
+    "Fluoreszenzangiographie + Amsler-Gitter-Test"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 192,
+  "text": "Sie sollen bei einem dreijährigen Mädchen eine Beurteilung der Augenstellung durchführen, da die Kinderärztin eine manifeste Schielfehlstellung vermutet. Welches Testverfahren wählen Sie nun am ehesten zur Überprüfung des stereoskopischen Sehens?",
+  "image": "",
+  "options": [
+    "Testtafeln nach Lang",
+    "Amsler-Gitter-Test",
+    "Ishihara-Farbtafel-Test",
+    "Goldmann-Perimetrie",
+    "Fluoreszenzangiographie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 193,
+  "text": "Welche der folgenden Untersuchungen helfen Ihnen bei der Diagnose eines Glaukoms? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Optische Kohärenztomographie",
+    "Goldmann-Applanationstonometrie",
+    "Computerperimetrie",
+    "Schirmer-Test",
+    "Amsler-Gitter-Test"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 194,
+  "text": "Welche Netzhauterkrankung ist in ihrem Endstadium durch die Ausbildung von Neovaskularisationen gekennzeichnet, die von der Netzhaut ausgehend in den Glaskörper einwachsen?",
+  "image": "",
+  "options": [
+    "Diabetische Retinopathie",
+    "Retinale Arterienverschluss",
+    "Retinitis pigmentosa",
+    "Chorioretinopathia centralis serosa",
+    "Makulaforamen"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 195,
+  "text": "Eine 30-jähriger Mann klagt über eine seit fünf Tagen bestehende schmerzhafte Schwellung am rechten Oberlid. Anhand der Anamnese vermuten Sie eine Entzündung der Meibom-Drüsen (Hordeolum internum). Welche Untersuchung sollen Sie zur Bestätigung Ihrer Verdachtsdiagnose durchführen?",
+  "image": "",
+  "options": [
+    "Ektropionieren",
+    "Perimetrie",
+    "OCT der Makula",
+    "Goldmann-Applanationstonometrie",
+    "Fluoreszenzangiographie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 196,
+  "text": "Bei welchem der folgenden Verfahren zum Ausgleich von Refraktionsanomalien, geht die natürliche Fähigkeit zur Akkomodation der kristallinen Linse verloren?",
+  "image": "",
+  "options": [
+    "Implantation einer Intraokularlinse (IOL)",
+    "Kontaktlinsenkorrektur",
+    "Brillenkorrektur",
+    "Orthokeratologie",
+    "Laserbehandlung der Hornhaut"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 197,
+  "text": "Wodurch wird die Richtung eines Nystagmus definiert?",
+  "image": "",
+  "options": [
+    "Durch die schnelle Phase",
+    "Durch die langsame Phase",
+    "Durch die Amplitude",
+    "Durch die Frequenz",
+    "Durch die Dauer"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 198,
+  "text": "Eine 59-jährige Patientin kommt in die Notaufnahme und gibt an, Blitze am rechten Auge zu sehen. Sie gibt an, eine Brille zu tragen und stark kurzsichtig zu sein. Wel- che Untersuchungsmethode ist im nächsten Schritt durchzuführen, um die Beschwerden abzuklären?",
+  "image": "",
+  "options": [
+    "Funduskopie",
+    "Perimetrie",
+    "Tonometrie",
+    "Fluoreszein-Färbung",
+    "Schirmer-Test"
+  ],
+  "correctAnswers": [0]
+},
+
+
+
+    ];
+// Reassign unique IDs sequentially (from 1 to the total number of questions)
+allQuestions.forEach((question, index) => {
+  question.id = index + 1;
+});
+console.log("Total questions after ID reassignment: " + allQuestions.length);
+
+    let currentPage = 1;
+    let reviewMode = false;
+    let unansweredMode = false;
+    let totalPages = Math.ceil(allQuestions.length / QUESTIONS_PER_PAGE);
+    let userAnswers = {};
+    
+    // -------------------------------
+    // NEW TIMER APPROACH:
+    // -------------------------------
+    // Record when the quiz started
+    let quizStartTime = Date.now();
+    // Total time (in ms) the page was hidden
+    let totalPausedTime = 0;
+    // Timestamp when the page was hidden (null when visible)
+    let hideTimestamp = null;
+    
+    function updateQuizTimer() {
+      // Calculate elapsed time excluding paused duration
+      let elapsedSeconds = Math.floor((Date.now() - quizStartTime - totalPausedTime) / 1000);
+      if(elapsedSeconds < 60) {
+        document.getElementById("quizTime").innerText = elapsedSeconds + "s";
+      } else if(elapsedSeconds < 3600) {
+        let minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+        let seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+        document.getElementById("quizTime").innerText = minutes + ":" + seconds;
+      } else {
+        let hours = Math.floor(elapsedSeconds / 3600).toString().padStart(2, '0');
+        let minutes = Math.floor((elapsedSeconds % 3600) / 60).toString().padStart(2, '0');
+        let seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+        document.getElementById("quizTime").innerText = hours + ":" + minutes + ":" + seconds;
+      }
+    }
+    
+    // Always run the timer update every second
+    setInterval(updateQuizTimer, 1000);
+    
+    // Use the Page Visibility API to track when the page is hidden
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
+        // Record the timestamp when the page is hidden
+        hideTimestamp = Date.now();
+      } else {
+        // When visible again, add the hidden duration to totalPausedTime
+        if (hideTimestamp !== null) {
+          totalPausedTime += Date.now() - hideTimestamp;
+          hideTimestamp = null;
+        }
+      }
+    });
+    // -------------------------------
+    // End NEW TIMER APPROACH
+    // -------------------------------
+    
+    // --- Auto-save main quiz progress ---
+    function saveMainQuizProgress() {
+      localStorage.setItem("mainQuizProgress_Augenheilkunde20192024", JSON.stringify(userAnswers));
+    }
+    function loadMainQuizProgress() {
+      const saved = localStorage.getItem("mainQuizProgress_Augenheilkunde20192024");
+      if (saved) { userAnswers = JSON.parse(saved); }
+    }
+    loadMainQuizProgress();
+    
+    function updateDateTime() {
+      let now = new Date();
+      document.getElementById("dateTime").innerText = now.toLocaleString();
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+    function drawClock() {
+      const canvas = document.getElementById("analogClock");
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        let radius = canvas.height / 2;
+        ctx.translate(radius, radius);
+        radius = radius * 0.90;
+        function draw() {
+          drawFace(ctx, radius);
+          drawNumbers(ctx, radius);
+          drawTime(ctx, radius);
+        }
+        draw();
+        setInterval(function(){
+          ctx.clearRect(-canvas.width, -canvas.height, canvas.width*2, canvas.height*2);
+          draw();
+        }, 1000);
+      }
+    }
+    function drawFace(ctx, radius) {
+      let grad;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+      ctx.fillStyle = '#f0f0f0';
+      ctx.fill();
+      grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
+      grad.addColorStop(0, '#333');
+      grad.addColorStop(0.5, 'white');
+      grad.addColorStop(1, '#333');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = radius * 0.1;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
+      ctx.fillStyle = '#333';
+      ctx.fill();
+    }
+    function drawNumbers(ctx, radius) {
+      let ang, num;
+      ctx.font = radius * 0.15 + "px arial";
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      for(num = 1; num < 13; num++){
+        ang = num * Math.PI / 6;
+        ctx.rotate(ang);
+        ctx.translate(0, -radius * 0.85);
+        ctx.rotate(-ang);
+        ctx.fillStyle = '#333';
+        ctx.fillText(num.toString(), 0, 0);
+        ctx.rotate(ang);
+        ctx.translate(0, radius * 0.85);
+        ctx.rotate(-ang);
+      }
+    }
+    function drawTime(ctx, radius) {
+      const now = new Date();
+      let hour = now.getHours();
+      let minute = now.getMinutes();
+      let second = now.getSeconds();
+      hour = hour % 12;
+      hour = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
+      drawHand(ctx, hour, radius * 0.5, radius * 0.07);
+      minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
+      drawHand(ctx, minute, radius * 0.8, radius * 0.07);
+      second = (second * Math.PI / 30);
+      drawHand(ctx, second, radius * 0.9, radius * 0.02, '#d32f2f');
+    }
+    function drawHand(ctx, pos, length, width, color) {
+      color = color || '#333';
+      ctx.beginPath();
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = color;
+      ctx.moveTo(0, 0);
+      ctx.rotate(pos);
+      ctx.lineTo(0, -length);
+      ctx.stroke();
+      ctx.rotate(-pos);
+    }
+    drawClock();
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      container.innerHTML = "";
+let questionsToRender;
+if (reviewMode) {
+  // Already existing: show incorrect answers.
+  questionsToRender = allQuestions.filter(q => userAnswers[q.id] && !userAnswers[q.id].correct);
+} else if (unansweredMode) {
+  // New branch: show questions that have NOT been answered.
+  questionsToRender = allQuestions.filter(q => {
+    return !(userAnswers[q.id] && userAnswers[q.id].answered);
+  });
+} else {
+  // Normal mode with pagination.
+  let startIndex = (currentPage - 1) * QUESTIONS_PER_PAGE;
+  let endIndex = startIndex + QUESTIONS_PER_PAGE;
+  questionsToRender = allQuestions.slice(startIndex, endIndex);
+}
+
+
+    if (!reviewMode && !unansweredMode) {
+  document.getElementById("pageIndicator").innerText = "Page " + currentPage + " of " + totalPages;
+  document.getElementById("prevPage").disabled = (currentPage === 1);
+  document.getElementById("nextPage").disabled = (currentPage === totalPages);
+} else {
+  let modeText = unansweredMode ? "Unanswered Questions" : "Review Incorrect Answers";
+  document.getElementById("pageIndicator").innerText = modeText + " (" + questionsToRender.length + ")";
+  document.getElementById("prevPage").disabled = true;
+  document.getElementById("nextPage").disabled = true;
+}
+
+      questionsToRender.forEach((q, idx) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        if (userAnswers[q.id] && userAnswers[q.id].answered) {
+          qDiv.dataset.answered = "true";
+        } else {
+          qDiv.dataset.answered = "false";
+          qDiv.dataset.startTime = Date.now();
+        }
+        let questionNumber = !reviewMode ? ((currentPage - 1) * QUESTIONS_PER_PAGE) + idx + 1 : idx + 1;
+       const qText = document.createElement("div");
+if (userAnswers[q.id] && userAnswers[q.id].highlightedHTML) {
+  // If there is a saved version with highlights, use it.
+  qText.innerHTML = userAnswers[q.id].highlightedHTML;
+} else {
+  // Otherwise, use the original text.
+  qText.innerHTML = "<strong>Q" + questionNumber + ":</strong> " + q.text;
+}
+qDiv.appendChild(qText);
+if (q.image) {
+  const imgElement = document.createElement("img");
+  imgElement.src = q.image;
+  imgElement.alt = "Question Image";
+  imgElement.style.maxWidth = "50%"; // Ensure responsiveness
+  imgElement.style.display = "block";
+  imgElement.style.margin = "10px auto"; // Center the image
+  qDiv.appendChild(imgElement);
+}
+if (q.image2) { // Check if second image exists
+  const imgElement2 = document.createElement("img");
+  imgElement2.src = q.image2;
+  imgElement2.alt = "Question Image 2";
+  imgElement2.style.maxWidth = "50%";
+  imgElement2.style.display = "block";
+  imgElement2.style.margin = "10px auto";
+  qDiv.appendChild(imgElement2);
+}
+qText.addEventListener("mouseup", function(){
+  let sel = window.getSelection();
+  if (sel.toString().length > 0) {
+    let range = sel.getRangeAt(0);
+    // Get the element that contains the start of the selection.
+    let parent = range.startContainer.parentElement;
+    
+    // Check if the selected text is already inside a highlighted span.
+    if (parent && parent.classList && parent.classList.contains("highlightedText")) {
+      // The text is already highlighted. Let's remove the highlight.
+      // "Unwrap" the highlighted <span> by replacing it with its inner content.
+      let span = parent;
+      let fragment = document.createDocumentFragment();
+      while (span.firstChild) {
+        fragment.appendChild(span.firstChild);
+      }
+      span.parentNode.replaceChild(fragment, span);
+      
+      // Update the saved HTML for this question.
+      if (!userAnswers[q.id]) {
+        userAnswers[q.id] = {};
+      }
+      userAnswers[q.id].highlightedHTML = qText.innerHTML;
+      saveMainQuizProgress();
+    } else {
+      // The text is not highlighted yet.
+      // Create a span to wrap the selected text.
+      let span = document.createElement("span");
+      span.className = "highlightedText"; // This applies the yellow background.
+      try {
+        range.surroundContents(span);
+      } catch (e) {
+        console.error("Could not highlight selection: ", e);
+      }
+      sel.removeAllRanges();
+      if (!userAnswers[q.id]) {
+        userAnswers[q.id] = {};
+      }
+      userAnswers[q.id].highlightedHTML = qText.innerHTML;
+      saveMainQuizProgress();
+    }
+  }
+});
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+        const inputType = (q.correctAnswers.length === 1) ? "radio" : "checkbox";
+        let optionsArr = q.shuffledOptions ? q.shuffledOptions : q.options.map((opt, index) => ({ text: opt, index: index }));
+        if(!q.shuffledOptions){
+          optionsArr = shuffleArray(optionsArr);
+          q.shuffledOptions = optionsArr;
+        }
+        optionsArr.forEach(optionObj => {
+          const optionLabel = document.createElement("label");
+          optionLabel.className = "option";
+          const input = document.createElement("input");
+          input.type = inputType;
+          input.name = "question_" + q.id;
+          input.value = optionObj.index;
+          if (!(userAnswers[q.id] && userAnswers[q.id].answered)) {
+            input.addEventListener("change", function(){
+              handleAnswer(qDiv, q, inputType);
+            });
+          }
+          if (userAnswers[q.id] && userAnswers[q.id].selected && userAnswers[q.id].selected.includes(optionObj.index)) {
+            input.checked = true;
+          }
+          optionLabel.appendChild(input);
+          optionLabel.appendChild(document.createTextNode(" " + optionObj.text));
+          optionsDiv.appendChild(optionLabel);
+        });
+        qDiv.appendChild(optionsDiv);
+        const qTimer = document.createElement("div");
+        qTimer.className = "timer";
+        qTimer.innerText = userAnswers[q.id] && userAnswers[q.id].elapsed ? "Time: " + userAnswers[q.id].elapsed + "s" : "Time: 0s";
+        qDiv.appendChild(qTimer);
+        const feedbackDiv = document.createElement("div");
+        feedbackDiv.className = "answer-feedback";
+        if (userAnswers[q.id] && userAnswers[q.id].answered) {
+          if (userAnswers[q.id].correct) {
+            feedbackDiv.innerHTML = "&#10003; Correct!";
+          } else {
+            let correctTexts = q.correctAnswers.map(idx => q.options[idx]);
+            feedbackDiv.innerHTML = "&#10007; Incorrect! The correct answer" +
+              (correctTexts.length > 1 ? "s are: " : " is: ") + correctTexts.join(", ");
+          }
+        }
+        qDiv.appendChild(feedbackDiv);
+        if (userAnswers[q.id] && userAnswers[q.id].answered) {
+          const inputs = qDiv.querySelectorAll("input");
+          inputs.forEach(input => {
+            const parentLabel = input.parentElement;
+            const optionValue = parseInt(input.value);
+            input.disabled = true;
+            if (q.correctAnswers.includes(optionValue)) {
+              parentLabel.classList.add("correct");
+              if (!parentLabel.querySelector(".checkmark")) {
+                let checkmarkSpan = document.createElement("span");
+                checkmarkSpan.className = "checkmark";
+                checkmarkSpan.innerHTML = " &#10003;";
+                parentLabel.appendChild(checkmarkSpan);
+              }
+            }
+            if (input.checked && !q.correctAnswers.includes(optionValue)) {
+              parentLabel.classList.add("incorrect");
+              if (!parentLabel.querySelector(".crossmark")) {
+                let crossSpan = document.createElement("span");
+                crossSpan.className = "crossmark";
+                crossSpan.innerHTML = " &#10007;";
+                parentLabel.appendChild(crossSpan);
+              }
+            }
+          });
+        }
+        container.appendChild(qDiv);
+      });
+      updateProgressBar();
+      updateProgressInfo();
+      saveMainQuizProgress();
+    }
+    function handleAnswer(questionDiv, questionData, inputType) {
+      if (questionDiv.dataset.answered === "true") return;
+      const startTime = parseInt(questionDiv.dataset.startTime);
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      const timerDiv = questionDiv.querySelector(".timer");
+      timerDiv.innerText = "Time: " + elapsedSeconds + "s";
+      const inputs = questionDiv.querySelectorAll("input");
+      let selectedValues = [];
+      inputs.forEach(input => { if (input.checked) { selectedValues.push(parseInt(input.value)); } });
+      if (inputType === "checkbox" && selectedValues.length < questionData.correctAnswers.length) { return; }
+      questionDiv.dataset.answered = "true";
+      inputs.forEach(input => { input.disabled = true; input.parentElement.classList.add("disabled"); });
+      const sortedSelected = selectedValues.sort((a, b) => a - b);
+      const sortedCorrect = questionData.correctAnswers.slice().sort((a, b) => a - b);
+      let isCorrect = (sortedSelected.length === sortedCorrect.length) && sortedSelected.every((val, i) => val === sortedCorrect[i]);
+      inputs.forEach(input => {
+        const parentLabel = input.parentElement;
+        const optionValue = parseInt(input.value);
+        if (questionData.correctAnswers.includes(optionValue)) {
+          parentLabel.classList.add("correct");
+          if (!parentLabel.querySelector(".checkmark")) {
+            let checkmarkSpan = document.createElement("span");
+            checkmarkSpan.className = "checkmark";
+            checkmarkSpan.innerHTML = " &#10003;";
+            parentLabel.appendChild(checkmarkSpan);
+          }
+        }
+        if (input.checked && !questionData.correctAnswers.includes(optionValue)) {
+          parentLabel.classList.add("incorrect");
+          if (!parentLabel.querySelector(".crossmark")) {
+            let crossSpan = document.createElement("span");
+            crossSpan.className = "crossmark";
+            crossSpan.innerHTML = " &#10007;";
+            parentLabel.appendChild(crossSpan);
+          }
+        }
+      });
+      const feedbackDiv = questionDiv.querySelector(".answer-feedback");
+      if (isCorrect) {
+        feedbackDiv.innerHTML = "&#10003; Correct!";
+      } else {
+        let correctTexts = questionData.correctAnswers.map(idx => questionData.options[idx]);
+        feedbackDiv.innerHTML = "&#10007; Incorrect! The correct answer" +
+          (correctTexts.length > 1 ? "s are: " : " is: ") + correctTexts.join(", ");
+      }
+      userAnswers[questionData.id] = { selected: sortedSelected, answered: true, correct: isCorrect, elapsed: elapsedSeconds };
+      updateProgressBar();
+      updateProgressInfo();
+      saveMainQuizProgress();
+    }
+    function updateProgressBar() {
+      let answeredCount = Object.keys(userAnswers).length;
+      let totalCount = allQuestions.length;
+      let percentage = (answeredCount / totalCount) * 100;
+      document.getElementById("progressBar").style.width = percentage + "%";
+    }
+    function updateProgressInfo() {
+  let answeredCount = Object.keys(userAnswers).length;
+  let totalCount = allQuestions.length;
+  let correctCount = 0;
+  for (let qid in userAnswers) {
+    if (userAnswers[qid].correct) {
+      correctCount++;
+    }
+  }
+  let wrongCount = answeredCount - correctCount;
+  document.getElementById("progressInfo").innerText = 
+    "Total Questions: " + totalCount + 
+    " | Answered: " + answeredCount +
+    " | Correct: " + correctCount + 
+    " | Wrong: " + wrongCount;
+    }
+    document.getElementById("prevPage").addEventListener("click", function(){
+      if (!reviewMode && currentPage > 1) { currentPage--; renderQuestions(); }
+    });
+    document.getElementById("nextPage").addEventListener("click", function(){
+      if (!reviewMode && currentPage < totalPages) { currentPage++; renderQuestions(); }
+    });
+    document.getElementById("shuffleButton").addEventListener("click", function(){
+      if (confirm("Are you sure you want to shuffle the questions? This will change the order but your answers will remain saved.")) {
+        allQuestions = shuffleArray(allQuestions);
+        totalPages = Math.ceil(allQuestions.length / QUESTIONS_PER_PAGE);
+        currentPage = 1;
+        reviewMode = false;
+        renderQuestions();
+      }
+    });
+    document.getElementById("reviewIncorrect").addEventListener("click", function(){
+      reviewMode = true;
+      renderQuestions();
+      document.getElementById("backFromReview").style.display = "block";
+    });
+    document.getElementById("reviewUnanswered").addEventListener("click", function(){
+  unansweredMode = true;
+  renderQuestions(); // This will refresh the display to show only unanswered questions.
+  document.getElementById("backFromReview").style.display = "block"; // Make sure your 'back' button is visible.
+});
+
+ document.getElementById("backBtn").addEventListener("click", function(){
+  reviewMode = false;
+  unansweredMode = false;
+  document.getElementById("backFromReview").style.display = "none";
+  renderQuestions();
+});
+
+
+    document.getElementById("resetProgress").addEventListener("click", function(){
+      if(confirm("Reset all progress?")) {
+        userAnswers = {};
+        localStorage.removeItem("mainQuizProgress_Augenheilkunde20192024");
+        renderQuestions();
+        updateProgressBar();
+        updateProgressInfo();
+      }
+    });
+    renderQuestions();
+  </script>
+  <!-- ---------- Insert SPT Test Button into Top Bar ---------- -->
+  <script>
+    (function(){
+      var topBar = document.getElementById("topBar");
+      var sptButton = document.createElement("button");
+      sptButton.id = "enterMockExam";
+      sptButton.className = "btn";
+      sptButton.innerText = "SPT Test";
+      sptButton.style.backgroundColor = "#c62828";
+      sptButton.style.color = "#fff";
+      topBar.appendChild(sptButton);
+    })();
+
+
+  </script>
+<!-- SEARCH PAGE (Hidden by default) -->
+<div id="searchPage" style="display:none; padding:20px; background:#e8f0fe;">
+  <div class="container">
+    <h1>Quiz Search</h1>
+    <input type="text" id="searchInput" class="search-input" placeholder="Enter search text or answer text" style="width:100%; padding:10px; font-size:16px; margin-bottom:10px;">
+    <br>
+    <button id="textSearchBtn" class="search-button" style="padding:10px 20px; font-size:16px; margin-right:10px; margin-bottom:10px; border:none; background-color:#4caf50; color:#fff; border-radius:4px; cursor:pointer;">Search by Text</button>
+    <button id="groupSearchBtn" class="search-button" style="padding:10px 20px; font-size:16px; margin-right:10px; margin-bottom:10px; border:none; background-color:#4caf50; color:#fff; border-radius:4px; cursor:pointer;">Group by Correct Answer</button>
+    <button id="backToQuizBtn" class="search-button" style="padding:10px 20px; font-size:16px; margin-bottom:10px; border:none; background-color:#607d8b; color:#fff; border-radius:4px; cursor:pointer;">Back to Quiz</button>
+    <div id="resultsContainer"></div>
+  </div>
+</div>
+
+  
+  <!-- ---------- SPT TEST (Exam Mode) SECTION ---------- -->
+  <div id="sptTestPage" style="display:none;">
+    <!-- Exam Setup -->
+    <div id="examSetup">
+      <h1 id="examTitle"></h1>
+      <!-- Setup Table: subject area and number of questions -->
+      <table id="setupTable">
+        <tr>
+          <th>Fachgebiet</th>
+          <th>Anzahl Fragen</th>
+        </tr>
+        <tr>
+          <td>Innere Medizin, Chirurgie und Kinderheilkunde</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Neurologie, Gynäkologie, Dermatologie und Notfallmedizin</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Hals-, Nasen-, Ohrenheilkunde, Psychiatrie, Augenheilkunde</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Challenging (Mixed)</td>
+          <td>40</td>
+        </tr>
+      </table>
+      <p>Wählen Sie Ihr Fachgebiet anhand der Anzahl der Fragen:</p>
+      <div style="margin-top:20px;">
+        <button id="btn30" class="btn examLengthBtn" data-questions="30">30 Fragen</button>
+        <button id="btn25" class="btn examLengthBtn" data-questions="25">25 Fragen</button>
+        <button id="btn20" class="btn examLengthBtn" data-questions="20">20 Fragen</button>
+        <button id="btn40" class="btn examLengthBtn" data-questions="40">40 Fragen (Challenging)</button>
+      </div>
+      <br>
+      <button id="startExam" class="btn" style="background-color:#c62828; color:#fff;">Start Exam</button>
+      <br>
+      <button id="backToMain" class="btn" style="background-color:#607d8b; color:#fff;">Back to Main Page</button>
+    </div>
+    <!-- Exam Interface -->
+    <div id="examContainer" style="display:none;">
+      <div id="totalExamTimer"></div>
+      <div id="examQuestionsList"></div>
+      <div id="examPaginationControls"></div>
+      <div style="text-align:center; margin-top:20px;">
+        <button id="submitExam" class="btn" style="background-color:#c62828; color:#fff;">Submit Exam</button>
+      </div>
+    </div>
+    <!-- Exam Results -->
+    <div id="examResult" style="display:none;">
+      <h2>Exam Results</h2>
+      <div id="resultSummary"></div>
+      <!-- Detailed German result table -->
+      <table id="resultTable">
+        <tr>
+          <th>Fachgebiet</th>
+          <th>Anzahl Fragen</th>
+          <th>60% der Fragen</th>
+          <th>Exakte Bestehenszahl</th>
+        </tr>
+        <tr>
+          <td>Innere Medizin</td>
+          <td>30</td>
+          <td>18</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>Chirurgie</td>
+          <td>30</td>
+          <td>18</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>Kinderheilkunde</td>
+          <td>30</td>
+          <td>18</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>Neurologie</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Gynäkologie</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Dermatologie</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Notfall- und Intensivmedizin</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Hals-, Nasen-, Ohrenheilkunde (HNO)</td>
+          <td>20</td>
+          <td>12</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Psychiatrie</td>
+          <td>20</td>
+          <td>12</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Augenheilkunde</td>
+          <td>20</td>
+          <td>12</td>
+          <td>12</td>
+        </tr>
+      </table>
+      <button id="showFeedback" class="btn" style="background-color:#c62828; color:#fff;">Show Detailed Feedback</button>
+      <div id="examFeedbackDiv" style="display:none; margin-top:20px;"></div>
+      <button id="backToSetup" class="btn" style="background-color:#607d8b; color:#fff;">Back to Exam Setup</button>
+    </div>
+  </div>
+  <script>
+    /* ---------- SPT TEST (Exam Mode) Script ---------- */
+    (function(){
+      let examQuestions = [];
+      let examUserAnswers = {};
+      let examFlags = {}; // Flag status by question id
+      let totalExamTime = 0;
+      let examTimerInterval;
+      let EXAM_QUESTIONS_PER_PAGE = 5;
+      let examCurrentPage = 1;
+      let examTotalPages = 1;
+      let selectedExamLength; // initially undefined
+      
+      // Set up exam length buttons – initially green; when selected, become red.
+      document.querySelectorAll('.examLengthBtn').forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          document.querySelectorAll('.examLengthBtn').forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          selectedExamLength = parseInt(btn.getAttribute("data-questions"));
+        });
+      });
+      
+      const mainContainer = document.querySelector('.container');
+      const sptTestPage = document.getElementById("sptTestPage");
+      const examSetup = document.getElementById("examSetup");
+      const examTitle = document.getElementById("examTitle");
+      const startExamBtn = document.getElementById("startExam");
+      const backToMainBtn = document.getElementById("backToMain");
+      const examContainer = document.getElementById("examContainer");
+      const totalExamTimerEl = document.getElementById("totalExamTimer");
+      const examQuestionsList = document.getElementById("examQuestionsList");
+      const examPaginationControls = document.getElementById("examPaginationControls");
+      const submitExamBtn = document.getElementById("submitExam");
+      const examResultDiv = document.getElementById("examResult");
+      const resultSummaryDiv = document.getElementById("resultSummary");
+      const showFeedbackBtn = document.getElementById("showFeedback");
+      const examFeedbackDiv = document.getElementById("examFeedbackDiv");
+      const backToSetupBtn = document.getElementById("backToSetup");
+      
+      examTitle.innerText = document.getElementById("topicHeadline").innerText + " SPT Test";
+      
+      document.getElementById("enterMockExam").addEventListener("click", function(){
+        mainContainer.style.display = "none";
+        sptTestPage.style.display = "block";
+      });
+      backToMainBtn.addEventListener("click", function(){
+        sptTestPage.style.display = "none";
+        mainContainer.style.display = "block";
+      });
+      startExamBtn.addEventListener("click", function(){
+        if(selectedExamLength === undefined) {
+          alert("Bitte wählen Sie die Anzahl der Fragen aus.");
+          return;
+        }
+        let examLength = selectedExamLength;
+        let questionsCopy = allQuestions.slice();
+        questionsCopy = shuffleArray(questionsCopy);
+        examQuestions = questionsCopy.slice(0, examLength);
+        examCurrentPage = 1;
+        examTotalPages = Math.ceil(examQuestions.length / EXAM_QUESTIONS_PER_PAGE);
+        examFlags = {};
+        totalExamTime = examQuestions.length * 90;
+        examUserAnswers = {};
+        examSetup.style.display = "none";
+        examResultDiv.style.display = "none";
+        examContainer.style.display = "block";
+        renderExamQuestionsList();
+        renderExamPaginationControls();
+        startTotalExamTimer();
+      });
+      function renderExamQuestionsList() {
+        examQuestionsList.innerHTML = "";
+        let startIndex = (examCurrentPage - 1) * EXAM_QUESTIONS_PER_PAGE;
+        let endIndex = Math.min(startIndex + EXAM_QUESTIONS_PER_PAGE, examQuestions.length);
+        for (let i = startIndex; i < endIndex; i++) {
+          let q = examQuestions[i];
+          const qDiv = document.createElement("div");
+          qDiv.className = "question";
+          qDiv.id = "exam_q_" + q.id;
+          qDiv.innerHTML = "<strong>Q" + (i + 1) + ":</strong> " + q.text;
+          const flagBtn = document.createElement("button");
+          flagBtn.className = "flagBtn";
+          flagBtn.innerText = "Flag";
+          flagBtn.addEventListener("click", function(){
+            examFlags[q.id] = !examFlags[q.id];
+            if(examFlags[q.id]){
+              qDiv.classList.add("flagged");
+              flagBtn.innerText = "Unflag";
+            } else {
+              qDiv.classList.remove("flagged");
+              flagBtn.innerText = "Flag";
+            }
+          });
+          qDiv.appendChild(flagBtn);
+          let optionsArr = q.options.map((opt, idx) => ({ text: opt, index: idx }));
+          optionsArr = shuffleArray(optionsArr);
+          q.examShuffledOptions = optionsArr;
+          const inputType = (q.correctAnswers.length === 1) ? "radio" : "checkbox";
+          const optionsDiv = document.createElement("div");
+          optionsDiv.className = "options";
+          optionsArr.forEach(optionObj => {
+            const optionLabel = document.createElement("label");
+            optionLabel.className = "option";
+            const input = document.createElement("input");
+            input.type = inputType;
+            input.name = "exam_question_" + q.id;
+            input.value = optionObj.index;
+            input.addEventListener("change", function(){
+              let selected = examUserAnswers[q.id] ? examUserAnswers[q.id] : [];
+              if(input.checked) {
+                if(inputType === "radio") {
+                  selected = [parseInt(input.value)];
+                } else {
+                  selected.push(parseInt(input.value));
+                }
+              } else {
+                selected = selected.filter(val => val !== parseInt(input.value));
+              }
+              examUserAnswers[q.id] = selected;
+            });
+            optionLabel.appendChild(input);
+            optionLabel.appendChild(document.createTextNode(" " + optionObj.text));
+            optionsDiv.appendChild(optionLabel);
+          });
+          qDiv.appendChild(optionsDiv);
+          examQuestionsList.appendChild(qDiv);
+        }
+      }
+      function renderExamPaginationControls() {
+        examPaginationControls.innerHTML = "";
+        const prevBtn = document.createElement("button");
+        prevBtn.innerText = "Previous";
+        prevBtn.disabled = (examCurrentPage === 1);
+        prevBtn.addEventListener("click", function(){
+          if(examCurrentPage > 1){
+            examCurrentPage--;
+            renderExamQuestionsList();
+            renderExamPaginationControls();
+          }
+        });
+        const nextBtn = document.createElement("button");
+        nextBtn.innerText = "Next";
+        nextBtn.disabled = (examCurrentPage === examTotalPages);
+        nextBtn.addEventListener("click", function(){
+          if(examCurrentPage < examTotalPages){
+            examCurrentPage++;
+            renderExamQuestionsList();
+            renderExamPaginationControls();
+          }
+        });
+        const pageIndicator = document.createElement("span");
+        pageIndicator.style.fontSize = "18px";
+        pageIndicator.innerText = "Page " + examCurrentPage + " of " + examTotalPages;
+        examPaginationControls.appendChild(prevBtn);
+        examPaginationControls.appendChild(pageIndicator);
+        examPaginationControls.appendChild(nextBtn);
+      }
+      function startTotalExamTimer() {
+        totalExamTimerEl.innerText = "Time Remaining: " + formatTime(totalExamTime);
+        examTimerInterval = setInterval(function(){
+          totalExamTime--;
+          totalExamTimerEl.innerText = "Time Remaining: " + formatTime(totalExamTime);
+          if(totalExamTime <= 0) {
+            clearInterval(examTimerInterval);
+            submitExam();
+          }
+        }, 1000);
+      }
+      function formatTime(seconds) {
+        let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        let s = (seconds % 60).toString().padStart(2, '0');
+        return m + ":" + s;
+      }
+      submitExamBtn.addEventListener("click", function(){
+        clearInterval(examTimerInterval);
+        submitExam();
+      });
+      function submitExam() {
+        examContainer.style.display = "none";
+        examResultDiv.style.display = "block";
+        let score = 0;
+        examQuestions.forEach(q => {
+          let userAns = examUserAnswers[q.id] ? examUserAnswers[q.id].sort((a,b)=>a-b) : [];
+          let correctAns = q.correctAnswers.slice().sort((a,b)=>a-b);
+          let isCorrect = (userAns.length === correctAns.length) && userAns.every((val, i) => val === correctAns[i]);
+          if(isCorrect) score++;
+          q.examUserAnswer = userAns;
+          q.examIsCorrect = isCorrect;
+        });
+        let total = examQuestions.length;
+        let incorrect = total - score;
+        let percentage = Math.round((score/total)*100);
+        let passMark = Math.ceil(0.6 * total);
+        resultSummaryDiv.innerHTML = 
+          "<p><strong>Score:</strong> " + score + " / " + total + "</p>" +
+          "<p><strong>Percentage:</strong> " + percentage + "%</p>" +
+          "<p><strong>Correct Answers:</strong> " + score + "</p>" +
+          "<p><strong>Incorrect Answers:</strong> " + incorrect + "</p>" +
+          "<p><strong>Passing Mark:</strong> " + passMark + " (" + (score >= passMark ? "<span style='color:green;'>Congratulations, you passed!</span>" : "<span style='color:red;'>Failed. Try again!</span>") + ")</p>";
+        // The detailed German table is shown in the HTML result section.
+        saveExamResult(score, total, examUserAnswers);
+      }
+      showFeedbackBtn.addEventListener("click", function(){
+        renderExamFeedback();
+        examFeedbackDiv.style.display = "block";
+        showFeedbackBtn.style.display = "none";
+      });
+      function renderExamFeedback() {
+        examFeedbackDiv.innerHTML = "";
+        examQuestions.forEach((q, index) => {
+          let reviewDiv = document.createElement("div");
+          reviewDiv.className = "question";
+          reviewDiv.innerHTML = "<strong>Q" + (index + 1) + ":</strong> " + q.text;
+          let optionsHTML = "<ul style='list-style-type:none; padding-left:0; text-align:left;'>";
+          q.examShuffledOptions.forEach(opt => {
+            let optionText = opt.text;
+            let isUserSelected = q.examUserAnswer && q.examUserAnswer.includes(opt.index);
+            let isCorrectOption = q.correctAnswers.includes(opt.index);
+            optionsHTML += "<li style='margin-bottom:5px; " +
+              (isCorrectOption ? "color:green;" : (isUserSelected && !isCorrectOption ? "color:red;" : "")) + "'>";
+            if(isUserSelected) {
+              optionsHTML += (isCorrectOption ? "&#10003; " : "<span style='color:red;'>&#10007;</span> ");
+            }
+            optionsHTML += optionText;
+            if(isUserSelected && !isCorrectOption){
+              optionsHTML += " (Your answer)";
+            }
+            if(!isUserSelected && isCorrectOption){
+              optionsHTML += " (Correct answer)";
+            }
+            optionsHTML += "</li>";
+          });
+          optionsHTML += "</ul>";
+          reviewDiv.innerHTML += optionsHTML;
+          examFeedbackDiv.appendChild(reviewDiv);
+        });
+      }
+      function saveExamResult(score, total, answers) {
+        let examResults = JSON.parse(localStorage.getItem("mockExamResults")) || [];
+        let resultEntry = {
+          timestamp: new Date().toLocaleString(),
+          score: score,
+          total: total,
+          answers: answers
+        };
+        examResults.push(resultEntry);
+        localStorage.setItem("mockExamResults", JSON.stringify(examResults));
+      }
+      backToSetupBtn.addEventListener("click", function(){
+        examSetup.style.display = "block";
+        examContainer.style.display = "none";
+        examResultDiv.style.display = "none";
+        sptTestPage.style.display = "none";
+        mainContainer.style.display = "block";
+      });
+    })();
+  </script>
+
+<script>
+  // Updated Search functionality for the Quiz Search page with requested changes.
+  (function() {
+    // Get references to search page elements
+    const searchPage = document.getElementById("searchPage");
+    const searchInput = document.getElementById("searchInput");
+    const textSearchBtn = document.getElementById("textSearchBtn");
+    const groupSearchBtn = document.getElementById("groupSearchBtn");
+    const backToQuizBtn = document.getElementById("backToQuizBtn");
+    const resultsContainer = document.getElementById("resultsContainer");
+
+    // Function to show the search page and hide other sections.
+    function showSearchPage() {
+      const mainContainer = document.querySelector('.container');
+      if(mainContainer) { mainContainer.style.display = "none"; }
+      const sptTestPage = document.getElementById("sptTestPage");
+      if(sptTestPage) { sptTestPage.style.display = "none"; }
+      searchPage.style.display = "block";
+    }
+
+    // Attach search page trigger if "openSearchBtn" exists.
+    const openSearchBtn = document.getElementById("openSearchBtn");
+    if (openSearchBtn) {
+      openSearchBtn.addEventListener("click", showSearchPage);
+    }
+
+    // Back button: hide search page, show main quiz page.
+    backToQuizBtn.addEventListener("click", function() {
+      searchPage.style.display = "none";
+      const mainContainer = document.querySelector('.container');
+      if(mainContainer) { mainContainer.style.display = "block"; }
+    });
+
+    // SEARCH BY TEXT: Search in both the question text and the texts of the correct answers.
+
+
+textSearchBtn.addEventListener("click", function() {
+  const query = searchInput.value.trim().toLowerCase();
+  resultsContainer.innerHTML = "";
+  if(query === "") {
+    resultsContainer.innerHTML = "<p>Please enter a search term.</p>";
+    return;
+  }
+  const matchedQuestions = allQuestions.filter(q => {
+    const qText = q.text.toLowerCase();
+    const correctAnswersText = q.correctAnswers
+      .map(idx => q.options[idx].toLowerCase())
+      .join(" ");
+    return qText.includes(query) || correctAnswersText.includes(query);
+  });
+  if(matchedQuestions.length === 0) {
+    resultsContainer.innerHTML = "<p>No questions found matching that text.</p>";
+    return;
+  }
+  
+  // For each matching question, build a rich DOM node that resembles your main quiz view.
+  matchedQuestions.forEach((q, index) => {
+    const qDiv = document.createElement("div");
+    qDiv.className = "question";
+    qDiv.style.border = "1px solid #ccc";
+    qDiv.style.padding = "8px";
+    qDiv.style.marginBottom = "5px";
+    const displayNumber = index + 1;
+
+    // Create and append the question text.
+    const qTextDiv = document.createElement("div");
+    qTextDiv.innerHTML = "<strong>Q" + displayNumber + ":</strong> " + q.text;
+    qDiv.appendChild(qTextDiv);
+    
+    // Check for and append the first image, if available.
+    if (q.image) {
+      const imgElement = document.createElement("img");
+      imgElement.src = q.image;
+      imgElement.alt = "Question Image";
+      imgElement.style.maxWidth = "50%";
+      imgElement.style.display = "block";
+      imgElement.style.margin = "10px auto";
+      qDiv.appendChild(imgElement);
+    }
+    
+    // Check for and append a second image, if available.
+    if (q.image2) {
+      const imgElement2 = document.createElement("img");
+      imgElement2.src = q.image2;
+      imgElement2.alt = "Second Question Image";
+      imgElement2.style.maxWidth = "50%";
+      imgElement2.style.display = "block";
+      imgElement2.style.margin = "10px auto";
+      qDiv.appendChild(imgElement2);
+    }
+    
+    // Append the correct answers.
+    const correctAnswerTexts = q.correctAnswers.map(idx => q.options[idx]).join(", ");
+    const caDiv = document.createElement("div");
+    caDiv.innerHTML = "<strong>Correct Answer(s):</strong> <span style='color:green;'>" + correctAnswerTexts + "</span>";
+    qDiv.appendChild(caDiv);
+    
+    resultsContainer.appendChild(qDiv);
+  });
+});
+
+
+    // SEARCH BY SIMILARITY: Group questions by a common correct answer.
+    
+groupSearchBtn.addEventListener("click", function() {
+  resultsContainer.innerHTML = "";
+  let answerGroups = {};
+  allQuestions.forEach(q => {
+    q.correctAnswers.forEach(idx => {
+      const answerText = q.options[idx].trim().toLowerCase();
+      if(answerGroups[answerText]) {
+        answerGroups[answerText].push(q);
+      } else {
+        answerGroups[answerText] = [q];
+      }
+    });
+  });
+  
+  // Only keep groups with more than one question.
+  let filteredGroups = {};
+  for(let answer in answerGroups) {
+    if(answerGroups[answer].length > 1) {
+      filteredGroups[answer] = answerGroups[answer];
+    }
+  }
+  
+  if(Object.keys(filteredGroups).length === 0) {
+    resultsContainer.innerHTML = "<p>No groups with similar correct answers found.</p>";
+    return;
+  }
+  
+  // Create an accordion-like structure for each group.
+  for(let answer in filteredGroups) {
+    // Create group header with common answer and group count.
+    const groupHeader = document.createElement("div");
+    groupHeader.className = "group-header";
+    groupHeader.style.cursor = "pointer";
+    groupHeader.style.background = "#ccc";
+    groupHeader.style.padding = "10px";
+    groupHeader.style.marginTop = "10px";
+    groupHeader.innerText = "Correct Answer: " + answer + " (" + filteredGroups[answer].length + " questions)";
+    
+    // Create container for the grouped questions.
+    const groupContainer = document.createElement("div");
+    groupContainer.className = "group-container";
+    groupContainer.style.display = "none";
+    groupContainer.style.padding = "10px";
+    groupContainer.style.border = "1px solid #ddd";
+    
+    // For each question in the group, build a detailed DOM node.
+    filteredGroups[answer].forEach((q, index) => {
+      const qDiv = document.createElement("div");
+      qDiv.className = "question";
+      qDiv.style.borderBottom = "1px dashed #aaa";
+      qDiv.style.padding = "5px 0";
+      const displayNumber = index + 1;
+      
+      // Add the question text.
+      const qTextDiv = document.createElement("div");
+      qTextDiv.innerHTML = "<strong>Q" + displayNumber + ":</strong> " + q.text;
+      qDiv.appendChild(qTextDiv);
+      
+      // Append first image if it exists.
+      if (q.image) {
+        const imgElement = document.createElement("img");
+        imgElement.src = q.image;
+        imgElement.alt = "Question Image";
+        imgElement.style.maxWidth = "50%";
+        imgElement.style.display = "block";
+        imgElement.style.margin = "10px auto";
+        qDiv.appendChild(imgElement);
+      }
+      // Append second image if it exists.
+      if (q.image2) {
+        const imgElement2 = document.createElement("img");
+        imgElement2.src = q.image2;
+        imgElement2.alt = "Second Question Image";
+        imgElement2.style.maxWidth = "50%";
+        imgElement2.style.display = "block";
+        imgElement2.style.margin = "10px auto";
+        qDiv.appendChild(imgElement2);
+      }
+      
+      // Append the correct answers.
+      const correctAnswerTexts = q.correctAnswers.map(idx => q.options[idx]).join(", ");
+      const caDiv = document.createElement("div");
+      caDiv.innerHTML = "<strong>Correct Answer(s):</strong> <span style='color:green;'>" + correctAnswerTexts + "</span>";
+      qDiv.appendChild(caDiv);
+      
+      groupContainer.appendChild(qDiv);
+    });
+    
+    // Toggle the visibility on header click.
+    groupHeader.addEventListener("click", function() {
+      groupContainer.style.display = (groupContainer.style.display === "none") ? "block" : "none";
+    });
+    resultsContainer.appendChild(groupHeader);
+    resultsContainer.appendChild(groupContainer);
+  }
+
+
+
+      // Create an accordion-like structure for each group.
+      for(let answer in filteredGroups) {
+        // Create group header with common answer and group count.
+        const groupHeader = document.createElement("div");
+        groupHeader.className = "group-header";
+        groupHeader.style.cursor = "pointer";
+        groupHeader.style.background = "#ccc";
+        groupHeader.style.padding = "10px";
+        groupHeader.style.marginTop = "10px";
+        groupHeader.innerText = "Correct Answer: " + answer + " (" + filteredGroups[answer].length + " questions)";
+        
+        // Create container for the grouped questions.
+        const groupContainer = document.createElement("div");
+        groupContainer.className = "group-container";
+        groupContainer.style.display = "none";
+        groupContainer.style.padding = "10px";
+        groupContainer.style.border = "1px solid #ddd";
+
+        // Display each question in the group with sequential numbering and correct answers.
+        filteredGroups[answer].forEach((q, index) => {
+          const qDiv = document.createElement("div");
+          qDiv.className = "question";
+          qDiv.style.borderBottom = "1px dashed #aaa";
+          qDiv.style.padding = "5px 0";
+          const displayNumber = index + 1;
+          const correctAnswerTexts = q.correctAnswers.map(idx => q.options[idx]).join(", ");
+          qDiv.innerHTML = "<strong>Q" + displayNumber + ":</strong> " + q.text +
+            "<br><strong>Correct Answer(s):</strong> <span style='color:green;'>" + correctAnswerTexts + "</span>";
+          groupContainer.appendChild(qDiv);
+        });
+        // Toggle the group container on header click.
+        groupHeader.addEventListener("click", function() {
+          groupContainer.style.display = (groupContainer.style.display === "none") ? "block" : "none";
+        });
+        resultsContainer.appendChild(groupHeader);
+        resultsContainer.appendChild(groupContainer);
+      }
+    });
+  })();
+</script>
+
+
+</body>
+</html>
