@@ -1,0 +1,3997 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- For mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HNO 2019-2024</title>
+  <!-- Load a stylish Google Font for exam setup -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+.highlightedText {
+  background-color: yellow;
+}
+
+    /* ---------- MAIN QUIZ STYLES ---------- */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #e8f0fe; /* soft light-blue for main quiz */
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #topBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    #topBar button {
+      padding: 8px 12px;
+      font-size: 14px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.2s;
+      margin: 4px;
+    }
+    #topBar button:hover {
+      background-color: #45a049;
+      transform: scale(1.03);
+    }
+    /* Reset Progress Button */
+    #resetProgress {
+      background-color: #9c27b0;
+    }
+    #resetProgress:hover {
+      background-color: #8e24aa;
+    }
+    #header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+    #dateTime, #globalTimer {
+      font-size: 14px;
+      color: #333;
+    }
+    #globalTimer {
+      font-size: 16px;
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    #roundClock {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border: 5px solid #333;
+      border-radius: 50%;
+      background: white;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+    #analogClock {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #progressInfo {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 16px;
+      color: #333;
+    }
+    #progressContainer {
+      width: 100%;
+      background: #ddd;
+      height: 20px;
+      margin: 15px 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #progressBar {
+      height: 100%;
+      background: #4caf50;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .question {
+      border: 1px solid #ccc;
+      background: #fafafa;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .question strong { display: block; margin-bottom: 8px; }
+    .options { margin-top: 5px; }
+    .option {
+      display: block;
+      margin-bottom: 8px;
+      padding: 5px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .option:hover { background-color: #f0f0f0; }
+    .correct { background-color: #c8e6c9 !important; }
+    .incorrect { background-color: #ffcdd2 !important; }
+    .disabled { pointer-events: none; opacity: 0.7; }
+    .timer { font-size: 12px; color: #555; margin-top: 5px; }
+    .answer-feedback { margin-top: 8px; font-size: 14px; font-weight: bold; }
+    .checkmark { color: green; font-weight: bold; margin-left: 5px; }
+    .crossmark { color: red; font-weight: bold; margin-left: 5px; }
+    #paginationControls {
+      margin-top: 20px;
+      text-align: center;
+    }
+    #paginationControls button {
+      margin: 0 10px;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background-color: #4caf50;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #paginationControls button:disabled { background-color: #9e9e9e; cursor: not-allowed; }
+    #backFromReview button {
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background-color: #607d8b;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #backFromReview button:hover { background-color: #546e7a; }
+    @media (max-width: 600px) {
+      body { padding: 10px; }
+      .container { padding: 15px; }
+      #topBar { flex-direction: column; gap: 10px; }
+      #header { flex-direction: column; }
+      #roundClock { width: 50px; height: 50px; }
+      #globalTimer, #progressInfo { font-size: 14px; }
+      #topBar button, #paginationControls button, #backFromReview button {
+        font-size: 12px; padding: 6px 10px;
+      }
+    }
+    /* ---------- Unified Button Style (Used in Exam Mode) ---------- */
+    .btn {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 10px;
+    }
+    .btn:hover { transform: scale(1.05); }
+    /* ---------- SPT TEST (Exam Mode) STYLES ---------- */
+    /* Lighter, fancier exam "world" */
+    #sptTestPage {
+      background-color: #f7f9fc;
+      color: #2c3e50;
+      padding: 30px 20px;
+      min-height: 100vh;
+    }
+    /* Exam Setup: now using a normal, compact size (wider than tall) */
+    #examSetup {
+      font-family: 'Roboto Slab', serif;
+      text-align: center;
+      font-size: 18px;
+      animation: fadeIn 1s ease;
+      margin: 20px auto;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    /* Setup Table remains the same */
+    #setupTable {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 90%;
+    }
+    #setupTable th, #setupTable td {
+      padding: 8px;
+      border: 1px solid #dfe4ea;
+      text-align: center;
+    }
+    #setupTable th { background: #f1f2f6; }
+    /* Exam length selection buttons: initially green, turn red when selected */
+    .examLengthBtn {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin: 5px;
+      font-size: 16px;
+    }
+    .examLengthBtn.selected { background-color: #c62828; }
+    /* Exam Interface Container */
+    #examContainer {
+      margin: 20px auto;
+      max-width: 800px;
+      animation: fadeIn 1s ease;
+      background: #ecf0f1;
+      color: #2c3e50;
+      padding: 15px;
+      border-radius: 8px;
+    }
+    /* Exam questions use same .question style as main quiz */
+    #examQuestionsList .question { text-align: left; margin-bottom: 15px; }
+    /* Flag button for exam questions */
+    .flagBtn {
+      float: right;
+      background-color: #ff9800;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .flagBtn:hover { transform: scale(1.05); }
+    .flagged { border: 2px solid #ff9800; }
+    /* Exam mode pagination controls (red buttons) */
+    #examPaginationControls {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #examPaginationControls button {
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      background-color: #c62828;
+      color: #fff;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 10px;
+      transition: background-color 0.2s;
+    }
+    #examPaginationControls button:disabled { background-color: #9e9e9e; cursor: not-allowed; }
+    /* Total Exam Timer */
+    #totalExamTimer {
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* Exam Result Page: now using a compact normal size */
+    #examResult {
+      text-align: center;
+      font-size: 18px;
+      animation: fadeIn 1s ease;
+      margin: 20px auto;
+      max-width: 600px;
+      background: #ecf0f1;
+      color: #2c3e50;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    /* Result Table in exam result page (German) */
+    #resultTable {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 500px;
+      font-size: 16px;
+    }
+    #resultTable th, #resultTable td {
+      border: 1px solid #dfe4ea;
+      padding: 8px;
+      text-align: center;
+    }
+    #resultTable th { background: #f1f2f6; }
+    /* Smaller fonts for Feedback Page */
+    #examFeedbackDiv { font-size: 16px; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* ---------- Additional Compact Styles for SPT Test Pages ---------- */
+    #sptTestPage, #examSetup, #examResult {
+      max-width: 650px !important;
+      font-size: 16px !important;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- MAIN QUIZ SECTION -->
+  <div class="container">
+    <div id="topBar">
+        <button id="openSearchBtn">Search</button>
+<button id="reviewUnanswered">Unanswered Questions</button>
+
+      <button id="reviewIncorrect">Incorrect Answers</button>
+      <button id="shuffleButton">Shuffle Questions</button>
+      <button id="resetProgress">Reset Progress</button>
+      <!-- SPT Test button will be added via JS below -->
+    </div>
+    <div id="header">
+      <div>
+        <h1 id="topicHeadline">HNO 2019-2024</h1>
+        <div id="dateTime"></div>
+      </div>
+      <div>
+        <div id="globalTimer">Quiz Timer: <span id="quizTime">00:00</span></div>
+        <div id="roundClock">
+          <canvas id="analogClock" width="100" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+    <div id="progressInfo">Total Questions: 0 | Answered: 0</div>
+    <div id="progressContainer">
+      <div id="progressBar"></div>
+    </div>
+    <div id="questionsContainer"></div>
+    <div id="paginationControls">
+      <button id="prevPage" disabled>Previous</button>
+      <span id="pageIndicator">Page 1</span>
+      <button id="nextPage">Next</button>
+    </div>
+    <div id="backFromReview" style="display:none; text-align:center; margin-top:20px;">
+      <button id="backBtn">Back to All Questions</button>
+    </div>
+  </div>
+  <script>
+    /* ---------- MAIN QUIZ SCRIPT (with Auto-Save) ---------- */
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    const QUESTIONS_PER_PAGE = 50;
+    let allQuestions = [
+
+ {
+  "id": 001,
+  "text": "Bei einer 36-jährigen Patientin mit seit Jahren bestehender Polyposis nasi et sinuum soll eine endoskopische Nasen-Nasennebenhöhlen-Chirurgie durchgeführt werden. Welche präoperativen Untersuchungen sind erforderlich? (3 richtige Antworten)",
+  "options": [
+    "Nasennebenhöhlen-CT",
+    "Allergie-Test",
+    "Riechuntersuchung",
+    "Lungenfunktionstest",
+    "Blutzuckerbestimmung"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 002,
+  "text": "Ein 43-jähriger Patient kommt vom HNO-Facharzt überwiesen in die HNO-Klinik-Ambulanz. Er hat beim Rasieren seit geraumer Zeit bemerkt, dass sich vor dem Ohr rechts ein in letzter Zeit rasch größer gewordener Knoten gebildet hat. Der Nervus facialis ist intakt. Sie gehen davon aus, dass es sich um den häufigsten gutartigen Tumor in der Glandula parotis handelt. Warum muss dieser Tumor unbedingt chirurgisch entfernt werden?",
+  "options": [
+    "Entartungsrisiko vorhanden",
+    "Der Tumor verursacht sofortige Lähmung des Nervus facialis",
+    "Spontane Rückbildung ist ausgeschlossen",
+    "Der Tumor führt zu starken Schmerzen",
+    "Antibiotische Therapie ist nicht wirksam"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 003,
+  "text": "Ein 85-jähriger Patient kommt wegen starker Ohrschmerzen und peripherer Facialisparese rechts in die HNO-Ambulanz. Die untersuchende Ärztin findet an der Ohrmuschel und im Gehörgang eine Entzündung der Haut mit Bläschenbildung. Welche Therapeutika sind in diesem Fall am ehesten zu verordnen? (3 richtige Antworten)",
+  "options": [
+    "Cortison",
+    "Virustatikum",
+    "Analgetika",
+    "Antibiotikum",
+    "Antimykotikum"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 004,
+  "text": "Eine 45-jährige Patientin kommt mit Schwindel und Ausfluss aus dem linken Ohr. Der Schwindel sei seit einigen Wochen zunehmend. Der Ausfluss bestehe seit langem. Als Kind hatte sie viele Ohrentzündungen. Welche Maßnahmen werden Sie zunächst am ehesten veranlassen? (2 richtige Antworten)",
+  "options": [
+    "Computertomografie des Felsenbeines",
+    "Antibiogramm vom Sekret im Gehörgang",
+    "Durchführung eines Hörtests",
+    "Verschreibung von Antihistaminika gegen den Schwindel",
+    "Sofortige chirurgische Intervention ohne weitere Diagnostik"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 005,
+  "text": "Eine 56-jährige Frau kommt zum HNO-Facharzt, da sie rechts seit circa einem halben Jahr zunehmend eine Hörverminderung feststellt. Bei sonst normalem HNO-Status findet der HNO-Arzt einen nichtentzündlichen Paukenerguss rechts. Welche Ursache muss nun unbedingt ausgeschlossen werden?",
+  "options": [
+    "Epipharynxtumor",
+    "Chronische Otitis externa",
+    "Akute Mastoiditis",
+    "Lärmbedingter Hörverlust",
+    "Morbus Menière"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 006,
+  "text": "Im Zuge einer Operation eines Zungengrundkarzinoms rechts musste auch der gleichseitige N. hypoglossus reseziert werden. Welche Folgen sind postoperativ zu erwarten? (3 richtige Antworten)",
+  "options": [
+    "Abweichung der herausgestreckten Zunge nach rechts",
+    "Faszikulationen der Zunge",
+    "Bissverletzungen",
+    "Verlust des Geschmackssinns auf der gesamten Zunge",
+    "Hyperreflexie des Massetermuskels"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+
+
+{
+  "id": 008,
+  "text": "Bei einem 25-jährigen Patienten besteht ein Herpes simplex labialis der Oberlippe. Er hat das immer im Frühjahr, wenn er im Hochgebirge Ski fährt. Er fragt Sie, womit er einer bakteriellen Superinfektion vorbeugen kann und was er machen soll, wenn es zu einem schweren Verlauf kommt. Was raten Sie ihm?",
+  "options": [
+    "Desinfizieren – Aciclovir",
+    "Ignorieren – es heilt von selbst ab",
+    "Antibiotika zur Vorbeugung einnehmen",
+    "Kortisoncreme auf die betroffenen Stellen auftragen",
+    "Warme Kompressen zur Förderung der Durchblutung nutzen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 009,
+  "text": "Bei einem 55-jährigen schweren Raucher wird wegen einer seit 2 Monaten bestehenden Heiserkeit eine diagnostische Mikrolaryngoskopie durchgeführt. Die linke Stimmlippe ist im mittleren Abschnitt aufgetrieben und es finden sich im gesamten Larynx-Pharynx Zeichen einer chronischen, hyperplastischen Schleimhautentzündung. Welche weitere diagnostische Maßnahme führen Sie zuerst durch?",
+  "options": [
+    "Biopsie",
+    "Verordnung von Stimmtherapie",
+    "Therapie mit Antibiotika",
+    "CT des Thorax",
+    "Überwachung ohne weitere Intervention"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 010,
+  "text": "Ein 27-jähriger erlitt beim Boxen ein stumpfes Ohrtrauma. Unmittelbar darauf entstand eine schmerzhafte, fluktuierende, rote Schwellung im Bereich der lateral über dem Ohrmuschelknorpel gelegenen Haut. Warum ist die Punktion dieser Schwellung obsolet? Wegen:",
+  "options": [
+    "Rezidivhäufigkeit",
+    "Geringem Infektionsrisiko",
+    "Schneller spontaner Rückbildung",
+    "Unbedeutender funktioneller Auswirkungen",
+    "Effektiver alleiniger Kühlung als Therapie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 011,
+  "text": "Ein 27-jähriger Koch wird in der HNO-Notfallambulanz wegen heftiger Schmerzen im Bereich der Nasenspitze vorstellig. Es findet sich eine ödematöse Schwellung und Rötung mit zentralem gelbem Pfropf. Er hat Kopfschmerzen und Fieber bis 39,5 ° Celsius. Wohin richtet sich Ihr Blick, um eine Überleitung des Prozesses nach endokraniell festzustellen?",
+  "options": [
+    "Medialer Augenwinkel",
+    "Lateraler Augenwinkel",
+    "Ohrläppchen",
+    "Nasenrücken",
+    "Kinnregion"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 012,
+  "text": "Ein 3-jähriges Mädchen entwickelt plötzlich in der Nacht einen inspiratorischen Stridor und bellenden Husten. Es entstehen diese Symptome aus vollster Gesundheit. Welche Erstmaßnahme zu Hause ist sinnvoll?",
+  "options": [
+    "Raumluft befeuchten",
+    "Kind flach hinlegen",
+    "Warme Getränke geben",
+    "Direkt Antibiotika verabreichen",
+    "Sofortige Intubation zu Hause"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 013,
+  "text": "Ein 30-jähriger Patient klagt über saisonunabhängige Riechstörung und Nasenatmungsbehinderung, die progredient seit 2 Jahren zunehmen. Welche Untersuchungen benötigen Sie für die Diagnostik? (3 richtige Antworten)",
+  "options": [
+    "Anteriore Rhinoskopie",
+    "Rhinomanometrie",
+    "Allergietest",
+    "Lungenfunktionstest",
+    "Blutkultur zur Sepsisdiagnostik"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 014,
+  "text": "Ein 55-jähriger Mann, starker Raucher, wird beim Praktischen Arzt wegen einer akuten, eitrigen Tonsillitis analgetisch und antibiotisch behandelt. Er hat auch vergrößerte Kieferwinkellymphknoten rechts. Bei der Kontrolle nach 7 Tagen sind die Halsschmerzen weg, die rechte Tonsille bland, links zeigt sich jedoch ein Ulcus mit einem Durchmesser von 2,5 cm. Die Halslymphknoten sind keineswegs kleiner geworden. Welches ist nun die wahrscheinlichste Diagnose?",
+  "options": [
+    "Tonsillenkarzinom",
+    "Persistierende bakterielle Tonsillitis",
+    "Mononukleose",
+    "Lues",
+    "Aphthöse Stomatitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 015,
+  "text": "Ein 55-jähriger stark übergewichtiger Patient leidet seit Jahren an Sodbrennen, Aufstoßen und auch epigastrischem Schmerz. Zudem gibt er an, öfters in der Nacht durch einen heftigen Hustenreiz aufzuwachen und dabei auch einen sauren Geschmack im Mund zu haben. Wodurch erklären Sie sich den nächtlichen Hustenreiz?",
+  "options": [
+    "Aspiration von Mageninhalt",
+    "Primäre Lungenerkrankung",
+    "Postnasal Drip Syndrom",
+    "Allergische Reaktion",
+    "Psychogener Husten"
+  ],
+  "correctAnswers": [0]
+},
+{
+  id: 016,
+  text: "Ein 56-jähriger Patient kommt mit Ohrenschmerzen, Hörverlust und starkem Tinnitus sowie Drehschwindel in die Ambulanz. Wie lautet die wahrscheinlichste Diagnose?",
+  options: [
+    "Menière's Krankheit",
+    "Labyrinthitis",
+    "Otitis media mit vestibulärer Beteiligung",
+    "Akute Otitis externa",
+    "Vestibularisneuritis"
+  ],
+  correctAnswers: [2]
+},
+{
+  id: 017,
+  text: "Ein 6-jähriger Bub stellt sich mit seinen Eltern vor. Die Eltern berichten, er schnarche und höre zudem schlecht. Sonst sei er gesund. Was ist die wahrscheinlichste Ursache?",
+  options: [
+    "Adenoide und Paukenerguss",
+    "Akute Tonsillitis",
+    "Allergische Rhinitis",
+    "Septischer Mittelohrinfekt",
+    "Nasopharyngealer Tumor"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 018,
+  text: "Ein 65-Jähriger kommt bereits zum dritten Mal innerhalb von vier Monaten wegen eines fortgeschrittenen Gehörgangsfurunkels zum HNO-Arzt. Welche ist die lokale Therapie der Wahl?",
+  options: [
+    "Incision",
+    "Topische Antibiotika",
+    "Lokale Desinfektion",
+    "Abschwellende Salbe",
+    "Wärmeanwendung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 019,
+  text: "Ein Patient klagt nach einer Lymphknotenbiopsie am seitlichen Hals über eine eingeschränkte Fähigkeit die Schulter zu heben. Welcher Nerv wurde bei der Operation am wahrscheinlichsten verletzt?",
+  options: [
+    "Accessorius",
+    "Phrenicus",
+    "Hypoglossus",
+    "Vagus",
+    "Facialis"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 020,
+  text: "Ein Patient mit schon lange bestehender Trommelfellperforation soll wegen einer akuten Otitis externa diffusa lokal behandelt werden. Welche der angeführten Substanzen kann jedoch einen Innenohrschäden bewirken und darf daher nicht gegeben werden?",
+  options: [
+    "Neomycin",
+    "Hydrocortison",
+    "Chlorhexidin",
+    "Borsäurelösung",
+    "Essigsäure"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 021,
+  text: "Eine 15 Jahre alte Patientin kommt in die Ambulanz und klagt über seit 4 Tagen bestehende Schluckbeschwerden, Fieber, Hals- und Gliederschmerzen. Gestern ist auch noch ein Ganzkörperexanthem hinzugekommen. Obwohl sie seit 4 Tagen Amoxicillin nimmt, kam es bis jetzt noch zu keiner Besserung der Symptomatik. Im Status zeigen sich fibrinöse Beläge auf beiden Tonsillen, symmetrische Gaumenbögen, eine gerötete Rachenhinterwand sowie stark geschwollene zervikale Lymphknoten. Welches Vorgehen ist neben der Analgetikagabe das sinnvollste?",
+  options: [
+    "Blutabnahme und Abdomensonographie",
+    "Erhöhung der Amoxicillin-Dosis",
+    "Beginn einer Kortikosteroidtherapie",
+    "Intravenöse Antibiotikatherapie",
+    "Sofortige Tonsillektomie"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 022,
+  text: "Eine 30-jährige Patientin berichtet nach einer Schwangerschaft kontinuierlich vor allem rechts schlechter zu hören. Der HNO Arzt stellt den Verdacht einer Otosklerose. Welchen typischen Befund erwartet man sich? (3 richtige Antworten)",
+  options: [
+    "Carhart-Senke rechts",
+    "Weber nach rechts",
+    "Negatives Valsalva-Manöver",
+    "Positiver Rinne-Test beidseits",
+    "Seitengleiches Hörvermögen im Stimmgabeltest"
+  ],
+  correctAnswers: [0, 1, 2]
+},
+{
+  id: 023,
+  text: "Eine 42-jährige Frau kommt wegen Abklärung einer schon seit einigen Monaten zunehmenden Hörverminderung (rechts mehr als links) zum HNO-Facharzt. Bei der Inspektion des Gehörganges, Trommelfells und des Mittelohres finden sich beidseits keine Auffälligkeiten. Stimmgabel-Versuch: Weber im Kopf, Rinne beidseits negativ. Im Tonaudiogramm findet sich beidseits, rechts mehr als links eine kombinierte Hörstörung. Wie lautet die wahrscheinlichste Diagnose und Therapie?",
+  options: [
+    "Otosklerose - Stapesplastik",
+    "Morbus Menière - Diuretika",
+    "Chronische Otitis media - Tympanoplastik",
+    "Akustikusneurinom - Bestrahlung",
+    "Presbyakusis - Hörgeräteanpassung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 024,
+  text: "Eine 43-jährige Patientin kommt zu Ihnen in die HNO Ambulanz und klagt über Schwindelbeschwerden. Um einen Vestibularisausfall nachzuweisen, planen Sie eine kalorische Untersuchung der Gleichgewichtsorgane. Was müssen Sie ausschließen, bevor Sie bei dieser Patientin eine Untersuchung durchführen können?",
+  options: [
+    "Trommelfellperforation",
+    "Bluthochdruck",
+    "Migräneanamnese",
+    "Diabetes mellitus",
+    "Schilddrüsenüberfunktion"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 025,
+  text: "Eine 44-jährige Krankenschwester kommt mit einer flächenhaften Rötung und Schwellung im Gesicht in die Ambulanz. Vor 2 Tagen hatte sie noch hohes Fieber. Jetzt jucken die betroffenen Hautstellen heftig. Was ist die wahrscheinlichste Diagnose?",
+  options: [
+    "Erysipel",
+    "Herpes Zoster",
+    "Kontaktdermatitis",
+    "Rosazea",
+    "Akute Urtikaria"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 026,
+  text: "Eine 45-jährige Patientin leidet seit einigen Tagen unter massivem Schnupfen, behinderter Nasenatmung und seit heute ist das linke Auge, besonders das Unterlid, massiv geschwollen. Der Visus ist unverändert. Was ist die wahrscheinlichste Diagnose?",
+  options: [
+    "Sinusitis acuta ethmoidalis mit orbitaler Beteiligung",
+    "Allergische Rhinokonjunktivitis",
+    "Dacryozystitis",
+    "Erysipel",
+    "Akute Konjunktivitis"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 027,
+  text: "Eine 50-jährige Dame stellt sich in der HNO Ambulanz nachmittags vor. Seit dem Aufstehen berichtet sie, am rechten Ohr plötzlich weniger zu hören. Eine Tonaudiometrie steht zeitlich nicht mehr zur Verfügung. Welcher Statusbefund bzw. welches Symptom bei freiem Gehörgang bekräftigt Sie in Ihrer Verdachtsdiagnose eines Hörsturzes?",
+  options: [
+    "Weber nach links",
+    "Rinne beidseits negativ",
+    "Schmerzen bei Zug am Ohrläppchen",
+    "Eitrige Sekretion aus dem Gehörgang",
+    "Seitengleiche Stimmgabelprüfung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 028,
+  text: "Eine 55-jährige Mittelschulprofessorin berichtet Ihnen, dass bei einem Infekt der oberen Luftwege mit Husten ihre Stimme plötzlich vollständig versagt habe. Trotz Antibiotika, die ihr der Praktische Arzt verschrieben hat, ist ihre Stimme noch nicht belastbar. Was ist die wichtigste sofortige Maßnahme?",
+  options: [
+    "Stimmschonung",
+    "Kortikosteroid-Therapie",
+    "Logopädische Therapie",
+    "Einnahme von Schleimlösern",
+    "Sofortige mikrochirurgische Abtragung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 029,
+  text: "Eine 65-jährige Patientin kommt mit Schwindel, welcher beim Drehen im Bett plötzlich aufgetreten und von heftigem Charakter gewesen sei. Das Hören sei normal. Ein Ausfluss aus dem Ohr besteht nicht. Der Facialis ist symmetrisch. Zum Zeitpunkt der Anamnese besteht kein Schwindel. Welche ist die wahrscheinlichste Verdachtsdiagnose?",
+  options: [
+    "Benigner paroxysmaler Lagerungsschwindel",
+    "Morbus Menière",
+    "Vestibularisneuritis",
+    "Akustikusneurinom",
+    "Zentrale vestibuläre Störung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 030,
+  text: "Eine 70-jährige Patientin, die seit ihrer Kindheit wiederholt Otorrhoe rechts hat, kommt zum HNO-Facharzt und berichtet, dass das Ohr seit 14 Tagen wieder „fließt“ und dass sie seither Schwindel hat. Beim Gehen spürt sie einen Zug nach rechts. Welche Komplikation der ursächlichen Erkrankung muss zwingend in Betracht gezogen werden?",
+  options: [
+    "Labyrinthitis",
+    "Chronische Otitis media ohne Komplikation",
+    "Morbus Menière",
+    "Vestibularisparoxysmie",
+    "Benigner paroxysmaler Lagerungsschwindel"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 031,
+  text: "Mit welcher der unten genannten Methoden wird das Hörscreening österreichischer Neugeborener durchgeführt?",
+  options: [
+    "Otoakustische Emissionen",
+    "Tonaudiometrie",
+    "Weber-Test",
+    "Rinne-Test",
+    "Sprachaudiometrie"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 032,
+  text: "Warum muss bei der operativen Entfernung einer lateralen Halszyste oftmals auch die Tonsille entfernt werden?.",
+  options: [
+    "ein obliterierter Gang von der Zyste bis in die Fossa supratonsillaris reicht.",
+    "die Tonsille die Zyste oft mechanisch komprimiert.",
+    "eine Infektion der Tonsille die Entstehung der Zyste begünstigt.",
+    "die Tonsille meist ebenfalls von der Zyste betroffen ist.",
+    "die Entfernung der Tonsille das Risiko eines Rezidivs reduziert."
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 033,
+  text: "Welche Untersuchungsergebnisse weisen auf eine einseitige Otosklerose hin? (3 richtige Antworten)",
+  options: [
+    "Schallleitungsschwerhörigkeit im Audiogramm",
+    "Rinne Versuch ist negativ",
+    "Weber Versuch lateralisiert ins betroffene Ohr",
+    "Weber Versuch lateralisiert ins nicht betroffene Ohr",
+    "Rinne Versuch ist positiv"
+  ],
+  correctAnswers: [0, 1, 2]
+},
+{
+  id: 034,
+  text: "Wodurch ist eine Epiglottitis acuta gekennzeichnet? (3 richtige Antworten)",
+  options: [
+    "Kloßige Sprache",
+    "Stridor",
+    "Dysphagie",
+    "Trockener Husten",
+    "Schmerzlose Lymphknotenschwellung"
+  ],
+  correctAnswers: [0, 1, 2]
+},
+{
+  id: 035,
+  text: "Wodurch wird bei der indirekten Laryngoskopie bei eingeführtem Spiegel der Einblick in den Kehlkopf ermöglicht?",
+  options: [
+    "Aufladen der Uvula auf den Spiegel und Schiebung nach hinten-oben",
+    "Anheben des Kehldeckels mit einem Spatel",
+    "Seitliches Wegziehen der Zunge mit einem Tupfer",
+    "Verwendung eines Stirnspiegels zur direkten Ausleuchtung",
+    "Einsprühen eines Lokalanästhetikums zur Weitung des Kehlkopfes"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 036,
+  text: "Ein 40-jähriger Patient kommt zum HNO-Facharzt wegen heftiger Schmerzen im Hals rechts. Er hat bisher mit einer antiseptischen Lösung gegurgelt und ist nicht tonsillektomiert. Der Patient raucht nicht. Es findet sich in der rechten geröteten und gering vergrößerten Tonsille ein schmierig belegtes Ulcus. Die dazugehörigen Halslymphknoten sind vergrößert und dolent. Sie behandeln mit oralen Antibiotika. Nach 5 Tagen ist der Patient beschwerdefrei. Welche 2 Erreger sind für diese Krankheit verantwortlich?",
+  options: [
+    "Spirochäten/Fusobakterien",
+    "Streptococcus pyogenes",
+    "Staphylococcus aureus",
+    "Epstein-Barr-Virus",
+    "Candida albicans"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 037,
+  text: "Ein Sportschütze verrückt während eines Schusses mit einer Handfeuerwaffe seinen Gehörschutz, sodass das rechte Ohr ungeschützt bleibt. Unmittelbar darauf berichtet er über eine erhebliche Hörverminderung rechts und Tinnitus. Sofort sucht er eine HNO-Abteilung auf. Welche typischen Befunde wird der HNO-Arzt erheben können? (2 richtige Antworten)",
+  options: [
+    "Normale Trommelfelle beidseits",
+    "Hörschwellensenke zwischen 3 und 6 kHz",
+    "Perforiertes Trommelfell rechts",
+    "Weber lateralisiert nach links",
+    "Rinne negativ beidseits"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 038,
+  text: "Im Zuge einer Anamnese äußern Sie den Verdacht eines benignen paroxysmalen Lagerungsschwindels. Welche der folgenden Untersuchungen benötigen Sie, um dies zu objektivieren?",
+  options: [
+    "Lagerungsmanöver nach Dix-Hallpike",
+    "Kalorische Testung",
+    "Weber- und Rinne-Versuch",
+    "Tonaudiometrie",
+    "CT des Schädels"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 039,
+  text: "Bei bestehender akuter Mittelohrentzündung rechts mit heftigen Ohrschmerzen und deutlicher Hörverminderung klagt ein 42-jähriger Patient über Drehschwindel seit einigen Stunden. Er wird von seiner Frau in die HNO-Ambulanz gebracht, er selbst fühlt sich zu unsicher um sein Auto zu lenken. Bei der Otoskopie zeigt sich eine deutliche Vorwölbung des Trommelfells mit gelbem Sekret in der Paukenhöhle. Welchen Eingriff werden Sie vornehmen, um eine Druckentlastung im Mittelohr zu erreichen?",
+  options: [
+    "Paracentese",
+    "Tympanoplastik",
+    "Cortison-Injektion",
+    "Mastoidektomie",
+    "Einlage eines Cochlea-Implantats"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 040,
+  text: "Bei einem 10-jahrigen Mädchen entwickelte sich innerhalb einer Woche im Bereich der rechten Carotisbifurkation eine circa 3×2 cm große, prallelastische, gut abgrenzbare, mäßig dolente Schwellung. Fieber trat nicht auf. Welche ist die wahrscheinlichste Diagnose?",
+  options: [
+    "Laterale Halscyste",
+    "Lymphadenitis colli",
+    "Zyste des Ductus thyreoglossus",
+    "Hodgkin-Lymphom",
+    "Lipom"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 041,
+  text: "Bei einem 3-jährigen Kleinkind wird wegen Schnarchen und Schlafapnoe eine Adenotomie vorgenommen. Welche postoperative Lagerung ist die beste, um eine Nachblutung zu erkennen?",
+  options: [
+    "Seitenlage",
+    "Rückenlage mit erhöhtem Kopfteil",
+    "Bauchlage",
+    "Flache Rückenlage",
+    "Trendelenburg-Lagerung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 042,
+  text: "Bei einem 4-jährigen Kind soll eine Hörprüfung durchgeführt werden. Das Kind ist bei der Reintonaudiometrie wenig kooperativ. Ein genauer Befund kann nicht erhoben werden. Welche der genannten Hörprüfungen können eingesetzt werden, ohne dass man auf die aktive Mitarbeit des Kindes angewiesen ist? (2 richtige Antworten)",
+  options: [
+    "Brainstem evoked response audiometry (BERA)",
+    "Stapediusreflex-Messung",
+    "Sprachaudiometrie",
+    "Freifeldaudiometrie",
+    "Spielaudiometrie"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 043,
+  text: "Bei einem 57-jährigen Patienten soll wegen eines stenosierenden Larynxkarzinoms eine Panendoskopie durchgeführt werden. Eine stridoröse Atmung bestand schon seit einigen Tagen. Bei der Narkoseeinleitung ist erkennbar, dass eine Intubation nicht möglich ist, da die Atemwege zu eng sind. Welcher Eingriff ist nun durchzuführen?",
+  options: [
+    "Tracheotomie in Lokalanästhesie",
+    "Koniotomie",
+    "Notfallintubation mit Hilfsmitteln",
+    "Bukkale Intubation",
+    "Laryngektomie"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 044,
+  text: "Bei einem 58-jährigen Mann wird wegen eines Plattenepithelkarzinoms der Zunge rechts, welches auch in den Zungengrund reicht, eine Hemiglossektomie durchgeführt. Postoperativ bitten Sie den Patienten die Zunge herauszustrecken. Wohin wird dabei die Zunge abweichen?",
+  options: [
+    "Rechts",
+    "Links",
+    "Gerade nach vorne",
+    "Nach oben",
+    "Nach unten"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  id: 045,
+  text: "Bei einem schwer übergewichtigen Patienten, der unter obstruktivem Schlafapnoesyndrom leidet, soll eine orale CPAP-Maske angepasst werden. Was soll dadurch erreicht werden?",
+  options: [
+    "Behebung der pharyngealen Engen",
+    "Reduktion des nächtlichen Speichelflusses",
+    "Vermeidung von Mundatmung",
+    "Verstärkung der Atemanstrengung",
+    "Verhinderung des Zungengrundkollapses"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 046,
+  text: "Der Mutter einer 14-jährigen Schülerin fällt auf, dass sich bei ihrer Tochter nach einer Halsentzündung am seitlichen Hals eine Vorwölbung von ca. 3 cm gebildet hat. Sie hat kein Fieber und keine Schmerzen. Welches ist das diagnostische Mittel der Wahl?",
+  options: [
+    "Ultraschall",
+    "CT mit Kontrastmittel",
+    "MRT",
+    "Röntgen des Halses",
+    "Feinnadelbiopsie"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 047,
+  text: "Ein 13-jähriger Knabe klagt unmittelbar nach einem Badeaufenthalt über zunehmend heftiger werdende Ohrschmerzen, rechts mehr als links. Er kann deshalb in der Nacht trotz Schmerzmittels kaum schlafen. Deshalb wird er vom Vater direkt vom Flughafen in die HNO-Notfall-Ambulanz gebracht. Bei der Inspektion zeigen sich beide Gehörgänge massiv gerötet, mit Detritus verlegt und verschwollen. Die Trommelfelle sind beidseits nicht einsehbar. Welche Maßnahme nach Reinigung und Desinfektion bietet sich am besten an, die Gehörgänge zur Abschwellung zu bekommen?",
+  options: [
+    "Einlage eines Streifens als Docht",
+    "Sofortige systemische Antibiotikatherapie",
+    "Intravenöse Kortikosteroide",
+    "Einbringen von trockenen Wattestäbchen",
+    "Durchführung einer Parazentese"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 048,
+  text: "Ein 14-jähriger Schüler erleidet bei einem Fußballspiel in der Schule eine Nasenbeinfraktur. Radiologisch zeigt sich eine Fraktur des distalen Nasenbeines ohne wesentliche Dislokation. Die anfangs bestehende Blutung aus der Nase rechts ist nach wenigen Minuten zum Stillstand gekommen. Bei der Inspektion des Naseninneren zeigt sich kein Septumhämatom. Von einem Eingriff wird abgesehen. Was wird dem Patienten dringend empfohlen in der nächsten Woche zu unterlassen?",
+  options: [
+    "Schnäuzen",
+    "Kühlen der Nase",
+    "Leichte körperliche Bewegung",
+    "Normale Nahrungsaufnahme",
+    "Lautes Sprechen"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  id: 049,
+  text: "Ein 25-jähriger Kickboxer hat beim Training einen Schlag auf das Mittelgesicht bekommen. Sofort tritt Nasenbluten links auf, das nach einer halben Stunde sistiert. Das Nasengerüst ist deutlich nach links verschoben. Warum erteilt die erstversorgende HNO-Ärztin ein Schnäuz-Verbot?: (2 richtige Antworten)",
+  options: [
+    "Fortgesetzten Nasenblutens",
+    "Entstehung eines Orbitaemphysems",
+    "Verlagerung der Nasenscheidewand",
+    "Vermehrten Schleimproduktion",
+    "Erhöhten Infektionsgefahr"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 050,
+  text: "Ein 35-jähriger Patient kommt mit Ohrenschmerzen links seit gestern. Er berichtet zusätzlich Fieber zu haben und seit gestern auch links schlechter zu hören. Davor habe er auf beiden Ohren gleich gut gehört. Es sind anamnestisch keine Ohrprobleme erhebbar. Sie diagnostizieren eine unkomplizierte Otits media acuta links (Schalleitungsschwerhörigkeit links). Wie erwarten Sie Weber und Rinne in dieser Situation?",
+  options: [
+    "Weber: lateralisiert nach links. Rinne: rechts positiv, links negativ",
+    "Weber: lateralisiert nach rechts. Rinne: rechts negativ, links positiv",
+    "Weber: lateralisiert nach links. Rinne: rechts negativ, links negativ",
+    "Weber: lateralisiert nach rechts. Rinne: rechts positiv, links negativ",
+    "Weber: Mittellinie. Rinne: beidseits positiv"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  id: 051,
+  text: "Ein 35-jähriger Schwimmlehrer sucht den HNO-Facharzt auf, da er beidseits starkes Jucken und ein Völlegefühl im Gehörgang verspürt. Die Frage nach Schmerzen verneint er. Er leidet immer wieder darunter und nimmt öfter Cortison- und antibiotikahältige Ohrentropfen. Was führen Sie nun primär durch, um die Rezidivneigung zu vermindern? (2 richtige Antworten)",
+  options: [
+    "Erregernachweis",
+    "Trocknung",
+    "Dauerhafte Antibiotikatherapie",
+    "Ohrspülung mit Wasser",
+    "Systemische Kortikosteroidtherapie"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 052,
+  text: "Ein 40-jähriger Patient erleidet eine plötzliche, einseitige Schallempfindungsstörung ohne erkennbare Ursache. Wie wird diese Erkrankung bezeichnet und warum hat diese eine gute Prognose?",
+  options: [
+    "Hörsturz − Hohe Spontanremission",
+    "Morbus Menière − Chronisch progredienter Verlauf",
+    "Akustikusneurinom − Operative Entfernung erforderlich",
+    "Presbyakusis − Altersbedingte Verschlechterung",
+    "Zentrale Hörstörung − Schlechtes Ansprechen auf Therapie"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 053,
+  text: "Ein 42-jähriger Patient, Nichtraucher, wird vom Arzt für Allgemeinmedizin zur HNO-Ärztin wegen multipler Schwellungen am Hals geschickt. Im HNO-Bereich finden sich sonst keine auffälligen Befunde. Nach welchen weiteren Symptomen wird die HNO-Ärztin gezielt den Patienten befragen? (2 richtige Antworten)",
+  options: [
+    "Massiver Nachtschweiß",
+    "Unerklärliches Fieber >38 °C",
+    "Chronische Halsschmerzen",
+    "Trockener Husten",
+    "Verminderte Speichelproduktion"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 054,
+  text: "Ein 44-jähriger Mann kommt um 23 Uhr in die HNO-Notfallsambulanz da er plötzlich vor 2 Stunden im rechten Ohr eine erhebliche Hörverminderung erlitten hat. Er klagt nicht über Tinnitus oder Schwindel. Bei näherer Befragung gibt er an nachmittags schwimmen gewesen zu sein. Sie machen eine Otoskopie und finden den Gehörgang gefüllt mit gelbbraunem Ohrschmalz. Sie möchten dieses entfernen. Womit führen Sie das durch, wenn nicht sicher ist, dass das Trommelfell intakt ist? (2 richtige Antworten)",
+  options: [
+    "Öse",
+    "Sauger",
+    "Wattestäbchen",
+    "Ohrspülung mit Wasser",
+    "Metallkürette"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 055,
+  text: "Ein 53-jähriger schwerer Raucher und Trinker kommt zum HNO-Arzt, da er seit ein paar Wochen einen „Kloß im Hals“ verspüre. Schlucken geht problemlos, am Hals ist kein Knoten sichtbar. Die Stimme ist nicht heiser. Allerdings bestehen Schmerzen von der rechten Halsseite ins rechte Ohr ausstrahlend. Welchen Bereich werden Sie bei der Panendoskopie im Besonderen inspizieren?",
+  options: [
+    "Hypopharynx",
+    "Larynx",
+    "Nasenrachen",
+    "Oropharynx",
+    "Trachea"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 056,
+  text: "Ein 55-jähriger starker Raucher kommt mit kloßiger Sprache, Schluckbeschwerden und seit einer Woche zunehmender Atemnot in die HNO-Ambulanz. Die Stimme habe sich zusätzlich nicht verändert und ist rau. Auffallend ist auch eine Schwellung submandibulär rechts. Sie denken an ein malignes Geschehen. Wo ist dieses lokalisierbar?",
+  options: [
+    "Zungengrund",
+    "Tonsille",
+    "Nasopharynx",
+    "Larynx",
+    "Trachea"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  id: 058,
+  text: "Ein 57-jahriger Raucher sucht den HNO-Facharzt wegen einseitiger Halsschmerzen und Schluckbeschwerden rechts auf. Es zeigt sich ein fibrinbelegtes Ulcus an der Tonsille rechts, zudem ein übler Mundgeruch. Im Kieferwinkel rechts finden sich indolente, vergrößerte Lymphknoten. Der Patient erhält 5 Tage Penicillin – am Lokalstatus ändert sich nichts. Was ist der nächste diagnostische Schritt?",
+  options: [
+    "Probeexcision von der rechten Tonsille",
+    "Verlängerung der Antibiotikatherapie",
+    "MRT des Halses",
+    "FNA der Lymphknoten",
+    "Spiegelung des Nasopharynx"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 059,
+  text: "Ein 57-jähriger Mann wird vom Arzt wegen stark vergrößerter Halslymphknoten rechts und einer deutlich vergrößerten Tonsille rechts an eine HNO-Abteilung zur weiteren Diagnostik und ggf. Therapie geschickt. Schmerzen habe der Patient nicht, aber das Schlucken fällt zunehmend schwerer. Bei der Inspektion findet sich die rechte Tonsille stark vergrößert und sie überschreitet die Mittellinie und berührt nahezu die normal große linke Tonsille. Es findet sich an der betroffenen Tonsille kein Ulcus. Wie sichern Sie den klinischen Verdacht?",
+  options: [
+    "Lymphknotenbiopsie",
+    "MRT des Halses",
+    "Tonsillektomie beidseits",
+    "FNA der Lymphknoten",
+    "Antibiotikatherapie mit Verlaufskontrolle"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 060,
+  text: "Ein 6-jähriges Kind wird von den Eltern in die HNO-Notfallsambulanz wegen starker Schmerzen im Mund gebracht. Insbesondere die Nahrungsaufnahme ist dadurch nahezu unmöglich. Besonders im vorderen Mundbereich zeigt sich bei der vorsichtigen Inspektion die gesamte Schleimhaut gerötet und zusätzlich kleine zahlreiche Bläschen, teils mit durchsichtiger teils mit trüber Flüssigkeit gefüllt. Das Kind entwickelte in den letzten Tagen hohes Fieber, Antriebslosigkeit und Verwirrtheit. Welche Komplikation der Grunderkrankung hat sich nun wahrscheinlich entwickelt?",
+  options: [
+    "Meningo-Encephalitis",
+    "Epiglottitis",
+    "Sepsis",
+    "Peritonsillarabszess",
+    "Laryngotracheitis"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 061,
+  text: "Ein 65-jähriger Patient berichtet von kurzzeitigen (bis 30 sec.) Drehschwindelattacken bei Kopflagerungswechsel begleitet von Übelkeit. Welche Ursache für diese Erkrankung ist die wahrscheinlichste und welches ist die Therapie der Wahl?",
+  options: [
+    "abgesprengte Otolithenteile - Repositionsmanöver",
+    "Morbus Menière - Diuretika",
+    "Vestibularisneuritis - Kortikosteroidtherapie",
+    "Zentrale vestibuläre Störung - MRT des Kopfes",
+    "Akustikusneurinom - chirurgische Entfernung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 062,
+  text: "Ein 65-jähriger Patient mit Bluthochdruck hat schon mehrfach an verschiedenen HNO-Abteilungen wegen Nasenbluten rechts eine vordere Streifentamponade erhalten. Dennoch kommt es rechts wiederholt zu Blutungen mit Abrinnen in den Rachen. Es ist nun angedacht eine Gefäßligatur bzw. Verödung vorzunehmen. Welches Gefäß wird man bei diesem Patienten aufsuchen und verschließen?",
+  options: [
+    "A. sphenopalatina",
+    "A. carotis interna",
+    "A. carotis externa",
+    "A. maxillaris",
+    "A. facialis"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 063,
+  text: "Ein 72-jähriger ehemaliger Badewart, der den Beruf 35 Jahre ausgeübt hat, kommt wegen einer nicht heilenden „Wunde“ an der Stirne rechts zur HNO-Ärztin. Die Veränderung ist makroskopisch schwer abgrenzbar. Lokoregionäre- oder Fernmetastasierung liegt nicht vor. Um welche Erkrankung handelt es sich am wahrscheinlichsten?",
+  options: [
+    "Sklerodermiformes Basaliom",
+    "Plattenepithelkarzinom",
+    "Malignes Melanom",
+    "Aktinische Keratose",
+    "Seborrhoische Keratose"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 064,
+  text: "Ein Englischlehrer entwickelt im Laufe eines viralen Infektes der oberen Luftwege eine Heiserkeit mit Husten und Räuspern. Er möchte vom HNO-Arzt nicht nur behandelt, sondern auch krankgeschrieben werden. Welches ist für Sie die Begründung, ihn sofort in den Krankenstand zu schicken?",
+  options: [
+    "Stimmschonung ist wichtigster Teil der Behandlung",
+    "Die Ansteckungsgefahr für Schüler ist zu hoch",
+    "Die Heiserkeit führt zu einem irreversiblen Stimmverlust",
+    "Ein viraler Infekt kann sich durch Sprechen verschlimmern",
+    "Die Medikation erfordert eine sofortige Arbeitsruhe"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 065,
+  text: "Ein Patient klagt über eine seit 2 Tagen stark geschwollene und schmerzhafte Ohrmuschel. Bei der Untersuchung zeigen sich die Ohrmuschelkonturen verstrichen sowie eine Schwellung im Conchabereich. Das gesamte Ohr bis auf das Ohrläppchen ist gerötet. Was ist die wahrscheinlichste Diagnose?",
+  options: [
+    "Ohrmuschelperichondritis",
+    "Erysipel",
+    "Ohrmuschelhämatom",
+    "Zoster oticus",
+    "Akute Otitis externa"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 066,
+  text: "Ein Patient leidet seit Jahren an einer chronischen rezidivierenden Rhinosinusitis. Er sucht einen HNO-Arzt auf, der eine Inspektion des Naseninneren nach Abschwellung mit der geraden Glasfiberoptik durchführt. Welche weiteren zwei Untersuchungen sind die sinnvollsten für die Bestimmung der Ursache der Krankheit?",
+  options: [
+    "CT + Allergietest",
+    "Röntgen des Schädels + Nasenabstrich",
+    "MRT des Schädels + Nasennebenhöhlenpunktion",
+    "Blutbild + Nasenspülung",
+    "Endoskopie des Kehlkopfes + Hörtest"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 067,
+  text: "Eine 30-jährige Sängerin kommt in die phoniatrische Abteilung der HNO-Klinik. Sie berichtet über eine zunehmend geringere Belastbarkeit ihrer Stimme und gelegentlich sei sie heiser. Sie ist besorgt, da sie doch vom Singen ihren Lebensunterhalt bestreiten muss. Mit welcher Untersuchungsmethode kann man die Stimmlippenschwingung?",
+  options: [
+    "Stroboskopie",
+    "Laryngoskopie mit starrem Endoskop",
+    "CT des Kehlkopfes",
+    "Ultraschall des Halses",
+    "Röntgen des Halses"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 068,
+  text: "Eine 37-jährige Hauptschullehrerin aus Wien klagt seit Monaten über eine zunehmende Heiserkeit und Stimmschwäche. Die Kinder seien schlimm und sie muss viel schreien, um sich behaupten zu können. Wie nennt man diese Überbeanspruchung und welche Diagnose bei einseitigem Stimmlappenbefund ist die wahrscheinlichste?",
+  options: [
+    "Phonotrauma - Knötchen",
+    "Laryngitis - Polyp",
+    "Stimmbandparese - Zyste",
+    "Reinke-Ödem - Stimmbandatrophie",
+    "Stimmlippenkarzinom - Ulkus"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 069,
+  text: "Eine 40-jährige Patientin verwendet seit Monaten täglich mehrmals abschwellende Nasentropfen. Sie kann ohne diese nicht mehr frei durch die Nase atmen. Wie bezeichnet man die Erkrankung und welches ist das Leitsymptom?",
+  options: [
+    "Privinismus - behinderte Nasenatmung",
+    "Rhinitis medicamentosa - Nasensekretion",
+    "Allergische Rhinitis - Niesreiz",
+    "Chronische Sinusitis - Druckgefühl",
+    "Nasale Polyposis - Geruchsstörung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 070,
+  text: "Eine 45-jährige Patientin, Nichtraucherin, kommt wegen ausgeprägter Heiserkeit, Behauchtheit der Stimme und subjektiv empfundener Atemnot beim Sprechen bzw. bei körperlicher Belastung zum HNO-Facharzt. Außerdem verschlucke sie sich, wenn sie rasch Flüssigkeiten aufnimmt. Manchmal versagt es ihr die Stimme vollständig. Die Symptome seien vor 14 Tagen aufgetreten und haben sich in den letzten Tagen verstärkt. Welches bildgebende Verfahren werden Sie im Rahmen der weiteren Abklärung am ehesten veranlassen",
+  options: [
+    "CT-Thorax",
+    "MRT-Hals",
+    "Sonographie der Schilddrüse",
+    "Röntgen-BWS",
+    "PET-CT"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 071,
+  text: "Eine 62-jährige Patientin mit seit Kindheit bestehender rezidivierender fötider Otorrhoe hat neben der gleichzeitig bestehenden Hörverminderung seit ein paar Tagen Drehschwindelattacken. Was ist am ehesten die Ursache dieses Schwindels?",
+  options: [
+    "Labyrinthitis",
+    "Benigner paroxysmaler Lagerungsschwindel",
+    "Vestibularisparoxysmie",
+    "Morbus Menière",
+    "Akustikusneurinom"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 072,
+  text: "Eine 74-jährige Patientin kommt in die Ambulanz und berichtet von seit 2 Tagen plötzlich auftretenden Schwindelattacken, die nur wenige Sekunden anhalten und besonders beim Niederlegen oder bei Drehungen im Bett auftreten. Hörverminderung oder Tinnitus tritt dabei nicht auf. Welche diagnostischen Maßnahmen werden Sie gleich durchführen? (2 richtige Antworten)",
+  options: [
+    "Frenzelbrille",
+    "Hallpike-Manöver",
+    "Tonaudiometrie",
+    "Kalorische Testung",
+    "CT des Schädels"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 073,
+  text: "Eine Patientin bemerkt 7 Tage nach einem funktionell endoskopischen nasenenbenhöhlenchirurgischen Eingriff eine wiederholte Absonderung von dünnflüssigem, klarem Nasensekret von der rechten Nasenhälfte. Beim Bücken kommt es zur Verstärkung. Um welche Flüssigkeit wird es sich am wahrscheinlichsten handeln?",
+  options: [
+    "Liquor cerebrospinalis",
+    "Seröse Rhinitis",
+    "Eitriges Nasensekret",
+    "Blutiges Exsudat",
+    "Allergisches Sekret"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 074,
+  text: "Eine ältere Frau die gerinnungshemmende Medikamente einnimmt, leidet an ungerichtetem Schwankschwindel. Sie streift mit dem seitlichen Kopf rechts an einen Türrahmen und verspürt einen kurzen Schmerz, dem sie keinerlei Bedeutung zumisst. Eine Blutung tritt nicht auf. Am Tag danach sucht sie einen Frisör auf, dem beim Haarschneiden eine gerötete Schwellung an der Ohrmuschelinnenseite rechts sofort aufgefallen war. Welche Diagnose ist die wahrscheinlichste und welche Therapie ist erforderlich?",
+  options: [
+    "Othämatom – operative Ausräumung",
+    "Ohrmuschelperichondritis – antibiotische Therapie",
+    "Erysipel – kühlende Umschläge",
+    "Zoster oticus – antivirale Therapie",
+    "Prellung der Ohrmuschel – symptomatische Behandlung"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 075,
+  text: "Für ein Hypopharynx-Karzinom gilt:\nHäufig liegen bei Diagnosestellung Lymphknotenmetastasen vor.",
+  options: [
+    "Häufig liegen bei Diagnosestellung Lymphknotenmetastasen vor.",
+    "Es tritt frühzeitig Heiserkeit als Leitsymptom auf.",
+    "Die Prognose ist im Vergleich zu anderen Kopf-Hals-Karzinomen besonders gut.",
+    "Das Hypopharynx-Karzinom verursacht in frühen Stadien starke Schmerzen.",
+    "Die Erkrankung betrifft vorrangig Nichtraucher."
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 076,
+  text: "Sie haben ein 3-Jähriges Kleinkind vor sich mit Symptomen einer subglottischen Laryngitis. Was machen Sie, um eine Epiglottitis auszuschließen?",
+  options: [
+    "Die Zunge weit herausstrecken lassen",
+    "Oropharynxinspektion",
+    "Laryngoskopie in Vollnarkose",
+    "Seitliches Röntgen des Halses",
+    "CT des Kehlkopfes"
+  ],
+  correctAnswers: [1]
+},
+{
+  id: 077,
+  text: "Was ist die Hauptursache für eine Recurrensparese?",
+  options: [
+    "Strumektomie",
+    "Lungenkarzinom",
+    "Virale Infektion",
+    "Trauma des Halses",
+    "Zervikale Osteochondrose"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  id: 078,
+  text: "Welche der folgenden Befunde sind typisch für eine akute Epstein-Barr Infektion? (3 richtige Antworten)",
+  options: [
+    "Tonsillitis acuta",
+    "Splenomegalie",
+    "Hautausschlag nach Aminopenicillingabe",
+    "Stridor",
+    "Pseudomembranöse Beläge im Rachen",
+    "Verlust des Geruchssinns"
+  ],
+  correctAnswers: [0, 1, 2]
+},
+{
+  id: 079,
+  text: "Welche ist die engste Stelle der oberen Atemwege beim Erwachsenen?",
+  options: [
+    "Glottis",
+    "Epiglottis",
+    "Trachea",
+    "Nasopharynx",
+    "Oropharynx"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 080,
+  text: "Welche Strukturen bilden das Nasenseptum? (3 richtige Antworten)",
+  options: [
+    "Vomer",
+    "Lamina perpendicularis ossis ethmoidalis",
+    "Cartilago septi nasi",
+    "Os palatinum",
+    "Concha nasalis inferior"
+  ],
+  correctAnswers: [0, 1, 2]
+},
+{
+  id: 081,
+  text: "Welcher Raum wird durch den Hiatus semilunaris begrenzt?",
+  options: [
+    "Sinus maxillaris",
+    "Sinus frontalis",
+    "Sinus sphenoidalis",
+    "Cellulae ethmoidales anteriores",
+    "Recessus sphenoethmoidalis"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 082,
+  text: "Welches Symptom tritt bei einer beidseitigen Recurrensparese auf?",
+  options: [
+    "Dyspnoe",
+    "Aphonie",
+    "Dysphagie",
+    "Hypersalivation",
+    "Trockener Husten"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  id: 083,
+  text: "Welches Symptom tritt bei einer einseitigen Recurrensparese auf?",
+  options: [
+    "Dysphonie",
+    "Aphonie",
+    "Dyspnoe",
+    "Dysphagie",
+    "Stridor"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 084,
+  text: "Wie lange dauern typischerweise die Schwindelbeschwerden bei Morbus Menière?",
+  options: [
+    "Mehrere Stunden",
+    "Wenige Sekunden",
+    "Einige Minuten",
+    "Mehrere Tage",
+    "Konstant über Wochen"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 085,
+  text: "Ein 40-jähriger Patient stellt sich mit einer Rötung und Schwellung im Bereich der Ohrmuschel vor. Die genaue Untersuchung zeigt, dass das Ohrläppchen mitbetroffen ist. Durch welchen Erreger wird die vermutete Erkrankung am häufigsten hervorgerufen?",
+  options: [
+    "Streptococcus pyogenes",
+    "Staphylococcus aureus",
+    "Pseudomonas aeruginosa",
+    "Haemophilus influenzae",
+    "Candida albicans"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 086,
+  text: "Eine 24-jähriger Patient hat seit 2 Tagen Hals- und Schluckschmerzen. Im klinischen Status zeigen sich gerötete, vergrößerte und nicht belegte Tonsillen und eine gerötete Pharynxhinterwand bei gleichzeitig unauffälligem Larynxbefund. Welche Diagnose stellen Sie und wie sollte die Erkrankung in der Regel behandelt werden?",
+  options: [
+    "Virale Pharyngotonsillitis – Analgetische Therapie",
+    "Bakterielle Tonsillitis – Antibiotische Therapie",
+    "Epiglottitis – Intravenöse Antibiotikatherapie",
+    "Laryngitis – Inhalative Kortikosteroide",
+    "Peritonsillarabszess – Chirurgische Drainage"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 087,
+  text: "Bei der indirekten Spiegeltechnik des Kehlkopfes muss bei geöffnetem Mund die Zunge nach vorne gezogen werden. Welche Struktur an der Zunge muss dabei besonders geschont werden?",
+  options: [
+    "Zungenbändchen",
+    "Zungenpapillen",
+    "Geschmacksrezeptoren",
+    "Zungenarterie",
+    "Sublingualdrüse"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 088,
+  text: "Bei einem 5-jährigen Mädchen mit einem chronischen Paukenerguss beidseits soll eine Parazentese durchgeführt werden. Warum und wo wird dieser Eingriff durchgeführt?",
+  options: [
+    "Zur Mittelohrbelüftung - untere Trommelfellquadranten",
+    "Zur Entfernung von Fremdkörpern - obere Trommelfellquadranten",
+    "Zur Diagnostik einer Infektion - vordere Trommelfellquadranten",
+    "Zur Schmerzreduktion - hintere Trommelfellquadranten",
+    "Zur Reinigung des äußeren Gehörgangs - laterale Trommelfellquadranten"
+  ],
+  correctAnswers: [0]
+},
+
+{
+  "id": 089,
+  "text": "Bei einem Lehrer, der circa 20 Zigaretten pro Tag raucht, fällt eine zunehmende Heiserkeit auf. Der HNO-Arzt diagnostiziert ein Reinke Ödem? Wo befindet sich dieses?",
+  "options": [
+    "An den Stimmlippen",
+    "Am Kehldeckel",
+    "In den Aryknorpeln",
+    "Im Sinus piriformis",
+    "Im Nasopharynx"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 090,
+  "text": "Bei einer 67-jährigen Frau liegt eine anbehandelte Otitis media acuta mit Otorrhoe vor. Sie bekommt Augmentin® (Amoxicillin plus Clavulansäure), Seractil® (Dexibuprofen) und einen Nasenspray. Die Schmerzen werden nicht geringer, zudem klagt sie über Drehschwindel seit einem Tag. Welche Ursache für diesen Schwindel ist am wahrscheinlichsten?",
+  "options": [
+    "Labyrinthitis",
+    "Benigner paroxysmaler Lagerungsschwindel",
+    "Morbus Menière",
+    "Vestibuläre Migräne",
+    "Orthostatische Dysregulation"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 091,
+  "text": "Bei einer 76-jährigen Frau, die seit 3 Jahren antikoaguliert ist, muss wegen einer heftigen Epistaxis eine Bellocq-Tamponade rechts durchgeführt werden. Wodurch kann in Folge ein toxischer Schock entstehen?",
+  "options": [
+    "Staphylokokken Toxine",
+    "Clostridium difficile Infektion",
+    "Übermäßige Antikoagulation",
+    "Hypovolämischer Schock",
+    "Allergische Reaktion auf die Tamponade"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 092,
+  "text": "Bei welchen der folgenden Erkrankungen haben Sie im kurzfristigen Verlauf mit der Entstehung einer akuten Dyspnoe zu rechnen? (3 richtige Antworten)",
+  "options": [
+    "Fraktur des Kehlkopfes",
+    "Fremdkörperaspiration",
+    "Bilaterale Parese des N. laryngeus recurrens",
+    "Chronische Rhinosinusitis",
+    "Einseitige Stimmlippenlähmung"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 093,
+  "text": "Bei welchen Krankheitsbildern stellt sich die Indikation zur Tonsillektomie? (3 richtige Antworten)",
+  "options": [
+    "Tonsillenkarzinom",
+    "Peritonsillarabszess",
+    "Tonsillenhyperplasie mit obstruktivem Schlafapnoesyndrom",
+    "Akute Pharyngitis",
+    "Einfache Tonsillitis ohne Rezidive"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 094,
+  "text": "Bei welchen Krankheitsbildern stellt sich die Indikationen für eine Tonsillektomie sind? (2 richtige Antworten)",
+  "options": [
+    "Tonsillenkarzinom",
+    "Peritonsillarabszess",
+    "Akute Tonsillitis",
+    "Virale Pharyngitis",
+    "Einfache Mandelvergrößerung ohne Beschwerden"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 095,
+  "text": "Bei welcher der folgenden Erkrankungen besteht für das Valsalva-Manöver eine Kontraindikation?",
+  "options": [
+    "Otitis media",
+    "Sinusitis maxillaris",
+    "Tonsillitis",
+    "Pharyngitis",
+    "Rhinitis allergica"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 096,
+  "text": "Beim Vorliegen welcher Symptomatik/ welches Befundes muss am ehesten an ein Epipharynxkarzinom gedacht werden?",
+  "options": [
+    "Einseitige rezidivierende Paukenergüsse",
+    "Beidseitige Tonsillenhyperplasie",
+    "Chronische Rhinitis",
+    "Intermittierender Schnupfen",
+    "Reversible Stimmveränderungen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 097,
+  "text": "Der niedergelassene HNO-Facharzt überweist einen 25-jährigen Patienten mit Verdacht auf einen retrotonsillären Abszess in Ihre Notfallambulanz. Welcher der folgenden Befunde entspricht einem klassischen Symptom und führte folglich zur Verdachtsdiagnose?",
+  "options": [
+    "Ödematöse Schwellung der lateralen Pharynxwand",
+    "Beidseitige Tonsillenhyperplasie",
+    "Trockene Schleimhäute",
+    "Seröse Rhinitis",
+    "Vergrößerte submandibuläre Lymphknoten ohne Rötung"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 098,
+  "text": "Ein 35-Jähriger kommt wegen einseitiger Hörverminderung seit 2–3 Tagen zum HNO-Arzt. Schmerzen bestehen nicht. Dieser diagnostiziert eine akute Tubenventilationsstörung links. Beim Weber-Test lateralisiert er ins linke Ohr. Welche Flüssigkeit im Mittelohr ist die wahrscheinlichste Ursache für die Hörstörung?",
+  "options": [
+    "Transsudat",
+    "Eiter",
+    "Blut",
+    "Liquor",
+    "Sebum"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 099,
+  "text": "Ein 4-jähriger Knabe wird dem HNO-Arzt wegen Halsschmerzen vorgestellt. Er hat auch erhöhte Körpertemperatur von max. 37,8° C, Kopf- und Muskelschmerzen und sein Allgemeinzustand ist reduziert. Bei der Untersuchung finden sich im Bereich der vorderen Gaumenbögen, der Gaumentonsillen und der Uvula bläschenförmige Effloreszenzen, die von einem roten Hof umgeben sind. Welches ist der häufigste Erreger dieser Erkrankung?",
+  "options": [
+    "Coxsackie A Virus",
+    "Streptococcus pyogenes",
+    "Epstein-Barr-Virus",
+    "Adenovirus",
+    "Staphylococcus aureus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 100,
+  "text": "Ein 5-jähriger Knabe mit 38 °C Fieber wird in der Nacht von den Eltern in die HNO-Notfallambulanz gebracht. Es fließt seit wenigen Stunden gelbliches Sekret aus dem linken Ohr. Vorher hatte der kleine Patient heftige Ohrenschmerzen. Die besorgte Mutter hat ihm bisher 2-3x täglich Paracetamol-Saft verabreicht. Seit dem Beginn der Otorrhoe haben die Schmerzen deutlich nachgelassen. Die Mutter fragt, warum Sie dennoch dringend ein Antibiotikum empfehlen. Welches ist die zutreffendste Antwort?",
+  "options": [
+    "Wegen der Gefahr der Komplikationen",
+    "Weil die Schmerzen noch anhalten",
+    "Um das Fieber zu senken",
+    "Weil Paracetamol die Infektion nicht heilt",
+    "Da jedes Mittelohrsekret bakteriell bedingt ist"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 101,
+  "text": "Ein 54-jähriger Patient kommt in die HNO Ambulanz wegen seit 1 Tag bestehender Drehschwindelbeschwerden, starker Übelkeit und Erbrechen. Welchen diagnostischen Schritt führen Sie nun als Nächstes durch?",
+  "options": [
+    "Nystagmusprüfung mit der Frenzelbrille",
+    "CT des Schädels",
+    "Blutdruckmessung",
+    "Otoskopie",
+    "Hörtest"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 102,
+  "text": "Ein 55-jähriger Patient leidet unter rezidivierender Epistaxis. Welchen Bereich endonasal müssen Sie mit besonderem Augenmerk untersuchen, da sie die häufigste Prädilektionsstelle für das Auftreten von Epistaxis ist?",
+  "options": [
+    "Locus Kiesselbachi",
+    "Concha nasalis media",
+    "Sinus sphenoidalis",
+    "Meatus nasi superior",
+    "Choanen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 103,
+  "text": "Ein 67-jähriger Patient erkrankt an einem Oropharynxkarzinom. Nach operativer Entfernung des Karzinoms wird eine Strahlentherapie durchgeführt. Ein halbes Jahr nach Beendigung der Strahlentherapie sehen Sie den Patienten zur Routine-Kontrolle in der Ambulanz. Welche der folgenden Pathologien stellt in diesem Fall eine klassische Komplikation einer Strahlentherapie dar?",
+  "options": [
+    "Xerostomie",
+    "Chronische Sinusitis",
+    "Septumperforation",
+    "Vestibularisparoxysmie",
+    "Akute Tonsillitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 104,
+  "text": "Ein 74-jähriger Typ-2 Diabetiker wird vom niedergelassenen HNO-Facharzt mit der Diagnose einer Otitis externa maligna in Ihre Ambulanz überwiesen. Neben lokalen Schmerzen können Sie Sekret im Gehörgang beobachten. Welcher Erreger ist mikrobiologisch am häufigsten nachzuweisen und somit Ursache einer Otitis externa maligna?",
+  "options": [
+    "Pseudomonas aeruginosa",
+    "Staphylococcus aureus",
+    "Candida albicans",
+    "Streptococcus pneumoniae",
+    "Haemophilus influenzae"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 105,
+  "text": "Ein 9-jähriger Bub stürzt mit dem Skateboard und fällt auf die Nase. Bis auf eine kleine Schürfwunde sind keine weiteren Verletzungszeichen erkennbar. Weshalb muss das Kind dennoch dem HNO-Arzt vorgestellt werden? Zum Ausschluss eines/einer:",
+  "options": [
+    "Nasenseptumhämatoms",
+    "Nasenbeinfraktur",
+    "Kieferhöhlenentzündung",
+    "Sinusitis frontalis",
+    "Verletzung des Siebbeins"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 106,
+  "text": "Ein Ihnen bekannter Patient stellt sich mit dem Verdacht eines Cholesteatom-Rezidivs in der Ambulanz vor. Im Rahmen der Ohrmikroskopie sehen Sie ein retrahiertes Trommelfell sowie eine schuppenartige Ansammlung im Bereich des hinteren oberen Quadranten. Welches Epithel findet man charakteristischerweise bei einem Cholesteatom?",
+  "options": [
+    "Verhornendes Plattenepithel",
+    "Mehrreihiges Flimmerepithel",
+    "Kubisches Epithel",
+    "Zylinderepithel mit Becherzellen",
+    "Übergangsepithel"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 107,
+  "text": "Ein Patient berichtete unmittelbar nach einer Mittelohroperation von einer Geschmacksempfindungsstörung. Welche Struktur ist hier typischerweise in Mitleidenschaft gezogen?",
+  "options": [
+    "Chorda tympani",
+    "Nervus vestibulocochlearis",
+    "Nervus trigeminus",
+    "Nervus glossopharyngeus",
+    "Nervus vagus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 108,
+  "text": "Eine 14-jährige Jugendliche mit reduziertem Allgemeinzustand, starken Schluckbeschwerden, vergrößerten Halslymphknoten und hohem Fieber kommt zum HNO-Arzt. Der Arzt für Allgemeinmedizin hat bereits ein Amoxicillin verschrieben. Seit 2 Tagen ist ein generalisierter Hautausschlag entstanden. Welche Erkrankung ist am wahrscheinlichsten?",
+  "options": [
+    "Mononucleiosis infectiosa",
+    "Scharlach",
+    "Masern",
+    "Varizellen",
+    "Bakterielle Tonsillitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 109,
+  "text": "Eine 14-jährige, ansonsten gesunde Patientin erleidet eine akute EBV-Infektion. Mit welcher der angeführten Komplikationen muss in Zusammenhang mit der Erkrankung am ehesten gerechnet werden?",
+  "options": [
+    "Spontane Milzruptur",
+    "Akute Otitis media",
+    "Pneumonie",
+    "Chronische Sinusitis",
+    "Hämorrhagische Zystitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 110,
+  "text": "Eine 45-jährige Patientin stellt sich mit einer Rötung und Schwellung im Bereich der Ohrmuschel mit Aussparung des Ohrläppchens vor. Durch welche Erreger wird die vermutete Erkrankung am häufigsten hervorgerufen? (2 richtige Antworten)",
+  "options": [
+    "Pseudomonas aeruginosa",
+    "Staphylococcus aureus",
+    "Streptococcus pneumoniae",
+    "Candida albicans",
+    "Haemophilus influenzae"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 111,
+  "text": "Eine 45-jährige Patientin wird mit der Rettung mit starkem Drehschwindel und Übelkeit zu Ihnen in die Notfallambulanz eingeliefert. Welche begleitenden Symptome sprechen für eine peripher-vestibuläre Störung? (2 richtige Antworten)",
+  "options": [
+    "Hörminderung",
+    "Tinnitus",
+    "Doppelbilder",
+    "Hemiparese",
+    "Sensibilitätsstörungen"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 112,
+  "text": "Eine 50-jährige Lehrerin kommt in die Ambulanz und klagt über seit mehreren Monaten bestehende Heiserkeit und Räusperzwang. Sie raucht 20 Zigaretten pro Tag, Alkohol trinkt sie nie. Endoskopisch zeigt sich eine lappige, ödematöse Schwellung der linken Stimmlippe mit weißlichen Epithelverdickungen. Welche der genannten Maßnahmen führt zur Sicherung der Diagnose?",
+  "options": [
+    "Direkte Endoskopie und Histologie",
+    "Laryngostroboskopie",
+    "CT des Kehlkopfes",
+    "Therapie mit Inhalativa",
+    "Sonographie der Halsweichteile"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 113,
+  "text": "Eine 87-jährige Patientin kommt mit heftigen Schluckschmerzen und Druck im Hals an die HNO-Klinik. Sie gibt an, beim Essen von einer Hühnerbrust diese Symptome plötzlich verspürt zu haben. In der Mundhöhle habe sie keinen Knochen gespürt, allerdings hat sie eine totale Ober- und Unterkieferprothese. Bisher hat sie beim Essen nie Schwierigkeiten gehabt. Mit welchem Operationsinstrument kann man große Fremdkörper am besten aus dem Ösophagus entfernen?",
+  "options": [
+    "Starres Ösophaguskop",
+    "Flexibles Endoskop",
+    "Magensonde",
+    "Laryngoskop",
+    "Nasopharyngoskop"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 115,
+  "text": "Eine Mutter kommt mit ihrer 4-jährigen Tochter in die HNO-Klinik. Sie ist vom HNO-Facharzt geschickt worden. Dieser hat ihr erklärt, dass bei ihrer kleinen Tochter wegen eines persistierenden Paukenergusses ein Trommelfellschnitt zum Absaugen desselben gemacht werden soll. Wie heißt dieser operative Eingriff am Trommelfell?",
+  "options": [
+    "Paracentese",
+    "Tympanoplastik",
+    "Mastoidektomie",
+    "Stapedotomie",
+    "Ossikuloplastik"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 116,
+  "text": "Eine Studienkollegin leidet an rezidivierender Epistaxis und fragt Sie nach möglichen Ursachen. Welche zwei wichtigen Risikofaktoren können Sie ihr nennen? (2 richtige Antworten)",
+  "options": [
+    "Einnahme von Cumarinen",
+    "Morbus Rendu-Osler",
+    "Chronische Rhinosinusitis",
+    "Hypertrophe Tonsillen",
+    "Laryngitis"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 117,
+  "text": "In der Notfallambulanz stellt sich eine 37-jährige Frau mit akuter, einseitiger Hörminderung des rechten Ohres vor. Zur Orientierung führen Sie eine Stimmgabelüberprüfung durch. Anhand welcher Konstellation vermuten Sie eine isolierte Schallleitungsstörung der betroffenen (rechten) Seite?",
+  "options": [
+    "Weber lateralisiert nach rechts, Rinne rechts negativ, Rinne links positiv.",
+    "Weber lateralisiert nach links, Rinne rechts negativ, Rinne links positiv.",
+    "Weber lateralisiert nach rechts, Rinne rechts positiv, Rinne links negativ.",
+    "Weber lateralisiert nach links, Rinne rechts positiv, Rinne links positiv.",
+    "Weber Mittellinie, Rinne beidseits negativ."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 118,
+  "text": "Was sind die 2 typischen Symptome bei Laryngitis subglottica? (2 richtige Antworten)",
+  "options": [
+    "Bellender Husten",
+    "Inspiratorischer Stridor",
+    "Rinorrhoe",
+    "Hämoptyse",
+    "Zyanose"
+  ],
+  "correctAnswers": [0, 1]
+},
+
+{
+  "id": 120,
+  "text": "Welche Art der Schwerhörigkeit ist typisch für den Morbus Menière?",
+  "options": [
+    "Tieftonschwerhörigkeit",
+    "Hochtonschwerhörigkeit",
+    "Schwerhörigkeit im mittleren Frequenzbereich",
+    "Schallempfindungsschwerhörigkeit aller Frequenzen",
+    "Schallleitungsschwerhörigkeit"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 121,
+  "text": "Welche Erstmaßnahme ist bei Verdacht auf Blutung nach Tonsillektomie durchzuführen?",
+  "options": [
+    "Sitzende Körperhaltung",
+    "Intravenöse Antibiotikagabe",
+    "Lagerung in Seitenlage",
+    "Gabe von Tranexamsäure",
+    "Kompression von außen"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 122,
+  "text": "Ein 20-jähriger Patient stellt sich in der HNO Ambulanz mit einer rezidivierenden einseitigen Otorrhoe, begleitender Otalgie und Schallleitungsschwerhörigkeit vor. Für welche Krankheitsbilder wären diese Symptome typisch? (3 richtige Antworten)",
+  "options": [
+    "Chronische Otitis media mesotympanalis",
+    "Cholesteatom",
+    "Rezidivierende Otitis externa",
+    "Morbus Menière",
+    "Akustikusneurinom"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 123,
+  "text": "Bei der endonasalen Nasennebenhöhlen-Chirurgie (FESS) besteht als typische, seltene Komplikation das Risiko der Orbitaverletzung. Dabei kommt es zuerst zu einer Verletzung der Lamina papyracea. Wo befindet sich die Lamina papyracea? Zwischen:",
+  "options": [
+    "Den Siebbeinzellen und der medialen Orbita",
+    "Der Stirnhöhle und der lateralen Orbita",
+    "Der Keilbeinhöhle und der oberen Orbita",
+    "Der Nasenhöhle und der lateralen Orbita",
+    "Dem Oberkiefer und der unteren Orbita"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 124,
+  "text": "Bei einem 67-jährigen schweren Raucher wird ein Kehlkopfkarzinom diagnostiziert, das den gesamten glottischen Raum, den Sinus Morgagni und die Taschenfalten erfasst hat. Wie bezeichnet man dieses Karzinom und welches ist das Leitsymptom am Beginn der Erkrankung?",
+  "options": [
+    "Transglottisches Karzinom - Heiserkeit",
+    "Supraglottisches Karzinom - Dysphagie",
+    "Subglottisches Karzinom - Stridor",
+    "Glottisches Karzinom - Dyspnoe",
+    "Epiglottisches Karzinom - Globusgefühl"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 125,
+  "text": "Bei einem 78-jährigen Raucher wird eine einseitige, blutig-eitrige, fötide Nasensekretion festgestellt. Diese besteht schon seit Wochen ohne Schmerzen. Welche der genannten Ursachen ist die wahrscheinlichste?",
+  "options": [
+    "Malignom der Nase",
+    "Chronische Rhinosinusitis",
+    "Fremdkörper",
+    "Atrophische Rhinitis",
+    "Septumhämatom"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 126,
+  "text": "Bei einer 18-jährigen Patientin mit geringer Einschränkung des Allgemeinbefindens und leichten Halsschmerzen fällt eine gräulich belegte linke Gaumen-Mandel beim Blick in den Spiegel auf; die rechte Mandel erscheint unauffällig. Außerdem bemerken Sie einen vergrößerten cervikalen Lymphknoten. Welche ist die primäre Verdachtsdiagnose?",
+  "options": [
+    "Angina Plaut-Vincenti",
+    "Mononucleosis infectiosa",
+    "Scharlachangina",
+    "Diphtherie",
+    "Akute Streptokokken-Tonsillitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 127,
+  "text": "Bei Sturz auf den Kehlkopf kann es zu einer Fraktur des Larynx kommen. Welche Untersuchungen sind bei Verdacht einer Larynxfraktur primär angezeigt? (3 richtige Antworten)",
+  "options": [
+    "Palpation des Halses",
+    "Larynxendoskopie",
+    "Kopf-Hals-CT",
+    "Sonographie der Halsweichteile",
+    "Audiometrie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 128,
+  "text": "Beim Aufklärungsgespräch vor einer Strumektomie erklärt der Arzt der Patientin, dass bei der Operation auch Nerven zu Schaden kommen können. Welcher Nerv ist davon am häufigsten betroffen?",
+  "options": [
+    "N. laryngeus inferior",
+    "N. laryngeus superior",
+    "N. hypoglossus",
+    "N. glossopharyngeus",
+    "N. vagus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 129,
+  "text": "Die Eltern eines 2-jährigen Mädchens berichten, dass die kleine Patientin in den letzten Tagen immer wieder zum rechten Ohr gegriffen habe. In der klinischen Untersuchung fällt Ihnen die abstehende rechte Ohrmuschel sowie eine retroaurikuläre Rötung und Schwellung auf. Welche ist die primäre Verdachtsdiagnose und welcher ist der nächste diagnostische Schritt, nachdem Sie mittels Otoskopie ein gerötetes Trommelfell beobachtet haben?",
+  "options": [
+    "Akute Mastoiditis - Schläfenbein-CT",
+    "Otitis externa - Ohrabstrich",
+    "Zervikale Lymphadenitis - Sonographie",
+    "Ohrfurunkel - Lokale Antibiose",
+    "Othematom - Punktion"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 130,
+  "text": "Ein 23-jähriger Ringer stellt sich mit einer geschwollenen Ohrmuschel in der HNO-Ambulanz vor und die HNO-Ärztin diagnostiziert ein Othämatom. Nachdem bei dem Patienten eine Inzision der Ohrmuschel mit Absaugen von Blut und Einlage einer Lasche durchgeführt wurde, muss primär welche medizinische Maßnahme angeschlossen werden?",
+  "options": [
+    "Anlegen eines Druckverbandes",
+    "Antibiotikagabe",
+    "Lymphdrainage",
+    "Kühlung mit Eis",
+    "Analgetische Therapie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 131,
+  "text": "Ein 3-jähriger Knabe hat einen Teil einer Erdnuss aspiriert. Er hustet sofort heftig, ist nicht zyanotisch und atmet nicht stridorös. Über Schmerzen klagt er nicht. Was ist aus diagnostischen und therapeutischen Gründen unbedingt durchzuführen?",
+  "options": [
+    "Laryngo-Tracheo-Bronchoskopie",
+    "Thoraxröntgen in 2 Ebenen",
+    "Gabe eines Bronchodilatators",
+    "Sonographie des Thorax",
+    "Nasopharyngoskopie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 132,
+  "text": "Ein 37-jähriger Mann stellt sich in der HNO-Ambulanz vor und berichtet über rezidivierende kurze Schwindelanfälle. Im Rahmen der klinischen Begutachtung stellt die HNO-Ärztin einen Nystagmus bei Durchführung des Epley-Manövers fest. Was ist die wahrscheinlichste Diagnose?",
+  "options": [
+    "Benigner paroxysmaler Lagerungsschwindel",
+    "Morbus Menière",
+    "Vestibuläre Migräne",
+    "Neuritis vestibularis",
+    "Kleinhirninfarkt"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 133,
+  "text": "Ein 40-jähriger Patient stellt sich beim Hausarzt mit starken seitenbetonten Schluckbeschwerden und Halsschmerzen vor. Außerdem zeigt sich eine kloßige Sprache. Bei der Untersuchung des Mundrachens fällt eine deutliche Rötung und Schwellung oberhalb der linken Mandel auf. Welche ist die zutreffendste Verdachtsdiagnose?",
+  "options": [
+    "Peritonsillar-Abszess",
+    "Akute Pharyngitis",
+    "Mononukleose",
+    "Herpangina",
+    "Epiglottitis"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 134,
+  "text": "Ein 50-jähriger Fernfahrer, starker Raucher, wurde vor 6 Wochen wegen einer Angina tonsillaris mit Antibiotika behandelt. Die Schluckschmerzen mit Ausstrahlung ins linke Ohr gingen jedoch nicht zurück. Er geht nun zum HNO-Arzt, der bei der indirekten Spiegelung des gesamten Pharynx und Larynx keinen pathologischen Befund erheben kann. Bei der lupenendoskopischen Untersuchung entdeckt er jedoch fragliches Fremdgewebe im linken Sinus piriformis. Welche weitere klinische Untersuchung ist jetzt notwendig und wie kann die Diagnose gesichert werden?",
+  "options": [
+    "Panendoskopie - Histologie",
+    "Therapie mit hochdosierten Antibiotika für zwei Wochen",
+    "Sonographie des Halses zur Beurteilung der Lymphknoten",
+    "CT des Schädels zur Beurteilung der Schädelbasis",
+    "Röntgenaufnahme des Thorax zur Tumorausschlussdiagnostik"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 135,
+  "text": "Ein 55-jähriger Patient kommt wegen eines Gesichtsschmerzes über der rechten Kieferhöhle zum HNO-Arzt. Die rechte Nase ist komplett verlegt. Der HNO-Arzt möchte zum mittleren Nasengang sehen. Welche Maßnahme führt er deshalb durch?",
+  "options": [
+    "Abschwellung mit Ephedrin",
+    "Sofortige chirurgische Eröffnung der Kieferhöhle",
+    "Therapie mit oralen Antibiotika ohne weitere Diagnostik",
+    "Ultraschall der Nasennebenhöhlen zur Diagnostik",
+    "Anwendung von Kochsalzlösung zur Spülung der Nase"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 136,
+  "text": "Ein 60-jähriger Patient stellt sich mit akuter Epistaxis vor. Welche Maßnahmen ergreifen Sie? (4 richtige Antworten)",
+  "options": [
+    "Ich bitte den Patienten, den Kopf nach vorne zu beugen.",
+    "Ich lasse ihm eine Eiskrawatte auf den Nacken legen.",
+    "Ich lasse den Blutdruck messen.",
+    "Kompression der Nasenflügel",
+    "Den Kopf des Patienten nach hinten neigen, um das Blut zu schlucken."
+  ],
+  "correctAnswers": [0, 1, 2, 3]
+},
+{
+  "id": 137,
+  "text": "Ein 70-jähriger Patient wird in der HNO-Tumorambulanz mit einer rasch an Größe zunehmenden Raumforderung im Bereich der Ohrspeicheldrüse mit beginnender Facialisparese vorstellig. Da somit ein dringender Malignomverdacht besteht, an welchen häufigsten histopathologischen Subtyp der malignen Tumoren der großen Kopfspeicheldrüsen ist primär zu denken?",
+  "options": [
+    "Mukoepidermoides Karzinom",
+    "Pleomorphes Adenom",
+    "Adenoid-zystisches Karzinom",
+    "Warthin-Tumor",
+    "Papilläres Schilddrüsenkarzinom"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 138,
+  "text": "Ein 89-jähriger Patient wird mit der Rettung mit massivem Nasenbluten ins Spital eingeliefert. Die Messung des Blutdrucks ergibt einen Wert von 180/120 mmHg, weshalb von der Notfallmedizinerin eine pharmakologische Blutdrucksenkung angeordnet wird. Die zugezogene HNO-Ärztin setzt bei dem Patienten nach der klinischen Begutachtung eine Nasen-Ballontamponade, da die Blutung von weit hinten erfolgt. Da die Blutung auch nach Blutdrucksenkung und Tamponade weiter persistiert, wird die Indikation zur operativen Blutstillung gestellt. Aus welchem Gefäß blutet der Patient am ehesten?",
+  "options": [
+    "A. sphenopalatina",
+    "A. ethmoidalis anterior",
+    "A. ethmoidalis posterior",
+    "A. facialis",
+    "A. carotis interna"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 139,
+  "text": "Ein Jugendlicher kommt von einem anderen praktischen Arzt wegen einer antibiotikaresistenten Angina tonsillaris und großen Lymphknotenpaketen am Hals zu Ihnen. Der Allgemeinzustand ist gering reduziert, es besteht kein Stridor. Welches bildgebende Verfahren und in welcher Körperregion neben dem Hals werden Sie veranlassen?",
+  "options": [
+    "Ultraschall/Oberbauch",
+    "Röntgen/Thorax",
+    "CT/Hals",
+    "MRT/Kopf",
+    "Szintigraphie/Skelett"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 140,
+  "text": "Eine 28-jährige Frau stellt sich mit seit 2 Tagen bestehenden Ohrenschmerzen auf der linken Seite sowie ipsilateraler Hörminderung in Ihrer Ambulanz vor. In der Ohrmikroskopie können Sie ein stark gerötetes Trommelfell beobachten. Sie stellen somit die Arbeitsdiagnose einer Otitis media acuta. Welche der folgenden Pathologien können bei dieser Diagnose als klassische Komplikationen erwartet werden? (3 richtige Antworten)",
+  "options": [
+    "Mastoiditis",
+    "Fazialisparese",
+    "Labyrinthitis",
+    "Epistaxis",
+    "Sinusitis frontalis"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 141,
+  "text": "Eine 35-jährige Patientin berichtet, schon mehrfach an den Nasennebenhöhlen aufgrund einer Polyposis nasi operiert worden zu sein. Nun habe sie wieder Beschwerden. Nach welchen Symptomen werden Sie zuerst fragen, um die Erkrankung richtig einschätzen zu können? (2 richtige Antworten)",
+  "options": [
+    "Behinderte Nasenatmung",
+    "Riechverlust",
+    "Ohrenschmerzen",
+    "Husten mit Auswurf",
+    "Juckreiz an den Augen"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 142,
+  "text": "Eine 43-jährige Frau wird in die Notfallambulanz mit dem Rettungstransport eingeliefert und klagt in der Erstbegutachtung über deutliche Schwindelbeschwerden. Welche Untersuchungen sollte die beigezogene HNO-Ärztin im Rahmen der klinischen Begutachtung zuallererst durchführen? (3 richtige Antworten)",
+  "options": [
+    "Untersuchung mittels Frenzelbrille",
+    "Ohrmikroskopie",
+    "Kopfimpuls-Test",
+    "Blutdruckmessung an beiden Armen",
+    "EKG zur Beurteilung der Herzfrequenz"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 143,
+  "text": "Eine 45-jährige Patientin klagt über Heiserkeit seit 2 Monaten. Sie raucht ca. 10 Zigaretten pro Tag. Welcher diagnostische Schritt sollte als nächstes erfolgen?",
+  "options": [
+    "Eine Laryngoskopie des Kehlkopfes, um ein Malignom auszuschließen.",
+    "Eine antibiotische Therapie gegen mögliche bakterielle Infektion.",
+    "Ein CT des Thorax zur Beurteilung der Lunge.",
+    "Eine logopädische Therapie zur Verbesserung der Stimme.",
+    "Eine Verordnung von Kortison zur Entzündungshemmung."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 144,
+  "text": "Eine 46-jährige Patientin stellt sich mit einer chronischen Sinusitis mit Polyposis nasi vor. Welche medikamentösen Therapien können in diesem Fall prinzipiell in Betracht gezogen werden? (3 richtige Antworten)",
+  "options": [
+    "Orale Kortikosteroide",
+    "Intranasale Kortikosteroide",
+    "Monoklonale Antikörper gegen Interleukine",
+    "Langzeitantibiotikatherapie mit Penicillin",
+    "Antihistaminika zur Reduktion der Schleimproduktion"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 145,
+  "text": "Eine 48-jährige Mittelschullehrerin geht zum HNO-Facharzt, da sie bei bestehendem banalen, viralen Infekt der oberen Luftwege nach 5-stündigem Unterricht die Stimme nahezu verloren hat. Was raten Sie der Patientin, damit sie bald wieder ihre Stimme belasten kann? (2 richtige Antworten)",
+  "options": [
+    "Inhalationen",
+    "Schweigen",
+    "Einnahme von Antibiotika zur schnellen Genesung",
+    "Vermehrtes Flüstern, um die Stimme zu schonen",
+    "Tägliches intensives Sprechen, um die Stimme zu trainieren"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 146,
+  "text": "Eine 57-jährige Patientin berichtet über einen seit ca. 2 Jahren bestehenden Knoten prä- bzw. infraaurikulär links. Dieser sei nicht schmerzhaft und dürfte seit 2 Jahren nicht an Größe zugenommen haben. Die Facialisfunktion zeigt sich beidseits unauffällig. Welche Diagnose vermuten Sie und was wäre der erste diagnostische Schritt?",
+  "options": [
+    "Benigner Parotistumor – Ultraschall",
+    "Malignes Lymphom – CT mit Kontrastmittel",
+    "Abszess – antibiotische Therapie",
+    "Speichelsteinerkrankung – Sialographie",
+    "Metastase eines Hauttumors – Biopsie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 147,
+  "text": "Eine 76-jährige Frau stellt sich mit heftigem Nasenbluten vor. Welche Maßnahmen sollten als erste erfolgen? (3 richtige Antworten)",
+  "options": [
+    "Kompression der Nasenflügel",
+    "Blutdruckmessung",
+    "Kopf nach vorne",
+    "Kopf nach hinten neigen, um das Blut zu schlucken",
+    "Sofortige Gabe von Antibiotika zur Infektionsprophylaxe"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 148,
+  "text": "Eine Kollegin berichtet Ihnen über einen Patienten mit einseitiger, partieller Gesichtslähmung. Sie möchte von Ihnen wissen, welche Erkrankungen am ehesten dafür in Frage kommen. Was antworten Sie? (3 richtige Antworten)",
+  "options": [
+    "Bell’sche (idiopathische) Parese",
+    "Erkrankungen des Ohres (z.B. Otitis media)",
+    "Erkrankungen der Ohrspeicheldrüse",
+    "Zervikale Bandscheibenprotrusion",
+    "Hyperthyreose"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 149,
+  "text": "Eine Studienkollegin hat seit 2 Tagen eine einseitige schmerzhafte Ohrmuschelrötung und – schwellung. Nach klinischer Untersuchung stellen Sie fest, dass das Ohrläppchen mitbetroffen ist. Welche ist die wahrscheinlichste Diagnose und welche Therapie würde Sie empfehlen?",
+  "options": [
+    "Ohrmuschelerysipel – i.v. antibiotische Therapie",
+    "Perichondritis – lokale Wärmeanwendung",
+    "Zoster oticus – antivirale Therapie",
+    "Ohrmuschelekzem – topische Kortikosteroide",
+    "Furunkel – chirurgische Inzision"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 150,
+  "text": "In der Ambulanz sitzt Ihnen ein Vater mit einem 5 Monate alten gehörlosen Mädchen gegenüber. Sie glauben, dass das Kind von einem Cochlea Implantat (Cl) profitieren würde. Welche Grundzüge der Funktion des Implantates müssen Sie dem Vater erklären und welche Konsequenzen für das Kind kann er sich erwarten? (2 richtige Antworten)",
+  "options": [
+    "Cl wird in die Schnecke eingeführt",
+    "Cl wandelt Schallwellen in elektrische Signale um",
+    "Cl stellt das natürliche Hörvermögen wieder vollständig her",
+    "Cl kann jederzeit problemlos entfernt werden, ohne Folgen für das Kind",
+    "Cl benötigt keine weitere Nachsorge oder Rehabilitation"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 151,
+  "text": "In der Tonaudiometrie eines 45-jährigen Mannes diagnostizieren Sie eine Schallleitungsschwerhörigkeit. Welche von den u.a. Krankheitsbildern sind am ehesten anzudenken? (2 richtige Antworten)",
+  "options": [
+    "Otitis media acuta",
+    "Otitis media chronica",
+    "Presbyakusis",
+    "Morbus Menière",
+    "Akustikusneurinom"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 152,
+  "text": "Warum sollte nach einer Schilddrüsen-Operation ein laryngoskopischer Status der Stimmlippen durchgeführt werden? (2 richtige Antworten)",
+  "options": [
+    "Zur Dokumentation der Stimmlippenbeweglichkeit",
+    "Zur Dokumentation einer eventuellen postoperativen Rekurrens-Parese",
+    "Zur Kontrolle der Schilddrüsenfunktion",
+    "Zur Beurteilung der Luftröhre auf mögliche Engstellen",
+    "Zur Überprüfung einer möglichen postoperativen Wundinfektion"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 153,
+  "text": "Wegen einer chronischen polypoiden Rhinosinusitis ist bei einer 45-jährigen Patientin mit sinubronchialem Syndrom eine sanierende Nasen-/Nasennebenhöhlen-Chirurgie vorgesehen. Im Zuge der präoperativen Aufklärung werden Sie von der Patientin gefragt, welche schwerwiegenden Folgen dabei auftreten können. Was antworten Sie? (2 richtige Antworten)",
+  "options": [
+    "Sehstörung",
+    "Liquorrhoe",
+    "Hörsturz",
+    "Schädigung des Nervus facialis",
+    "Zahnverfärbungen"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 154,
+  "text": "Welche Form der Hörstörung kann beim Zoster oticus auftreten?",
+  "options": [
+    "Schallempfindungsschwerhörigkeit",
+    "Schallleitungsschwerhörigkeit",
+    "Gemischte Schwerhörigkeit",
+    "Retrocochleäre Schwerhörigkeit",
+    "Zentrale Schwerhörigkeit"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 155,
+  "text": "Welche Funktion wird mit dem Kopf-Impuls-Test untersucht?",
+  "options": [
+    "Bogengangs-Funktion",
+    "Mittelohr-Funktion",
+    "Ohrmuschel-Funktion",
+    "Cochlea-Funktion",
+    "Tubenbelüftungs-Funktion"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 156,
+  "text": "Welche Funktionen vermittelt der 8. Hirnnerv? (2 richtige Antworten)",
+  "options": [
+    "Hören",
+    "Gleichgewicht",
+    "Sehen",
+    "Riechen",
+    "Schmecken"
+  ],
+  "correctAnswers": [0, 1]
+},
+{
+  "id": 157,
+  "text": "Welche Therapiestrategie sollte beim belastenden chronischen Tinnitus angestrebt werden?",
+  "options": [
+    "Verhaltenstherapeutische Maßnahmen",
+    "Antibiotische Therapie",
+    "Kortisontherapie",
+    "Operative Entfernung des Innenohrs",
+    "Strikte Ruhe und Vermeidung jeglicher Geräusche"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 158,
+  "text": "Welcher der folgenden Tumoren ist der häufigste Tumor der Speicheldrüsen?",
+  "options": [
+    "Pleomorphes Adenom",
+    "Adenoid-zystisches Karzinom",
+    "Mukoepidermoides Karzinom",
+    "Warthin-Tumor",
+    "Plattenepithelkarzinom"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 159,
+  "text": "Welcher Nerv innerviert die meisten Kehlkopfmuskeln?",
+  "options": [
+    "N. laryngeus inferior",
+    "N. laryngeus superior",
+    "N. glossopharyngeus",
+    "N. hypoglossus",
+    "N. vagus"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 160,
+  "text": "Abstehende Ohrmuscheln können psychisch belastend sein, daher wird bei starker Ausprägung eine chirurgische Therapie (Otopexie) am besten vor der Einschulung mit 5 oder 6 Jahren empfohlen. Welches sind häufige Pathologien, die zu abstehenden Ohrmuscheln führen? (3 richtige Antworten)",
+  "options": [
+    "Eine gering ausgeprägte Anthelixfalte",
+    "Ein zu großes Cavum conchae",
+    "Ein abstehender Lobulus",
+    "Eine verengte Gehörgangsöffnung",
+    "Eine vergrößerte Mastoidzelle"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 161,
+  "text": "Bei einem einjährigen Kind wird eine Surditas in der Hirnstammaudiometrie bestätigt. CT Felsenbein und MRT Schädel werden als unauffällig befundet. Welche Vorgehensweise ist am ehesten zur Therapie geeignet? Einsetzen von:",
+  "options": [
+    "Cochlea-Implantaten",
+    "Hörgeräten",
+    "Mittelohrimplantaten",
+    "Knochenleitungshörgeräten",
+    "Kortisontherapie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 162,
+  "text": "Die Indikation zur Tonsillektomie (TE) sollte streng gestellt werden. Leitlinien empfehlen, erst bei sieben Tonsillitiden im letzten Jahr, eine TE durchzuführen. Warum vor allem?",
+  "options": [
+    "Aufgrund des Nachblutungsrisikos",
+    "Weil eine TE keine langfristige Wirkung hat",
+    "Wegen der Gefahr einer postoperativen Stimmbandlähmung",
+    "Da eine TE häufig zu einer Zunahme von Allergien führt",
+    "Weil es keine wirksame Anästhesiemethode gibt"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 163,
+  "text": "Ein 20-jähriger Profi-Surfer klagt über progredienten, symmetrischen Hörverlust, der sich zuletzt massiv verschlechtert hat. Im Rahmen der Ohrmikroskopie zeigen sich nicht- verschiebliche, harte Strukturen, die den äußeren Gehörgang bds. komplett verlegen. Die Knochenleitung ist unauffällig, es liegt aber ein kompletter Schallleitungsblock vor. Was ist die sinnvollste Therapie?",
+  "options": [
+    "Abtragung der hyperostotischen Läsionen",
+    "Verordnung von Hörgeräten",
+    "Langfristige antibiotische Therapie",
+    "Einsatz eines Cochlea-Implantats",
+    "Tympanoplastik zur Verbesserung der Mittelohrfunktion"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 164,
+  "text": "Ein 20-jähriger Profi-Surfer klagt über progredienten, symmetrischen Hörverlust, der sich zuletzt massiv verschlechtert hat. Im Rahmen der Ohrmikroskopie zeigen sich nicht- verschiebliche, harte Strukturen, die den äußeren Gehörgang bds. komplett verlegen. Die Knochenleitung ist unauffällig, es liegt aber ein kompletter Schallleitungsblock vor. Was ist die sinnvollste Therapie?",
+  "options": [
+    "Abtragung der hyperostotischen Läsionen",
+    "Verordnung von Hörgeräten",
+    "Langfristige antibiotische Therapie",
+    "Einsatz eines Cochlea-Implantats",
+    "Tympanoplastik zur Verbesserung der Mittelohrfunktion"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 165,
+  "text": "Ein 25-jähriger Ringer kommt mit einer akut aufgetretenen schmerzlosen Schwellung der rechten Ohrmuschel zu Ihnen. Unmittelbar nachdem er im Training ein stumpfes Trauma im Ohrbereich erlitten hatte, sei die Schwellung aufgetreten und seither kontinuierlich größer geworden. Wie ist in diesem Fall am ehesten weiter vorzugehen?",
+  "options": [
+    "Inzision in Lokalanästhesie",
+    "Gabe von oralen Antibiotika",
+    "Abwarten, da die Schwellung sich spontan zurückbildet",
+    "Kühlung und Schmerztherapie",
+    "Operative Entfernung des betroffenen Gewebes"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 166,
+  "text": "Ein 4-jähriger Junge hat sich eine kleine Glasmurmel in den äußeren Gehörgang gesteckt und diese kann von den Eltern nicht entfernt werden. Wie sollte der:die Arzt:Ärztin vorgehen?",
+  "options": [
+    "Der Kopf des Kindes wird von einem Elternteil fixiert und die Murmel mittels Häkchen vorsichtig entfernt.",
+    "Die Murmel wird mit einer Pinzette ohne weitere Maßnahmen entfernt.",
+    "Das Kind wird sofort in Vollnarkose versetzt, um die Murmel zu entfernen.",
+    "Die Murmel wird durch Spülung mit Wasser herausgespült.",
+    "Es wird abgewartet, ob die Murmel sich von selbst herausbewegt."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 167,
+  "text": "Ein 40-jähriger Patient stellt sich mit reduziertem Allgemeinzustand und starker Schwindelsymptomatik vor. Er wird von der Rettung liegend in die Ambulanz gebracht. Der Patient ist offensichtlich übergewichtig, wirkt blass und kaltschweißig. Am Weg ins Krankenhaus musste er sich mehrmals übergeben. Unter der Frenzelbrille zeigt sich ein angedeuteter Spontannystagmus nach rechts. Beim Kopf-Impuls-Test zeigt sich beidseits keine Nachstell-Sakkade. Wie sollte das primäre weitere Vorgehen aussehen?",
+  "options": [
+    "Man legt einen Venenzugang und bittet die diensthabenden Neurolog:innen um ein Konsil.",
+    "Man verabreicht sofort Antiemetika und entlässt den Patienten mit einer Empfehlung zur Schonung.",
+    "Man verabreicht Kortikosteroide und beobachtet den Patienten stationär für 24 Stunden.",
+    "Man beginnt eine empirische Antibiotikatherapie gegen eine mögliche Labyrinthitis.",
+    "Man verordnet Physiotherapie zur Schwindelrehabilitation und entlässt den Patienten."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 168,
+  "text": "Ein 41-jähriger Patient stellt sich in der Notfallambulanz mit akut eingesetztem Drehschwindel und Hörminderung nach einem Sprung ins Wasser vor. Der Hergang ist dem Patienten sehr dramatisch in Erinnerung, da er unter Wasser die Orientierung verloren hatte. Glücklicherweise konnte er aus dem Wasser gerettet werden. Der Drehschwindel besteht weiterhin in abgeschwächter Form und am linken Ohr hört der Patient subjektiv gar nichts mehr. Wie lautet die primäre Verdachtsdiagnose?",
+  "options": [
+    "Rundfenstermembranruptur",
+    "Akustikusneurinom",
+    "Morbus Menière",
+    "Labyrinthitis",
+    "Barotrauma des Trommelfells"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 169,
+  "text": "Ein 47-jähriger Patient wird von der Neurologie mit peripherer Facialisparese rechts zugewiesen. Die klinische HNO-Untersuchung zeigt Bläschen im Bereich der rechten Ohrmuschel und in weiterer Folge bestätigt sich die von Ihnen deshalb vermutete Diagnose. Welche Therapie sollte in diesem Fall prioritär initiiert werden?",
+  "options": [
+    "Cortison plus Virostatikum systemisch",
+    "Antibiotische Therapie",
+    "Chirurgische Dekompression des Nervs",
+    "Ausschließlich symptomatische Therapie mit Analgetika",
+    "Hochdosierte Vitamin-B-Therapie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 170,
+  "text": "Ein 53-jähriger Patient wurde mit der Diagnose eines Vestibularisausfalls rechts stationär aufgenommen und es zeigte sich mit der Frenzelbrille ein 3.-grädiger Spontannystagmus. Am nächsten Tag berichtet er über eine Besserung der Schwindelbeschwerden und die Untersuchung mittels Frenzelbrille ergibt einen 2.-grädigen Spontannystagmus. Was sieht man nun unter der Frenzelbrille?",
+  "options": [
+    "Einen Nystagmus nach links bei Blick nach links und geradeaus.",
+    "Einen Nystagmus nach rechts bei Blick nach rechts und geradeaus.",
+    "Einen Nystagmus nach rechts bei Blick nach links und rechts.",
+    "Einen Nystagmus nur noch bei Kopfdrehung nach rechts.",
+    "Keinen Nystagmus mehr, da die Beschwerden nachgelassen haben."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 171,
+  "text": "Ein 54-jähriger Patient hat die Radiochemotherapie eines Tonsillenkarzinoms beendet. Es lag ein N0-Stadium des Halses vor. Welches ist die Methode der Wahl bei Follow-up Kontrollen des Halses?",
+  "options": [
+    "Ultraschall",
+    "CT mit Kontrastmittel",
+    "MRT des Halses",
+    "PET-CT",
+    "Röntgenaufnahme des Halses"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 172,
+  "text": "Ein 56-jähriger Mann bemerkt, seit etwa 4 Wochen links schlechter zu hören. Er war in letzter Zeit weder verkühlt noch akuter Lärmbelastung ausgesetzt. Die von ihm konsultierte HNO- Ärztin findet als erste Auffälligkeit bei der Ohrmikroskopie einen Mittelohrerguss links. Außerdem tastet sie einen vergrößerten nuchalen Lymphknoten. Welche weitere Untersuchung muss im Rahmen des HNO-Status bei diesem Patienten auf jeden Fall erfolgen?",
+  "options": [
+    "Endoskopie des Nasenrachens",
+    "Audiometrie mit Tympanometrie",
+    "CT des Schädels",
+    "Sonographie des Halses",
+    "Blutuntersuchung auf Infektionsparameter"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 173,
+  "text": "Ein 56-jähriger übergewichtiger (BMI 35) Patient berichtet über ausgeprägte Tagesmüdigkeit und seine Frau meint, dass er stark schnarche und manchmal glaube sie, dass er auch Atemaussetzer habe. Was ist die primäre Verdachtsdiagnose und welche Maßnahme ist als nächste zu empfehlen?",
+  "options": [
+    "Obstruktives Schlafapnoesyndrom - Schlafscreening (Polygraphie)",
+    "Zentrale Schlafapnoe - MRT des Gehirns",
+    "Chronische Rhinosinusitis - CT der Nasennebenhöhlen",
+    "Primäre Insomnie - Psychologische Beratung",
+    "Herzinsuffizienz - Echokardiographie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 174,
+  "text": "Ein 65-jähriger Patient klagt über rechtsseitige Ohrenschmerzen. Bei der Ohrmikroskopie sehen Sie einen blanden Befund des Gehörganges und des Mittelohres ohne Hinweise auf Belüftungsstörung. Welche weiteren Bereiche sind primär zu untersuchen und warum? (3 richtige Antworten)",
+  "options": [
+    "Mund/Mundrachen aufgrund der Möglichkeit ausstrahlender Schmerzen durch Tumore oder Entzündungen.",
+    "Zähne und Kiefergelenk aufgrund ausstrahlender Schmerzen bei dortigen Pathologien.",
+    "Lymphknoten im Bereich der Ohrmuschel, um eine Lymphadenitis als Ursache auszuschließen.",
+    "Nasennebenhöhlen zur Beurteilung einer möglichen Sinusitis als Ursache.",
+    "Augenhintergrund zur Abklärung eines erhöhten Augeninnendrucks als mögliche Schmerzquelle."
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+
+{
+  "id": 175,
+  "text": "Ein 65-jähriger Patient stellt sich mit einer schmerzhaften Rötung der knorpeligen Ohrmuschel seit zwei Tagen vor. Das Ohrläppchen ist eindeutig ausgespart. Welche Komplikation könnte in diesem Fall am ehesten auftreten?",
+  "options": [
+    "Ohrknorpeldestruktion",
+    "Innenohrschwerhörigkeit",
+    "Fazialisparese",
+    "Thrombose der Vena jugularis",
+    "Zervikale Lymphknotenmetastasen"
+  ],
+  "correctAnswers": [0]
+},
+
+{
+  "id": 176,
+  "text": "Ein Kleinkind präsentiert sich in der Notfallambulanz mit akuter Dyspnoe. Sofort nehmen Sie einen inspiratorischen Stridor wahr. Welche sind die naheliegendsten Ursachen der Beschwerden? (3 richtige Antworten)",
+  "options": [
+    "Akute Epiglottitis",
+    "Fremdkörperaspiration",
+    "Subglottische Laryngitis",
+    "Akute Otitis media",
+    "Sinusitis maxillaris"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+{
+  "id": 177,
+  "text": "Ein Patient mit chronisch rinnendem und übel riechendem Ohr gibt im Rahmen der Anamnese an, auch manchmal unter Schwindel zu leiden. Bei der Ohrmikroskopie sind weißliche Massen im Bereich des Trommelfells zu sehen. Bei Druck auf den Tragus ist ein horizontaler Nystagmus und Schwindel auslösbar. Welche Ursache der Schwindelbeschwerden ist in diesem Fall am ehesten anzunehmen?",
+  "options": [
+    "Eine Bogengangsfistel mit direkter Stimulation des lateralen Bogenganges",
+    "Ein akutes Vestibularissyndrom mit Labyrinthitis",
+    "Ein Morbus Menière mit endolymphatischem Hydrops",
+    "Eine zentrale vestibuläre Störung im Hirnstamm",
+    "Eine altersbedingte Presbyvertigo"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 178,
+  "text": "Ein vierjähriges Mädchen hatte laut Eltern vor zwei Wochen eine offenbar selbstlimitierte, unbehandelte Episode einer Otitis media links. Seit 3 Tagen berichtet sie erneut über starke linksseitige Ohrenschmerzen und fiebert massiv, weshalb die Kinderärztin vorgestern eine antimikrobielle Therapie mit Amoxicillin/Clavulansäure startete, worunter es jedoch zu keiner Besserung kam. In der klinischen Untersuchung steht das linke Ohr ab, es ist eine retroaurikuläre Schwellung und Rötung vorhanden. Welche ist die bestmögliche weiterführende Therapie?",
+  "options": [
+    "Bei nachgewiesener Mastoiditis Mastoidektomie",
+    "Weiterführung der Antibiotikatherapie für eine Woche",
+    "Verordnung von abschwellenden Nasentropfen",
+    "Einlage eines Paukendrainageröhrchens",
+    "Behandlung mit hochdosierten Kortikosteroiden"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 179,
+  "text": "Ein „notfallmäßiger chirurgischer Zugang zum Atemweg“ wird ausgeführt:",
+  "options": [
+    "Im Bereich des Ligamentum conicum",
+    "Zwischen den Ringknorpel und das erste Trachealknorpel",
+    "Im Bereich des Zungenbeins",
+    "Im Bereich der Epiglottis",
+    "Zwischen den Stellknorpeln"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 180,
+  "text": "Eine 19-jährige Studentin kommt um ca. 18 Uhr in die Notfallambulanz einer HNO-Abteilung, da ihr aufgefallen war, dass seit heute früh ihre linke Gesichtshälfte gelähmt ist. Welche Erstmaßname werden Sie durchführen lassen?",
+  "options": [
+    "Uhrglasverband",
+    "Hochdosierte Kortikosteroidtherapie",
+    "Elektrostimulation des Nervus facialis",
+    "Sofortige operative Dekompression des Nervs",
+    "Intravenöse Antibiotikatherapie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  id: 181,
+  text: "Eine 20-jährige Patientin kommt nach einem Thermenaufenthalt mit Otalgie links zu Ihnen. In der klinischen Untersuchung ist ein Tragusdruckschmerz zu beobachten, das Trommelfell ist nicht komplett einsehbar, ein Valsalva-Versuch verläuft auf dieser Seite jedoch negativ und Sie vermuten eine Trommelfellperforation. Was ist am ehesten zur Behandlung dieser Patientin zu verwenden?",
+  options: [
+    "Ciprofloxacin-haltige Ohrentropfen",
+    "Aminoglykosid-haltige Ohrentropfen",
+    "Systemische Glukokortikoide",
+    "Chirurgische Tympanoplastik",
+    "Salicylathaltige Analgetika als Monotherapie"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 182,
+  text: "Eine 22-jährige Frau stellt sich mit starken einseitigen Halsschmerzen, Fieber, kloßiger Sprache und Kiefersperre in der HNO-Notfallambulanz vor. Sie nehme bereits seit 2 Tagen Amoxicillin 3x tgl ein. An welche Diagnose ist am ehesten zu denken?",
+  options: [
+    "Peritonsillarabszess",
+    "Epiglottitis",
+    "Pharyngitis viraler Genese",
+    "Laryngitis",
+    "Akute eitrige Parotitis"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 183,
+  text: "Eine 34-jährige Patientin mit jahrelanger allergischer Rhinopathie als Vorgeschichte klagt über seit Monaten zunehmende behinderte Nasenatmung, Hyposmie und Rhinophonia clausa. Neben der endoskopischen Naseninspektion ist welche Untersuchung für die weiterführende Diagnostik unerlässlich?",
+  options: [
+    "CT-Nasennebenhöhlen",
+    "Röntgen-Thorax",
+    "Lungenfunktionstest",
+    "Sonographie der Nasennebenhöhlen",
+    "Allergietest auf Insektengifte"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 184,
+  text: "Eine 35-jährige Frau kommt in die Ambulanz und beklagt sich über progressive bilaterale Schwerhörigkeit seit der Geburt ihrer beiden Kinder. Ein auswärts angefertigtes Felsenbein-CT zeigt knöcherne Veränderungen um das ovale Fenster („präfenestrale Plaques“), die Knochenleitung liegt bds. pantonal bei 10 dB, die Luftleitung bei 50 dB, das Tympanogramm zeigt eine gute Mittelohrbelüftung an, der Stapediusreflex ist bds. jedoch negativ. Wie gehen Sie am ehesten vor?",
+  options: [
+    "Anbieten einer Stapedotomie",
+    "Verordnung von systemischen Glukokortikoiden",
+    "Einlage eines Paukenröhrchens",
+    "Anpassung eines Cochlea-Implantats",
+    "Abwarten und Verlaufskontrolle ohne Therapieoption"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 185,
+  text: "Eine 35-jährige Patientin berichtet im Rahmen der Anamnese über Nasenjucken und Niesen v.a. im März und April. An welche Ursache ist primär zu denken und welche diagnostische Maßnahme ist zu empfehlen?",
+  options: [
+    "Allergie auf: Birke; Prick-Test",
+    "Allergie auf: Hausstaubmilben; nasale Provokationstestung",
+    "Allergie auf: Gräserpollen; IgG-Antikörperbestimmung",
+    "Allergie auf: Schimmelpilze; RAST-Test",
+    "Allergie auf: Katzenhaare; Lungenfunktionstest mit Bronchospasmolyse"
+  ],
+  correctAnswers: [0]
+},
+{
+  id: 186,
+  text: "Eine 52-jährige Frau besucht die HNO-Ambulanz mit ausgeprägter Rhinorrhoe und Schwel- lung des rechten Oberlids. Bei der Anamnese erfahren Sie, dass sie vor 8 Tagen ihren Hausarzt aufgesucht und ein Rezept für Amoxicillin plus Clavulansäure (Augmentin®) erhalten hatte, das sie 3 Tage lang einnahm und dann absetzte, weil sie sich besser fühlte. Bei der Untersuchung stellt sich heraus, dass sie eitrigen grünen Ausfluss aus dem mittleren Nasengang hat und dass ihr rechtes Auge geschwollen ist und sie ihre Augen nicht mehr gut bewegen kann. Was sind die geeignetsten nächsten Schritte? (2 richtige Antworten)",
+  options: [
+    "Ophthalmologische Untersuchung",
+    "CT-Untersuchung der Nasennebenhöhlen",
+    "Erneute Verordnung von Amoxicillin plus Clavulansäure ohne weitere Diagnostik",
+    "Lokale Anwendung von abschwellenden Nasensprays als alleinige Therapie",
+    "Sofortige operative Entlastung ohne weitere Bildgebung"
+  ],
+  correctAnswers: [0, 1]
+},
+{
+  id: 187,
+  text: "Ein Patient stellt sich mit Dysphagie und retrosternalem Druckgefühl in der Notaufnahme vor. In der Anamnese berichtet er, dass er beim Essen plötzlich starke Beschwerden verspürte. Welche Maßnahme ist in dieser Situation am ehesten indiziert?",
+  options: [
+    "Ösophagus-Fremdkörper; umgehende Entfernung im Rahmen einer Ösophagoskopie",
+    "Therapie mit Protonenpumpenhemmern und Beobachtung",
+    "Röntgen-Thorax als alleinige diagnostische Maßnahme",
+    "Verabreichung von Glukokortikoiden zur Schwellungsreduktion",
+    "Abwarten und symptomatische Therapie mit Analgetika"
+  ],
+  correctAnswers: [0]
+},
+{
+  "id": 188,
+  "text": "Eine 81-jährige Patientin stellt sich gehend in der Ambulanz vor. Sie berichtet, dass sich seit einigen Tagen, immer wenn sie sich auf die linke Seite legt, der ganze Raum um sie dreht. Dies halte für ungefähr 20-30 Sekunden an. Weitere Beschwerden bestehen nicht. Die Patientin lebt in einer Wohnung mit ihrem Mann und braucht für den Alltag bisher keinerlei Unterstützung. Beim Dix-Hallpike Manöver auf der linken Seite zeigt sich ein deutlicher geotroper Nystagmus mit rotatorischer Komponente und subjektivem Drehschwindelgefühl. Wie lautet die primäre Verdachtsdiagnose?",
+  "options": [
+    "Benigner paroxysmaler Lagerungsschwindel des linken posterioren Bogenganges",
+    "Neuritis vestibularis",
+    "M. Menière",
+    "Zentrale vestibuläre Störung",
+    "Vestibuläre Migräne"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 189,
+  "text": "Eine Mutter bringt ihre 3-jährige Tochter in Ihre HNO Ambulanz. Die kleine Patientin gibt eine Otalgie seit 3 Tagen an und Sie sehen eine abstehende Ohrmuschel auf der betroffenen Seite. Nach klinischer Untersuchung vermuten Sie eine Otitis media mit beginnenden Komplikationen. Welche Komplikation würde zu diesem klinischen Bild am ehesten passen?",
+  "options": [
+    "Labyrinthitis",
+    "Meningitis",
+    "Sinusvenenthrombose",
+    "Facialisparese",
+    "Mastoiditis"
+  ],
+  "correctAnswers": [4]
+},
+{
+  "id": 190,
+  "text": "Eine Mutter kommt mit ihrem 4-jährigen Kind in die Ambulanz. Sie klagt, dass ihr Kind ständig verschnupft ist und laut schnarcht. Außerdem ist die Sprache des Kindes undeutlich. Was ist die wahrscheinlichste Diagnose?",
+  "options": [
+    "Chronische Rhinosinusitis",
+    "Allergische Rhinitis",
+    "Tonsillitis",
+    "Septumdeviation",
+    "Adenoidenhyperplasie"
+  ],
+  "correctAnswers": [4]
+},
+{
+  "id": 191,
+  "text": "Eine Studienkollegin berichtet Ihnen, in ihrer letzten HNO-Famulatur bei einer Hals-OP assistiert zu haben. Dabei sei eine zystische Raumforderung entfernt worden. Die Operateure meinten, die Pathologie hätte eine mögliche Verbindung zwischen der Tonsillenloge und dem M. sternocleidomastoideus. An welche Pathologie ist in diesem Fall primär zu denken?",
+  "options": [
+    "Mediane Halszyste",
+    "Lymphadenopathie",
+    "Branchiogene Fistel",
+    "Lipom",
+    "Laterale Halszyste"
+  ],
+  "correctAnswers": [4]
+},
+{
+  "id": 192,
+  "text": "Sie haben Bereitschaftsdienst in der HNO, als die Kinderärzte Sie wegen eines Neugeborenen mit Atemproblemen anrufen. Sie berichten, dass das Baby vor allem beim Füttern zyanotisch ist und dass sich dies bessert, wenn es weint. Was ist die wahrscheinlichste Diagnose?",
+  "options": [
+    "Laryngomalazie",
+    "Tracheoösophageale Fistel",
+    "Neugeborenensepsis",
+    "Subglottische Stenose",
+    "Choanal-Atresie"
+  ],
+  "correctAnswers": [4]
+},
+{
+  "id": 193,
+  "text": "Sie sind im Nachtdienst. Um 4 Uhr früh werden Sie in die HNO-Notfallsambulanz gerufen. Dort befindet sich ein 57-jähriger Mann, bei dem ein pfeifendes Atemgeräusch bei der Einatmung besteht. Er kämpft bei jedem Atemzug und ist zyanotisch. Bei der flexiblen Naso-Pharyngoskopie findet sich ein Tumor des rechten Sinus piriformis, der sich nahezu auf den gesamten Kehlkopf ausgebreitet hat. Sie entscheiden sich für eine Coniotomie in Lokalanästhesie unter milder Sedierung. In welchem Bereich werden die oberen Luftwege eröffnet?",
+  "options": [
+    "Cartilago thyroidea",
+    "Cartilago cricoidea",
+    "Membrana thyrohyoidea",
+    "Trachea",
+    "Ligamentum cricothyreoideum"
+  ],
+  "correctAnswers": [4]
+},
+{
+  "id": 194,
+  "text": "Welche Charakteristika kennzeichnen die Presbyakusis? (2 richtige Antworten)",
+  "options": [
+    "Zuerst werden die tiefen Frequenzen betroffen, also liegt zuerst eine Tieftonschwerhörigkeit vor.",
+    "Zuerst werden die hohen Frequenzen betroffen, also liegt zuerst eine Hochtonschwerhörigkeit vor.",
+    "Presbyakusis ist ausschließlich durch genetische Faktoren bedingt.",
+    "Bei ausgeprägter Presbyakusis leiden die Betroffenen unter einem eingeschränkten dynamischen Bereich.",
+    "Presbyakusis betrifft nur das Mittelohr und nicht die Cochlea."
+  ],
+  "correctAnswers": [1, 3]
+},
+{
+  "id": 195,
+  "text": "Welche sind die drei häufigsten mit Schwindel einhergehenden Erkrankungen in der HNO? (3 richtige Antworten)",
+  "options": [
+    "Neuropathia vestibularis",
+    "Vestibuläre Migräne",
+    "Lagerungsschwindel",
+    "Morbus Menière",
+    "Zentrale vestibuläre Störung"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 196,
+  "text": "Welche Strukturen befinden sich im Mittelohr? (3 richtige Antworten)",
+  "options": [
+    "M. stapedius",
+    "Cochlea",
+    "Chorda tympani",
+    "Malleus",
+    "N. vestibularis"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 197,
+  "text": "Welche Strukturen werden bei einer radikalen Neckdissektion entfernt? (3 richtige Antworten)",
+  "options": [
+    "V. jugularis interna",
+    "Glandula thyroidea",
+    "M. sternocleidomastoideus",
+    "N. accessorius",
+    "Trachea"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 198,
+  "text": "Welche Symptome treten beim Morbus Menière auf? (3 richtige Antworten)",
+  "options": [
+    "Tinnitus",
+    "Otosklerose",
+    "Spontannystagmus",
+    "Schallempfindungsstörung",
+    "Chronische Mittelohrentzündung"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 199,
+  "text": "Welche Untersuchungsmodalitäten können bei neu aufgetretener Mundbodenphlegmone zum Ausschluss einer Abszedierung verordnet werden? (2 richtige Antworten)",
+  "options": [
+    "Hals-Ultraschall",
+    "Panoramaschichtaufnahme der Zähne",
+    "Kopf-Hals-Computertomographie",
+    "Tympanometrie",
+    "Nasopharyngoskopie"
+  ],
+  "correctAnswers": [0, 2]
+},
+{
+  "id": 200,
+  "text": "Welches sind typische Symptome einer Septumperforation? (3 richtige Antworten)",
+  "options": [
+    "Pfeifgeräusche",
+    "Verlust des Geruchssinns",
+    "Blutungen",
+    "Nasenatmungsbehinderung",
+    "Schwellung der Nasenmuscheln"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 201,
+  "text": "Wodurch wird die Entstehung einer schwarzen Haarzunge (Lingua villosa nigra) begünstigt? (3 richtige Antworten)",
+  "options": [
+    "Übermäßiger Gebrauch von Mundspüllösungen",
+    "Eisenmangelanämie",
+    "Nikotinabusus",
+    "Diabetes mellitus",
+    "Hypothyreose"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 202,
+  "text": "Zur postoperativen Nachsorgeuntersuchung wird bei einer 66-jährigen Patientin eine Lu- penlaryngoskopie durchgeführt. Dabei zeigt sich ein linksseitiger Stimmlippenstillstand und es fällt die deutlich heisere Sprache der Patientin auf. Vor der OP berichtet die Patientin, keine Probleme mit der Stimme gehabt zu haben. Welche Operation kann typischerweise zu dem beschriebenen Kehlkopfbefund und der Symptomatik führen?",
+  "options": [
+    "Mastoidektomie",
+    "Thyreoidektomie",
+    "Appendektomie",
+    "Cholezystektomie",
+    "Hüftendoprothese"
+  ],
+  "correctAnswers": [1]
+},
+{
+  "id": 203,
+  "text": "Auf welche Seite schlägt ein peripherer Ausfallsnystagmus?",
+  "options": [
+    "Zur betroffenen Seite",
+    "Zur gesunden Seite",
+    "Immer nach unten",
+    "Immer nach oben",
+    "Wechselnd, je nach Kopfposition"
+  ],
+  "correctAnswers": [1]
+},
+{
+  "id": 204,
+  "text": "Bei welchen Erkrankungen besteht eine Schallleitungsstörung? (3 richtige Antworten)",
+  "options": [
+    "Cholesteatom",
+    "Presbyakusis",
+    "Trommelfellperforation",
+    "Otosklerose",
+    "Morbus Menière"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 205,
+  "text": "Ein 19-jähriger männlicher Patient wird unmittelbar nach einer Schlägerei in einer Bar von den Unfallchirurgen mit dem Verdacht auf eine Nasenbeinfraktur in die HNO-Ambulanz überwiesen. Die Unfallchirurgen haben andere erhebliche Verletzungen ausgeschlossen. Bei der Untersuchung seiner Nase zeigt sich eine erhebliche Weichteilschwellung, beim Abtasten sind Krepitationen zu spüren, und Sie vermuten, dass er eine Stufe im Nasenbein hat. Die anteriore Rhinoskopie ist unauffällig, und er kann durch die Nase atmen. Wie ist bei diesem Patienten am besten vorzugehen?",
+  "options": [
+    "Sofortige operative Reposition",
+    "Empfehlung kühlender Umschläge und Kontrolle in 2-3 Tagen",
+    "CT des Schädels zur weiteren Abklärung",
+    "Antibiotische Therapie aufgrund der Fraktur",
+    "Sofortige Gipsanlage zur Stabilisierung"
+  ],
+  "correctAnswers": [1]
+},
+{
+  "id": 206,
+  "text": "Ein 29-jähriger Mann stellt sich mit einer retroaurikulären Schwellung rechts vor. Dies sei in der Vergangenheit immer wieder vorgekommen, nun seien die Schmerzen aber stärker als sonst. Die Untersuchung zeigt posterior des Lobulus eine ca. 3 cm große druckdolente, fluktuierende, prall-elastische, gerötete Raumforderung. Was ist in diesem Fall die prioritäre Therapie?",
+  "options": [
+    "Antibiotische Therapie alleine",
+    "Abwarten und Verlaufskontrolle",
+    "Lokale Inzision",
+    "Kortisontherapie",
+    "MRT zur weiteren Abklärung"
+  ],
+  "correctAnswers": [2]
+},
+{
+  "id": 207,
+  "text": "Ein 34-jähriger Mann geht zum HNO-Arzt, da er im Anschluss an einen Schnupfen Gesichtskopfschmerzen und eine grünlich-gelbe Rhinorrhoe bemerkte. Zudem hat er seit 2 Tagen bis 39,0°C Fieber. Mit welcher Untersuchung werden Sie die Diagnose stellen, und welches ist das therapeutische Mittel der Wahl?",
+  "options": [
+    "Rhinoscopia anterior - Antibiotikum",
+    "CT der Nasennebenhöhlen - Antimykotikum",
+    "Nasopharyngoskopie - Antihistaminikum",
+    "Ultraschall der Nasennebenhöhlen - Kortison",
+    "MRT des Schädels - Antiviraltherapie"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 208,
+  "text": "Ein 36-jähriger Mann stellt sich mit heftiger Übelkeit und Erbrechen in der Ambulanz vor. Der Patient wurde bereits gestern von einem Kollegen gesehen und mit der Diagnose Gastroenteritis nach Hause entlassen. Bei erneuter Anamnese lässt sich keine Diarrhoe erheben. Ein Diabetes Mellitus Typ 2 und eine arterielle Hypertonie sind bekannt. Der Patient ist liegend und kann aufgrund von starkem Schwindelgefühl nicht aufstehen. Unter der Frenzelbrille zeigt sich kein Spontannystagmus, der Kopf-Impulstest ist beidseits unauffällig, keine Skew-Deviation. Bei der neurologischen Testung zeigt sich eine deutliche rechtsseitige Dysdiadochokinese. Wie sollte das weitere Vorgehen bevorzugt aussehen?",
+  "options": [
+    "Auf die Neurologie überweisen und akutes cMRT durchführen lassen.",
+    "Antivertiginosum verabreichen und nach Hause entlassen.",
+    "Eine Lumbalpunktion durchführen zur Liquordiagnostik.",
+    "Auf gastrointestinale Ursachen fokussieren und symptomatisch behandeln.",
+    "Eine konservative Beobachtung ohne weitere Diagnostik anordnen."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 209,
+  "text": "Ein 51-jähriger Mann wird von der Rettung mit starkem Drehschwindel in die Ambulanz gebracht. Er sei heute früh mit dem Schwindel aufgewacht, begleitet von Übelkeit und bisher 2 x Erbrechen. Eine Hörminderung oder Ohrgeräusch wird verneint. Bei der Untersuchung des Patienten führen Sie unter anderem einen Kopf-Impuls-Test durch. Welcher physiologische Reflexbogen wird hierbei getestet?",
+  "options": [
+    "Vestibulookulärer Reflex",
+    "Kornealreflex",
+    "Patellarsehnenreflex",
+    "Trigemino-fazialer Reflex",
+    "Hustenreflex"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 210,
+  "text": "Ein 55-jähriger Mann kommt in die HNO-Ambulanz und klagt über eine seit 4 Monaten verstopfte Nase und Rhinorrhoe. Bei der Untersuchung weist er beidseitige traubenartige Schleimhautschwellungen auf, die von seinem mittleren Nasengang ausgehen. Bei der Anamneseerhebung stellte sich heraus, dass er bisher keine Behandlung für seine Symptome erhalten hat. Was ist der nächste geeignete Schritt?",
+  "options": [
+    "Behandlung mit Kortikosteroid-Nasenspray und regelmäßigen Nasenspülungen",
+    "Sofortige chirurgische Entfernung der Polypen",
+    "Antibiotische Therapie für 10 Tage",
+    "Antihistaminika als alleinige Therapie",
+    "CT der Nasennebenhöhlen als erster diagnostischer Schritt"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 211,
+  "text": "Ein 55-jähriger Patient stellt sich mit akutem Drehschwindel und einem Verschlagenheitsgefühl im rechten Ohr vor. Auf Nachfrage hatte er auch anfangs ein Ohrgeräusch rechts. Unter der Frenzelbrille sehen Sie einen Spontannystagmus nach rechts. Der Patient berichtet, dass er dieselbe Symptomatik früher öfters gehabt habe. Er habe immer Infusionen bekommen und nach ein bis zwei Tagen war er wieder beschwerdefrei. Wie lautet die zutreffendste Verdachtsdiagnose?",
+  "options": [
+    "Vestibularisparoxysmie",
+    "Neuritis vestibularis",
+    "Morbus Menière",
+    "Zentrale vestibuläre Störung",
+    "Benigner paroxysmaler Lagerungsschwindel"
+  ],
+  "correctAnswers": [2]
+},
+{
+  "id": 212,
+  "text": "Ein 6-jähriger Knabe mit Fieber 39,7°C wird mit der Rettung wegen massivem inspiratorischen, aber auch exspiratorischen Stridor und sehr heftigen Schluckschmerzen in die Notfallambulanz eingeliefert. Welche Erkrankung ist die wahrscheinlichste, und welche Maßnahme zur Sicherung der Atemwege ist erforderlich?",
+  "options": [
+    "Epiglottitis - Intubation",
+    "Pseudokrupp - Kortikosteroide",
+    "Fremdkörperaspiration - Heimlich-Manöver",
+    "Tracheomalazie - Beobachtung",
+    "Allergisches Larynxödem - Antihistaminika"
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 213,
+  "text": "Ein 60-jähriger Mann stellt sich mit einer 0,5 cm großen Läsion an der Unterlippe in der HNO-Ambulanz vor. Welche Faktoren in der Anamnese lassen am ehesten an ein Karzinom denken? (3 richtige Antworten)",
+  "options": [
+    "Seit > 6 Wochen bestehendes Ulcus",
+    "Schmerzhafte Läsion mit Eiterbildung",
+    "Indolent",
+    "Raucher",
+    "Rötung und Juckreiz"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 214,
+  "text": "Ein siebenjähriger Junge stellt sich in Begleitung seiner Eltern in der Ambulanz vor. Bei der Schuluntersuchung waren je ca. 1 mm große Einkerbungen anterior des Helixansatzes beider Ohrmuscheln aufgefallen. In der Vergangenheit sind keinerlei Probleme (insbesondere keine Entzündungen) aufgetreten. Wie gehen Sie am ehesten vor?",
+  "options": [
+    "Observanz ist vertretbar.",
+    "Sofortige chirurgische Entfernung.",
+    "Antibiotische Therapie prophylaktisch.",
+    "MRT des Kopfes zur weiteren Diagnostik.",
+    "Biopsie der Einkerbungen zur histologischen Abklärung."
+  ],
+  "correctAnswers": [0]
+},
+{
+  "id": 215,
+  "text": "Eine 45-jährige Patientin stellt sich in der Notfallambulanz mit einer akuten Schwellung der Lippen, der Zunge und des Gesichts vor. Welche Diagnosen sind in diesem Fall wahrscheinlich? (3 richtige Antworten)",
+  "options": [
+    "Hereditäres Angioödem",
+    "Epiglottitis",
+    "ACE-Hemmer induziertes Ödem",
+    "Allergisch induziertes Ödem",
+    "Trigeminalneuralgie"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+{
+  "id": 216,
+  "text": "Eine 47-jährige Patientin berichtet über starke Heiserkeit nach einer Schilddrüsen-Operation ohne Vorliegen einer Dyspnoe. In weiterer Folge wurde bei ihr eine Thyreoplastik durchgeführt und danach besserte sich die Stimme fast vollständig. Was war die wahrscheinlichste Ursache der Heiserkeit und was wurde bei der 2. Operation gemacht?",
+  "options": [
+    "Beidseitige Rekurrensparese; Tracheotomie",
+    "Stimmlippenknötchen; Entfernung der Knötchen",
+    "Einseitige Rekurrensparese; Medialisation der gelähmten Stimmlippe",
+    "Larynxkarzinom; Teilresektion des Kehlkopfes",
+    "Zentrale Lähmung des Nervus vagus; Physiotherapie"
+  ],
+  "correctAnswers": [2]
+},
+{
+  "id": 217,
+  "text": "Eine 72-jährige Patientin unter Radiotherapie eines Sarkoms der Tibia stellt sich mit Trockenheitsgefühl und brennenden weißlichen Belägen an der Mundschleimhaut vor. Im Status erkennen Sie weißliche abwischbare Flecken mit einem rötlichen und leicht blutenden Grund an der gesamten Mundschleimhaut. An welche Diagnose ist am ehesten zu denken?",
+  "options": [
+    "Leukoplakie",
+    "Lichen planus",
+    "Soor",
+    "Aphthöse Stomatitis",
+    "Pemphigus vulgaris"
+  ],
+  "correctAnswers": [2]
+},
+{
+  "id": 218,
+  "text": "Eine 82-jährige Frau, die aufgrund eines früheren mechanischen Herzklappenersatzes Phenprocoumon (Marcoumar®) einnimmt, besucht die HNO-Notfallambulanz mit einer starken Epistaxis, die 50 Minuten lang anhält. Bei der klinischen Untersuchung scheint die Blutung aus dem hinteren Teil der mittleren Nasenmuschel zu kommen. Was ist in diesem Fall der geeignetste nächste Schritt?",
+  "options": [
+    "Anteriore Tamponade",
+    "Posteriore Ballontamponade",
+    "Intravenöse Antibiotikatherapie",
+    "Sofortige chirurgische Ligatur der A. sphenopalatina",
+    "CT-Angiographie zur weiteren Abklärung"
+  ],
+  "correctAnswers": [1]
+},
+{
+  "id": 219,
+  "text": "Eine 82-jährige Frau, die aufgrund eines früheren mechanischen Herzklappenersatzes Phenprocoumon (Marcoumar®) einnimmt, besucht die HNO-Notfallambulanz mit einer starken Epistaxis, die 50 Minuten lang anhält. Bei der klinischen Untersuchung scheint die Blutung aus dem hinteren Teil der mittleren Nasenmuschel zu kommen. Welche Arterie ist am ehesten für die Blutung verantwortlich?",
+  "options": [
+    "Arteria ethmoidalis anterior",
+    "Arteria ethmoidalis posterior",
+    "Arteria sphenopalatina",
+    "Arteria carotis externa",
+    "Arteria facialis"
+  ],
+  "correctAnswers": [2]
+},
+{
+  "id": 220,
+  "text": "Was sind naheliegende Differentialdiagnosen einer Angina tonsillaris? (3 richtige Antworten)",
+  "options": [
+    "Herpetische Angina",
+    "Epiglottitis",
+    "Angina Plaut-Vincenti",
+    "Scharlach",
+    "Otitis media"
+  ],
+  "correctAnswers": [0, 2, 3]
+},
+
+
+
+{
+  "id": 221,
+  "text": "Was sind mögliche Symptome des Morbus Menière? (3 richtige Antworten)",
+  "image": "",
+  "options": [
+    "Ipsilateraler Tinnitus",
+    "Ipsilaterale Tiefton-Innenohrläsion",
+    "Drehschwindelattacken",
+    "Pulsierender Kopfschmerz",
+    "Photophobie"
+  ],
+  "correctAnswers": [0, 1, 2]
+},
+
+
+
+
+
+
+
+    ];
+// Reassign unique IDs sequentially (from 1 to the total number of questions)
+allQuestions.forEach((question, index) => {
+  question.id = index + 1;
+});
+console.log("Total questions after ID reassignment: " + allQuestions.length);
+
+    allQuestions = shuffleArray(allQuestions);
+    let currentPage = 1;
+    let reviewMode = false;
+    let unansweredMode = false;
+    let totalPages = Math.ceil(allQuestions.length / QUESTIONS_PER_PAGE);
+    let userAnswers = {};
+    
+    // -------------------------------
+    // NEW TIMER APPROACH:
+    // -------------------------------
+    // Record when the quiz started
+    let quizStartTime = Date.now();
+    // Total time (in ms) the page was hidden
+    let totalPausedTime = 0;
+    // Timestamp when the page was hidden (null when visible)
+    let hideTimestamp = null;
+    
+    function updateQuizTimer() {
+      // Calculate elapsed time excluding paused duration
+      let elapsedSeconds = Math.floor((Date.now() - quizStartTime - totalPausedTime) / 1000);
+      if(elapsedSeconds < 60) {
+        document.getElementById("quizTime").innerText = elapsedSeconds + "s";
+      } else if(elapsedSeconds < 3600) {
+        let minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+        let seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+        document.getElementById("quizTime").innerText = minutes + ":" + seconds;
+      } else {
+        let hours = Math.floor(elapsedSeconds / 3600).toString().padStart(2, '0');
+        let minutes = Math.floor((elapsedSeconds % 3600) / 60).toString().padStart(2, '0');
+        let seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+        document.getElementById("quizTime").innerText = hours + ":" + minutes + ":" + seconds;
+      }
+    }
+    
+    // Always run the timer update every second
+    setInterval(updateQuizTimer, 1000);
+    
+    // Use the Page Visibility API to track when the page is hidden
+    document.addEventListener("visibilitychange", function() {
+      if (document.hidden) {
+        // Record the timestamp when the page is hidden
+        hideTimestamp = Date.now();
+      } else {
+        // When visible again, add the hidden duration to totalPausedTime
+        if (hideTimestamp !== null) {
+          totalPausedTime += Date.now() - hideTimestamp;
+          hideTimestamp = null;
+        }
+      }
+    });
+    // -------------------------------
+    // End NEW TIMER APPROACH
+    // -------------------------------
+    
+    // --- Auto-save main quiz progress ---
+    function saveMainQuizProgress() {
+      localStorage.setItem("mainQuizProgress_HNO2019-2024", JSON.stringify(userAnswers));
+    }
+    function loadMainQuizProgress() {
+      const saved = localStorage.getItem("mainQuizProgress_HNO2019-2024");
+      if (saved) { userAnswers = JSON.parse(saved); }
+    }
+    loadMainQuizProgress();
+    
+    function updateDateTime() {
+      let now = new Date();
+      document.getElementById("dateTime").innerText = now.toLocaleString();
+    }
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+    function drawClock() {
+      const canvas = document.getElementById("analogClock");
+      if (canvas.getContext) {
+        const ctx = canvas.getContext("2d");
+        let radius = canvas.height / 2;
+        ctx.translate(radius, radius);
+        radius = radius * 0.90;
+        function draw() {
+          drawFace(ctx, radius);
+          drawNumbers(ctx, radius);
+          drawTime(ctx, radius);
+        }
+        draw();
+        setInterval(function(){
+          ctx.clearRect(-canvas.width, -canvas.height, canvas.width*2, canvas.height*2);
+          draw();
+        }, 1000);
+      }
+    }
+    function drawFace(ctx, radius) {
+      let grad;
+      ctx.beginPath();
+      ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+      ctx.fillStyle = '#f0f0f0';
+      ctx.fill();
+      grad = ctx.createRadialGradient(0, 0, radius * 0.95, 0, 0, radius * 1.05);
+      grad.addColorStop(0, '#333');
+      grad.addColorStop(0.5, 'white');
+      grad.addColorStop(1, '#333');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = radius * 0.1;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(0, 0, radius * 0.1, 0, 2 * Math.PI);
+      ctx.fillStyle = '#333';
+      ctx.fill();
+    }
+    function drawNumbers(ctx, radius) {
+      let ang, num;
+      ctx.font = radius * 0.15 + "px arial";
+      ctx.textBaseline = "middle";
+      ctx.textAlign = "center";
+      for(num = 1; num < 13; num++){
+        ang = num * Math.PI / 6;
+        ctx.rotate(ang);
+        ctx.translate(0, -radius * 0.85);
+        ctx.rotate(-ang);
+        ctx.fillStyle = '#333';
+        ctx.fillText(num.toString(), 0, 0);
+        ctx.rotate(ang);
+        ctx.translate(0, radius * 0.85);
+        ctx.rotate(-ang);
+      }
+    }
+    function drawTime(ctx, radius) {
+      const now = new Date();
+      let hour = now.getHours();
+      let minute = now.getMinutes();
+      let second = now.getSeconds();
+      hour = hour % 12;
+      hour = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
+      drawHand(ctx, hour, radius * 0.5, radius * 0.07);
+      minute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
+      drawHand(ctx, minute, radius * 0.8, radius * 0.07);
+      second = (second * Math.PI / 30);
+      drawHand(ctx, second, radius * 0.9, radius * 0.02, '#d32f2f');
+    }
+    function drawHand(ctx, pos, length, width, color) {
+      color = color || '#333';
+      ctx.beginPath();
+      ctx.lineWidth = width;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = color;
+      ctx.moveTo(0, 0);
+      ctx.rotate(pos);
+      ctx.lineTo(0, -length);
+      ctx.stroke();
+      ctx.rotate(-pos);
+    }
+    drawClock();
+    function renderQuestions() {
+      const container = document.getElementById("questionsContainer");
+      container.innerHTML = "";
+let questionsToRender;
+if (reviewMode) {
+  // Already existing: show incorrect answers.
+  questionsToRender = allQuestions.filter(q => userAnswers[q.id] && !userAnswers[q.id].correct);
+} else if (unansweredMode) {
+  // New branch: show questions that have NOT been answered.
+  questionsToRender = allQuestions.filter(q => {
+    return !(userAnswers[q.id] && userAnswers[q.id].answered);
+  });
+} else {
+  // Normal mode with pagination.
+  let startIndex = (currentPage - 1) * QUESTIONS_PER_PAGE;
+  let endIndex = startIndex + QUESTIONS_PER_PAGE;
+  questionsToRender = allQuestions.slice(startIndex, endIndex);
+}
+
+
+    if (!reviewMode && !unansweredMode) {
+  document.getElementById("pageIndicator").innerText = "Page " + currentPage + " of " + totalPages;
+  document.getElementById("prevPage").disabled = (currentPage === 1);
+  document.getElementById("nextPage").disabled = (currentPage === totalPages);
+} else {
+  let modeText = unansweredMode ? "Unanswered Questions" : "Review Incorrect Answers";
+  document.getElementById("pageIndicator").innerText = modeText + " (" + questionsToRender.length + ")";
+  document.getElementById("prevPage").disabled = true;
+  document.getElementById("nextPage").disabled = true;
+}
+
+      questionsToRender.forEach((q, idx) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        if (userAnswers[q.id] && userAnswers[q.id].answered) {
+          qDiv.dataset.answered = "true";
+        } else {
+          qDiv.dataset.answered = "false";
+          qDiv.dataset.startTime = Date.now();
+        }
+        let questionNumber = !reviewMode ? ((currentPage - 1) * QUESTIONS_PER_PAGE) + idx + 1 : idx + 1;
+       const qText = document.createElement("div");
+if (userAnswers[q.id] && userAnswers[q.id].highlightedHTML) {
+  // If there is a saved version with highlights, use it.
+  qText.innerHTML = userAnswers[q.id].highlightedHTML;
+} else {
+  // Otherwise, use the original text.
+  qText.innerHTML = "<strong>Q" + questionNumber + ":</strong> " + q.text;
+}
+qDiv.appendChild(qText);
+qText.addEventListener("mouseup", function(){
+  let sel = window.getSelection();
+  if (sel.toString().length > 0) {
+    let range = sel.getRangeAt(0);
+    // Get the element that contains the start of the selection.
+    let parent = range.startContainer.parentElement;
+    
+    // Check if the selected text is already inside a highlighted span.
+    if (parent && parent.classList && parent.classList.contains("highlightedText")) {
+      // The text is already highlighted. Let's remove the highlight.
+      // "Unwrap" the highlighted <span> by replacing it with its inner content.
+      let span = parent;
+      let fragment = document.createDocumentFragment();
+      while (span.firstChild) {
+        fragment.appendChild(span.firstChild);
+      }
+      span.parentNode.replaceChild(fragment, span);
+      
+      // Update the saved HTML for this question.
+      if (!userAnswers[q.id]) {
+        userAnswers[q.id] = {};
+      }
+      userAnswers[q.id].highlightedHTML = qText.innerHTML;
+      saveMainQuizProgress();
+    } else {
+      // The text is not highlighted yet.
+      // Create a span to wrap the selected text.
+      let span = document.createElement("span");
+      span.className = "highlightedText"; // This applies the yellow background.
+      try {
+        range.surroundContents(span);
+      } catch (e) {
+        console.error("Could not highlight selection: ", e);
+      }
+      sel.removeAllRanges();
+      if (!userAnswers[q.id]) {
+        userAnswers[q.id] = {};
+      }
+      userAnswers[q.id].highlightedHTML = qText.innerHTML;
+      saveMainQuizProgress();
+    }
+  }
+});
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+        const inputType = (q.correctAnswers.length === 1) ? "radio" : "checkbox";
+        let optionsArr = q.shuffledOptions ? q.shuffledOptions : q.options.map((opt, index) => ({ text: opt, index: index }));
+        if(!q.shuffledOptions){
+          optionsArr = shuffleArray(optionsArr);
+          q.shuffledOptions = optionsArr;
+        }
+        optionsArr.forEach(optionObj => {
+          const optionLabel = document.createElement("label");
+          optionLabel.className = "option";
+          const input = document.createElement("input");
+          input.type = inputType;
+          input.name = "question_" + q.id;
+          input.value = optionObj.index;
+          if (!(userAnswers[q.id] && userAnswers[q.id].answered)) {
+            input.addEventListener("change", function(){
+              handleAnswer(qDiv, q, inputType);
+            });
+          }
+          if (userAnswers[q.id] && userAnswers[q.id].selected && userAnswers[q.id].selected.includes(optionObj.index)) {
+            input.checked = true;
+          }
+          optionLabel.appendChild(input);
+          optionLabel.appendChild(document.createTextNode(" " + optionObj.text));
+          optionsDiv.appendChild(optionLabel);
+        });
+        qDiv.appendChild(optionsDiv);
+        const qTimer = document.createElement("div");
+        qTimer.className = "timer";
+        qTimer.innerText = userAnswers[q.id] && userAnswers[q.id].elapsed ? "Time: " + userAnswers[q.id].elapsed + "s" : "Time: 0s";
+        qDiv.appendChild(qTimer);
+        const feedbackDiv = document.createElement("div");
+        feedbackDiv.className = "answer-feedback";
+        if (userAnswers[q.id] && userAnswers[q.id].answered) {
+          if (userAnswers[q.id].correct) {
+            feedbackDiv.innerHTML = "&#10003; Correct!";
+          } else {
+            let correctTexts = q.correctAnswers.map(idx => q.options[idx]);
+            feedbackDiv.innerHTML = "&#10007; Incorrect! The correct answer" +
+              (correctTexts.length > 1 ? "s are: " : " is: ") + correctTexts.join(", ");
+          }
+        }
+        qDiv.appendChild(feedbackDiv);
+        if (userAnswers[q.id] && userAnswers[q.id].answered) {
+          const inputs = qDiv.querySelectorAll("input");
+          inputs.forEach(input => {
+            const parentLabel = input.parentElement;
+            const optionValue = parseInt(input.value);
+            input.disabled = true;
+            if (q.correctAnswers.includes(optionValue)) {
+              parentLabel.classList.add("correct");
+              if (!parentLabel.querySelector(".checkmark")) {
+                let checkmarkSpan = document.createElement("span");
+                checkmarkSpan.className = "checkmark";
+                checkmarkSpan.innerHTML = " &#10003;";
+                parentLabel.appendChild(checkmarkSpan);
+              }
+            }
+            if (input.checked && !q.correctAnswers.includes(optionValue)) {
+              parentLabel.classList.add("incorrect");
+              if (!parentLabel.querySelector(".crossmark")) {
+                let crossSpan = document.createElement("span");
+                crossSpan.className = "crossmark";
+                crossSpan.innerHTML = " &#10007;";
+                parentLabel.appendChild(crossSpan);
+              }
+            }
+          });
+        }
+        container.appendChild(qDiv);
+      });
+      updateProgressBar();
+      updateProgressInfo();
+      saveMainQuizProgress();
+    }
+    function handleAnswer(questionDiv, questionData, inputType) {
+      if (questionDiv.dataset.answered === "true") return;
+      const startTime = parseInt(questionDiv.dataset.startTime);
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      const timerDiv = questionDiv.querySelector(".timer");
+      timerDiv.innerText = "Time: " + elapsedSeconds + "s";
+      const inputs = questionDiv.querySelectorAll("input");
+      let selectedValues = [];
+      inputs.forEach(input => { if (input.checked) { selectedValues.push(parseInt(input.value)); } });
+      if (inputType === "checkbox" && selectedValues.length < questionData.correctAnswers.length) { return; }
+      questionDiv.dataset.answered = "true";
+      inputs.forEach(input => { input.disabled = true; input.parentElement.classList.add("disabled"); });
+      const sortedSelected = selectedValues.sort((a, b) => a - b);
+      const sortedCorrect = questionData.correctAnswers.slice().sort((a, b) => a - b);
+      let isCorrect = (sortedSelected.length === sortedCorrect.length) && sortedSelected.every((val, i) => val === sortedCorrect[i]);
+      inputs.forEach(input => {
+        const parentLabel = input.parentElement;
+        const optionValue = parseInt(input.value);
+        if (questionData.correctAnswers.includes(optionValue)) {
+          parentLabel.classList.add("correct");
+          if (!parentLabel.querySelector(".checkmark")) {
+            let checkmarkSpan = document.createElement("span");
+            checkmarkSpan.className = "checkmark";
+            checkmarkSpan.innerHTML = " &#10003;";
+            parentLabel.appendChild(checkmarkSpan);
+          }
+        }
+        if (input.checked && !questionData.correctAnswers.includes(optionValue)) {
+          parentLabel.classList.add("incorrect");
+          if (!parentLabel.querySelector(".crossmark")) {
+            let crossSpan = document.createElement("span");
+            crossSpan.className = "crossmark";
+            crossSpan.innerHTML = " &#10007;";
+            parentLabel.appendChild(crossSpan);
+          }
+        }
+      });
+      const feedbackDiv = questionDiv.querySelector(".answer-feedback");
+      if (isCorrect) {
+        feedbackDiv.innerHTML = "&#10003; Correct!";
+      } else {
+        let correctTexts = questionData.correctAnswers.map(idx => questionData.options[idx]);
+        feedbackDiv.innerHTML = "&#10007; Incorrect! The correct answer" +
+          (correctTexts.length > 1 ? "s are: " : " is: ") + correctTexts.join(", ");
+      }
+      userAnswers[questionData.id] = { selected: sortedSelected, answered: true, correct: isCorrect, elapsed: elapsedSeconds };
+      updateProgressBar();
+      updateProgressInfo();
+      saveMainQuizProgress();
+    }
+    function updateProgressBar() {
+      let answeredCount = Object.keys(userAnswers).length;
+      let totalCount = allQuestions.length;
+      let percentage = (answeredCount / totalCount) * 100;
+      document.getElementById("progressBar").style.width = percentage + "%";
+    }
+    function updateProgressInfo() {
+  let answeredCount = Object.keys(userAnswers).length;
+  let totalCount = allQuestions.length;
+  let correctCount = 0;
+  for (let qid in userAnswers) {
+    if (userAnswers[qid].correct) {
+      correctCount++;
+    }
+  }
+  let wrongCount = answeredCount - correctCount;
+  document.getElementById("progressInfo").innerText = 
+    "Total Questions: " + totalCount + 
+    " | Answered: " + answeredCount +
+    " | Correct: " + correctCount + 
+    " | Wrong: " + wrongCount;
+    }
+    document.getElementById("prevPage").addEventListener("click", function(){
+      if (!reviewMode && currentPage > 1) { currentPage--; renderQuestions(); }
+    });
+    document.getElementById("nextPage").addEventListener("click", function(){
+      if (!reviewMode && currentPage < totalPages) { currentPage++; renderQuestions(); }
+    });
+    document.getElementById("shuffleButton").addEventListener("click", function(){
+      if (confirm("Are you sure you want to shuffle the questions? This will change the order but your answers will remain saved.")) {
+        allQuestions = shuffleArray(allQuestions);
+        totalPages = Math.ceil(allQuestions.length / QUESTIONS_PER_PAGE);
+        currentPage = 1;
+        reviewMode = false;
+        renderQuestions();
+      }
+    });
+    document.getElementById("reviewIncorrect").addEventListener("click", function(){
+      reviewMode = true;
+      renderQuestions();
+      document.getElementById("backFromReview").style.display = "block";
+    });
+    document.getElementById("reviewUnanswered").addEventListener("click", function(){
+  unansweredMode = true;
+  renderQuestions(); // This will refresh the display to show only unanswered questions.
+  document.getElementById("backFromReview").style.display = "block"; // Make sure your 'back' button is visible.
+});
+
+ document.getElementById("backBtn").addEventListener("click", function(){
+  reviewMode = false;
+  unansweredMode = false;
+  document.getElementById("backFromReview").style.display = "none";
+  renderQuestions();
+});
+
+
+    document.getElementById("resetProgress").addEventListener("click", function(){
+      if(confirm("Reset all progress?")) {
+        userAnswers = {};
+        localStorage.removeItem("mainQuizProgress_HNO2019-2024");
+        renderQuestions();
+        updateProgressBar();
+        updateProgressInfo();
+      }
+    });
+    renderQuestions();
+  </script>
+  <!-- ---------- Insert SPT Test Button into Top Bar ---------- -->
+  <script>
+    (function(){
+      var topBar = document.getElementById("topBar");
+      var sptButton = document.createElement("button");
+      sptButton.id = "enterMockExam";
+      sptButton.className = "btn";
+      sptButton.innerText = "SPT Test";
+      sptButton.style.backgroundColor = "#c62828";
+      sptButton.style.color = "#fff";
+      topBar.appendChild(sptButton);
+    })();
+
+
+  </script>
+<!-- SEARCH PAGE (Hidden by default) -->
+<div id="searchPage" style="display:none; padding:20px; background:#e8f0fe;">
+  <div class="container">
+    <h1>Quiz Search</h1>
+    <input type="text" id="searchInput" class="search-input" placeholder="Enter search text or answer text" style="width:100%; padding:10px; font-size:16px; margin-bottom:10px;">
+    <br>
+    <button id="textSearchBtn" class="search-button" style="padding:10px 20px; font-size:16px; margin-right:10px; margin-bottom:10px; border:none; background-color:#4caf50; color:#fff; border-radius:4px; cursor:pointer;">Search by Text</button>
+    <button id="groupSearchBtn" class="search-button" style="padding:10px 20px; font-size:16px; margin-right:10px; margin-bottom:10px; border:none; background-color:#4caf50; color:#fff; border-radius:4px; cursor:pointer;">Group by Correct Answer</button>
+    <button id="backToQuizBtn" class="search-button" style="padding:10px 20px; font-size:16px; margin-bottom:10px; border:none; background-color:#607d8b; color:#fff; border-radius:4px; cursor:pointer;">Back to Quiz</button>
+    <div id="resultsContainer"></div>
+  </div>
+</div>
+
+  
+  <!-- ---------- SPT TEST (Exam Mode) SECTION ---------- -->
+  <div id="sptTestPage" style="display:none;">
+    <!-- Exam Setup -->
+    <div id="examSetup">
+      <h1 id="examTitle"></h1>
+      <!-- Setup Table: subject area and number of questions -->
+      <table id="setupTable">
+        <tr>
+          <th>Fachgebiet</th>
+          <th>Anzahl Fragen</th>
+        </tr>
+        <tr>
+          <td>Innere Medizin, Chirurgie und Kinderheilkunde</td>
+          <td>30</td>
+        </tr>
+        <tr>
+          <td>Neurologie, Gynäkologie, Dermatologie und Notfallmedizin</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Hals-, Nasen-, Ohrenheilkunde, Psychiatrie, Augenheilkunde</td>
+          <td>20</td>
+        </tr>
+        <tr>
+          <td>Challenging (Mixed)</td>
+          <td>40</td>
+        </tr>
+      </table>
+      <p>Wählen Sie Ihr Fachgebiet anhand der Anzahl der Fragen:</p>
+      <div style="margin-top:20px;">
+        <button id="btn30" class="btn examLengthBtn" data-questions="30">30 Fragen</button>
+        <button id="btn25" class="btn examLengthBtn" data-questions="25">25 Fragen</button>
+        <button id="btn20" class="btn examLengthBtn" data-questions="20">20 Fragen</button>
+        <button id="btn40" class="btn examLengthBtn" data-questions="40">40 Fragen (Challenging)</button>
+      </div>
+      <br>
+      <button id="startExam" class="btn" style="background-color:#c62828; color:#fff;">Start Exam</button>
+      <br>
+      <button id="backToMain" class="btn" style="background-color:#607d8b; color:#fff;">Back to Main Page</button>
+    </div>
+    <!-- Exam Interface -->
+    <div id="examContainer" style="display:none;">
+      <div id="totalExamTimer"></div>
+      <div id="examQuestionsList"></div>
+      <div id="examPaginationControls"></div>
+      <div style="text-align:center; margin-top:20px;">
+        <button id="submitExam" class="btn" style="background-color:#c62828; color:#fff;">Submit Exam</button>
+      </div>
+    </div>
+    <!-- Exam Results -->
+    <div id="examResult" style="display:none;">
+      <h2>Exam Results</h2>
+      <div id="resultSummary"></div>
+      <!-- Detailed German result table -->
+      <table id="resultTable">
+        <tr>
+          <th>Fachgebiet</th>
+          <th>Anzahl Fragen</th>
+          <th>60% der Fragen</th>
+          <th>Exakte Bestehenszahl</th>
+        </tr>
+        <tr>
+          <td>Innere Medizin</td>
+          <td>30</td>
+          <td>18</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>Chirurgie</td>
+          <td>30</td>
+          <td>18</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>Kinderheilkunde</td>
+          <td>30</td>
+          <td>18</td>
+          <td>18</td>
+        </tr>
+        <tr>
+          <td>Neurologie</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Gynäkologie</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Dermatologie</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Notfall- und Intensivmedizin</td>
+          <td>25</td>
+          <td>15</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <td>Hals-, Nasen-, Ohrenheilkunde (HNO)</td>
+          <td>20</td>
+          <td>12</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Psychiatrie</td>
+          <td>20</td>
+          <td>12</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Augenheilkunde</td>
+          <td>20</td>
+          <td>12</td>
+          <td>12</td>
+        </tr>
+      </table>
+      <button id="showFeedback" class="btn" style="background-color:#c62828; color:#fff;">Show Detailed Feedback</button>
+      <div id="examFeedbackDiv" style="display:none; margin-top:20px;"></div>
+      <button id="backToSetup" class="btn" style="background-color:#607d8b; color:#fff;">Back to Exam Setup</button>
+    </div>
+  </div>
+  <script>
+    /* ---------- SPT TEST (Exam Mode) Script ---------- */
+    (function(){
+      let examQuestions = [];
+      let examUserAnswers = {};
+      let examFlags = {}; // Flag status by question id
+      let totalExamTime = 0;
+      let examTimerInterval;
+      let EXAM_QUESTIONS_PER_PAGE = 5;
+      let examCurrentPage = 1;
+      let examTotalPages = 1;
+      let selectedExamLength; // initially undefined
+      
+      // Set up exam length buttons – initially green; when selected, become red.
+      document.querySelectorAll('.examLengthBtn').forEach(function(btn) {
+        btn.addEventListener("click", function() {
+          document.querySelectorAll('.examLengthBtn').forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          selectedExamLength = parseInt(btn.getAttribute("data-questions"));
+        });
+      });
+      
+      const mainContainer = document.querySelector('.container');
+      const sptTestPage = document.getElementById("sptTestPage");
+      const examSetup = document.getElementById("examSetup");
+      const examTitle = document.getElementById("examTitle");
+      const startExamBtn = document.getElementById("startExam");
+      const backToMainBtn = document.getElementById("backToMain");
+      const examContainer = document.getElementById("examContainer");
+      const totalExamTimerEl = document.getElementById("totalExamTimer");
+      const examQuestionsList = document.getElementById("examQuestionsList");
+      const examPaginationControls = document.getElementById("examPaginationControls");
+      const submitExamBtn = document.getElementById("submitExam");
+      const examResultDiv = document.getElementById("examResult");
+      const resultSummaryDiv = document.getElementById("resultSummary");
+      const showFeedbackBtn = document.getElementById("showFeedback");
+      const examFeedbackDiv = document.getElementById("examFeedbackDiv");
+      const backToSetupBtn = document.getElementById("backToSetup");
+      
+      examTitle.innerText = document.getElementById("topicHeadline").innerText + " SPT Test";
+      
+      document.getElementById("enterMockExam").addEventListener("click", function(){
+        mainContainer.style.display = "none";
+        sptTestPage.style.display = "block";
+      });
+      backToMainBtn.addEventListener("click", function(){
+        sptTestPage.style.display = "none";
+        mainContainer.style.display = "block";
+      });
+      startExamBtn.addEventListener("click", function(){
+        if(selectedExamLength === undefined) {
+          alert("Bitte wählen Sie die Anzahl der Fragen aus.");
+          return;
+        }
+        let examLength = selectedExamLength;
+        let questionsCopy = allQuestions.slice();
+        questionsCopy = shuffleArray(questionsCopy);
+        examQuestions = questionsCopy.slice(0, examLength);
+        examCurrentPage = 1;
+        examTotalPages = Math.ceil(examQuestions.length / EXAM_QUESTIONS_PER_PAGE);
+        examFlags = {};
+        totalExamTime = examQuestions.length * 90;
+        examUserAnswers = {};
+        examSetup.style.display = "none";
+        examResultDiv.style.display = "none";
+        examContainer.style.display = "block";
+        renderExamQuestionsList();
+        renderExamPaginationControls();
+        startTotalExamTimer();
+      });
+      function renderExamQuestionsList() {
+        examQuestionsList.innerHTML = "";
+        let startIndex = (examCurrentPage - 1) * EXAM_QUESTIONS_PER_PAGE;
+        let endIndex = Math.min(startIndex + EXAM_QUESTIONS_PER_PAGE, examQuestions.length);
+        for (let i = startIndex; i < endIndex; i++) {
+          let q = examQuestions[i];
+          const qDiv = document.createElement("div");
+          qDiv.className = "question";
+          qDiv.id = "exam_q_" + q.id;
+          qDiv.innerHTML = "<strong>Q" + (i + 1) + ":</strong> " + q.text;
+          const flagBtn = document.createElement("button");
+          flagBtn.className = "flagBtn";
+          flagBtn.innerText = "Flag";
+          flagBtn.addEventListener("click", function(){
+            examFlags[q.id] = !examFlags[q.id];
+            if(examFlags[q.id]){
+              qDiv.classList.add("flagged");
+              flagBtn.innerText = "Unflag";
+            } else {
+              qDiv.classList.remove("flagged");
+              flagBtn.innerText = "Flag";
+            }
+          });
+          qDiv.appendChild(flagBtn);
+          let optionsArr = q.options.map((opt, idx) => ({ text: opt, index: idx }));
+          optionsArr = shuffleArray(optionsArr);
+          q.examShuffledOptions = optionsArr;
+          const inputType = (q.correctAnswers.length === 1) ? "radio" : "checkbox";
+          const optionsDiv = document.createElement("div");
+          optionsDiv.className = "options";
+          optionsArr.forEach(optionObj => {
+            const optionLabel = document.createElement("label");
+            optionLabel.className = "option";
+            const input = document.createElement("input");
+            input.type = inputType;
+            input.name = "exam_question_" + q.id;
+            input.value = optionObj.index;
+            input.addEventListener("change", function(){
+              let selected = examUserAnswers[q.id] ? examUserAnswers[q.id] : [];
+              if(input.checked) {
+                if(inputType === "radio") {
+                  selected = [parseInt(input.value)];
+                } else {
+                  selected.push(parseInt(input.value));
+                }
+              } else {
+                selected = selected.filter(val => val !== parseInt(input.value));
+              }
+              examUserAnswers[q.id] = selected;
+            });
+            optionLabel.appendChild(input);
+            optionLabel.appendChild(document.createTextNode(" " + optionObj.text));
+            optionsDiv.appendChild(optionLabel);
+          });
+          qDiv.appendChild(optionsDiv);
+          examQuestionsList.appendChild(qDiv);
+        }
+      }
+      function renderExamPaginationControls() {
+        examPaginationControls.innerHTML = "";
+        const prevBtn = document.createElement("button");
+        prevBtn.innerText = "Previous";
+        prevBtn.disabled = (examCurrentPage === 1);
+        prevBtn.addEventListener("click", function(){
+          if(examCurrentPage > 1){
+            examCurrentPage--;
+            renderExamQuestionsList();
+            renderExamPaginationControls();
+          }
+        });
+        const nextBtn = document.createElement("button");
+        nextBtn.innerText = "Next";
+        nextBtn.disabled = (examCurrentPage === examTotalPages);
+        nextBtn.addEventListener("click", function(){
+          if(examCurrentPage < examTotalPages){
+            examCurrentPage++;
+            renderExamQuestionsList();
+            renderExamPaginationControls();
+          }
+        });
+        const pageIndicator = document.createElement("span");
+        pageIndicator.style.fontSize = "18px";
+        pageIndicator.innerText = "Page " + examCurrentPage + " of " + examTotalPages;
+        examPaginationControls.appendChild(prevBtn);
+        examPaginationControls.appendChild(pageIndicator);
+        examPaginationControls.appendChild(nextBtn);
+      }
+      function startTotalExamTimer() {
+        totalExamTimerEl.innerText = "Time Remaining: " + formatTime(totalExamTime);
+        examTimerInterval = setInterval(function(){
+          totalExamTime--;
+          totalExamTimerEl.innerText = "Time Remaining: " + formatTime(totalExamTime);
+          if(totalExamTime <= 0) {
+            clearInterval(examTimerInterval);
+            submitExam();
+          }
+        }, 1000);
+      }
+      function formatTime(seconds) {
+        let m = Math.floor(seconds / 60).toString().padStart(2, '0');
+        let s = (seconds % 60).toString().padStart(2, '0');
+        return m + ":" + s;
+      }
+      submitExamBtn.addEventListener("click", function(){
+        clearInterval(examTimerInterval);
+        submitExam();
+      });
+      function submitExam() {
+        examContainer.style.display = "none";
+        examResultDiv.style.display = "block";
+        let score = 0;
+        examQuestions.forEach(q => {
+          let userAns = examUserAnswers[q.id] ? examUserAnswers[q.id].sort((a,b)=>a-b) : [];
+          let correctAns = q.correctAnswers.slice().sort((a,b)=>a-b);
+          let isCorrect = (userAns.length === correctAns.length) && userAns.every((val, i) => val === correctAns[i]);
+          if(isCorrect) score++;
+          q.examUserAnswer = userAns;
+          q.examIsCorrect = isCorrect;
+        });
+        let total = examQuestions.length;
+        let incorrect = total - score;
+        let percentage = Math.round((score/total)*100);
+        let passMark = Math.ceil(0.6 * total);
+        resultSummaryDiv.innerHTML = 
+          "<p><strong>Score:</strong> " + score + " / " + total + "</p>" +
+          "<p><strong>Percentage:</strong> " + percentage + "%</p>" +
+          "<p><strong>Correct Answers:</strong> " + score + "</p>" +
+          "<p><strong>Incorrect Answers:</strong> " + incorrect + "</p>" +
+          "<p><strong>Passing Mark:</strong> " + passMark + " (" + (score >= passMark ? "<span style='color:green;'>Congratulations, you passed!</span>" : "<span style='color:red;'>Failed. Try again!</span>") + ")</p>";
+        // The detailed German table is shown in the HTML result section.
+        saveExamResult(score, total, examUserAnswers);
+      }
+      showFeedbackBtn.addEventListener("click", function(){
+        renderExamFeedback();
+        examFeedbackDiv.style.display = "block";
+        showFeedbackBtn.style.display = "none";
+      });
+      function renderExamFeedback() {
+        examFeedbackDiv.innerHTML = "";
+        examQuestions.forEach((q, index) => {
+          let reviewDiv = document.createElement("div");
+          reviewDiv.className = "question";
+          reviewDiv.innerHTML = "<strong>Q" + (index + 1) + ":</strong> " + q.text;
+          let optionsHTML = "<ul style='list-style-type:none; padding-left:0; text-align:left;'>";
+          q.examShuffledOptions.forEach(opt => {
+            let optionText = opt.text;
+            let isUserSelected = q.examUserAnswer && q.examUserAnswer.includes(opt.index);
+            let isCorrectOption = q.correctAnswers.includes(opt.index);
+            optionsHTML += "<li style='margin-bottom:5px; " +
+              (isCorrectOption ? "color:green;" : (isUserSelected && !isCorrectOption ? "color:red;" : "")) + "'>";
+            if(isUserSelected) {
+              optionsHTML += (isCorrectOption ? "&#10003; " : "<span style='color:red;'>&#10007;</span> ");
+            }
+            optionsHTML += optionText;
+            if(isUserSelected && !isCorrectOption){
+              optionsHTML += " (Your answer)";
+            }
+            if(!isUserSelected && isCorrectOption){
+              optionsHTML += " (Correct answer)";
+            }
+            optionsHTML += "</li>";
+          });
+          optionsHTML += "</ul>";
+          reviewDiv.innerHTML += optionsHTML;
+          examFeedbackDiv.appendChild(reviewDiv);
+        });
+      }
+      function saveExamResult(score, total, answers) {
+        let examResults = JSON.parse(localStorage.getItem("mockExamResults")) || [];
+        let resultEntry = {
+          timestamp: new Date().toLocaleString(),
+          score: score,
+          total: total,
+          answers: answers
+        };
+        examResults.push(resultEntry);
+        localStorage.setItem("mockExamResults", JSON.stringify(examResults));
+      }
+      backToSetupBtn.addEventListener("click", function(){
+        examSetup.style.display = "block";
+        examContainer.style.display = "none";
+        examResultDiv.style.display = "none";
+        sptTestPage.style.display = "none";
+        mainContainer.style.display = "block";
+      });
+    })();
+  </script>
+
+<script>
+  // Updated Search functionality for the Quiz Search page with requested changes.
+  (function() {
+    // Get references to search page elements
+    const searchPage = document.getElementById("searchPage");
+    const searchInput = document.getElementById("searchInput");
+    const textSearchBtn = document.getElementById("textSearchBtn");
+    const groupSearchBtn = document.getElementById("groupSearchBtn");
+    const backToQuizBtn = document.getElementById("backToQuizBtn");
+    const resultsContainer = document.getElementById("resultsContainer");
+
+    // Function to show the search page and hide other sections.
+    function showSearchPage() {
+      const mainContainer = document.querySelector('.container');
+      if(mainContainer) { mainContainer.style.display = "none"; }
+      const sptTestPage = document.getElementById("sptTestPage");
+      if(sptTestPage) { sptTestPage.style.display = "none"; }
+      searchPage.style.display = "block";
+    }
+
+    // Attach search page trigger if "openSearchBtn" exists.
+    const openSearchBtn = document.getElementById("openSearchBtn");
+    if (openSearchBtn) {
+      openSearchBtn.addEventListener("click", showSearchPage);
+    }
+
+    // Back button: hide search page, show main quiz page.
+    backToQuizBtn.addEventListener("click", function() {
+      searchPage.style.display = "none";
+      const mainContainer = document.querySelector('.container');
+      if(mainContainer) { mainContainer.style.display = "block"; }
+    });
+
+    // SEARCH BY TEXT: Search in both the question text and the texts of the correct answers.
+    textSearchBtn.addEventListener("click", function() {
+      const query = searchInput.value.trim().toLowerCase();
+      resultsContainer.innerHTML = "";
+      if(query === "") {
+        resultsContainer.innerHTML = "<p>Please enter a search term.</p>";
+        return;
+      }
+      const matchedQuestions = allQuestions.filter(q => {
+        const qText = q.text.toLowerCase();
+        const correctAnswersText = q.correctAnswers.map(idx => q.options[idx].toLowerCase()).join(" ");
+        return qText.includes(query) || correctAnswersText.includes(query);
+      });
+      if(matchedQuestions.length === 0) {
+        resultsContainer.innerHTML = "<p>No questions found matching that text.</p>";
+        return;
+      }
+      // Display each matching question with sequential numbering and its correct answers in green.
+      matchedQuestions.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.style.border = "1px solid #ccc";
+        qDiv.style.padding = "8px";
+        qDiv.style.marginBottom = "5px";
+        const displayNumber = index + 1;
+        const correctAnswerTexts = q.correctAnswers.map(idx => q.options[idx]).join(", ");
+        qDiv.innerHTML = "<strong>Q" + displayNumber + ":</strong> " + q.text +
+          "<br><strong>Correct Answer(s):</strong> <span style='color:green;'>" + correctAnswerTexts + "</span>";
+        resultsContainer.appendChild(qDiv);
+      });
+    });
+
+    // SEARCH BY SIMILARITY: Group questions by a common correct answer.
+    groupSearchBtn.addEventListener("click", function() {
+      resultsContainer.innerHTML = "";
+      let answerGroups = {};
+      allQuestions.forEach(q => {
+        q.correctAnswers.forEach(idx => {
+          const answerText = q.options[idx].trim().toLowerCase();
+          if(answerGroups[answerText]) {
+            answerGroups[answerText].push(q);
+          } else {
+            answerGroups[answerText] = [q];
+          }
+        });
+      });
+      // Only keep groups with more than one question.
+      let filteredGroups = {};
+      for(let answer in answerGroups) {
+        if(answerGroups[answer].length > 1) {
+          filteredGroups[answer] = answerGroups[answer];
+        }
+      }
+      if(Object.keys(filteredGroups).length === 0) {
+        resultsContainer.innerHTML = "<p>No groups with similar correct answers found.</p>";
+        return;
+      }
+      // Create an accordion-like structure for each group.
+      for(let answer in filteredGroups) {
+        // Create group header with common answer and group count.
+        const groupHeader = document.createElement("div");
+        groupHeader.className = "group-header";
+        groupHeader.style.cursor = "pointer";
+        groupHeader.style.background = "#ccc";
+        groupHeader.style.padding = "10px";
+        groupHeader.style.marginTop = "10px";
+        groupHeader.innerText = "Correct Answer: " + answer + " (" + filteredGroups[answer].length + " questions)";
+        
+        // Create container for the grouped questions.
+        const groupContainer = document.createElement("div");
+        groupContainer.className = "group-container";
+        groupContainer.style.display = "none";
+        groupContainer.style.padding = "10px";
+        groupContainer.style.border = "1px solid #ddd";
+
+        // Display each question in the group with sequential numbering and correct answers.
+        filteredGroups[answer].forEach((q, index) => {
+          const qDiv = document.createElement("div");
+          qDiv.className = "question";
+          qDiv.style.borderBottom = "1px dashed #aaa";
+          qDiv.style.padding = "5px 0";
+          const displayNumber = index + 1;
+          const correctAnswerTexts = q.correctAnswers.map(idx => q.options[idx]).join(", ");
+          qDiv.innerHTML = "<strong>Q" + displayNumber + ":</strong> " + q.text +
+            "<br><strong>Correct Answer(s):</strong> <span style='color:green;'>" + correctAnswerTexts + "</span>";
+          groupContainer.appendChild(qDiv);
+        });
+        // Toggle the group container on header click.
+        groupHeader.addEventListener("click", function() {
+          groupContainer.style.display = (groupContainer.style.display === "none") ? "block" : "none";
+        });
+        resultsContainer.appendChild(groupHeader);
+        resultsContainer.appendChild(groupContainer);
+      }
+    });
+  })();
+</script>
+
+
+</body>
+</html>
